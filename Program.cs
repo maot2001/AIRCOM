@@ -1,4 +1,7 @@
+using AIRCOM.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -25,9 +28,20 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UserSecurity", policy => policy.RequireClaim("UserType", "Security"));
     options.AddPolicy("UserMechanic", policy => policy.RequireClaim("UserType", "Mechanic"));
     options.AddPolicy("UserDirection", policy => policy.RequireClaim("UserType", "Direction"));
+}); 
+builder.Services.AddDbContext<DBContext>(options =>
+{
+    var defaults = builder.Configuration.GetConnectionString("DBConnection");
+    if (!options.IsConfigured)
+        options.UseMySql(defaults, ServerVersion.AutoDetect(defaults));
 });
-
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<DBContext>();
+    dataContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

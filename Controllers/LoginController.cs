@@ -4,6 +4,8 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using AIRCOM.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
@@ -13,7 +15,7 @@ namespace AIRCOM.Controllers
     {
         private readonly DBContext _context;
         private IConfiguration _config;
-        public LoginController(BDContext context, IConfiguration config)
+        public LoginController(DBContext context, IConfiguration config)
         {
             _context = context;
             _config = config;
@@ -37,7 +39,6 @@ namespace AIRCOM.Controllers
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("UserType", user.Role),
             };
