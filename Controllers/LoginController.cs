@@ -7,6 +7,8 @@ using System.Text;
 
 namespace AIRCOM.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class LoginController : Controller
     {
         private readonly DBContext _context;
@@ -17,7 +19,7 @@ namespace AIRCOM.Controllers
             _config = config;
         }
         
-        [HttpPost("authenticate")]
+        [HttpPost(Name = "authenticate")]
         public async Task<IActionResult> Login(IFormCollection collection)
         {
             var user = await _context.Users.
