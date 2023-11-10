@@ -10,5 +10,7 @@ namespace AIRCOM.Models
 
         }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Airoport> Airoports { get; set; }    
+        public virtual DbSet<Client> Clients { get; set; }  
     }
 }
