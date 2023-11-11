@@ -9,8 +9,21 @@ namespace AIRCOM.Models
         {
 
         }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Airoport> Airoports { get; set; }    
-        public virtual DbSet<Client> Clients { get; set; }  
+        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Airoport> Airoports { get; set; } = null!;
+        public virtual DbSet<Client> Clients { get; set; } = null!;
+        public virtual DbSet<Ships> Ships { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Installation>()
+           .HasKey(i => new { i.InstallationID, i.AiroportID });
+
+            modelBuilder.Entity<ServicesInstallation>()
+           .HasKey(si => new { si.InstallationID, si.AiroportID, si.Code });
+
+            modelBuilder.Entity<on_site>()
+           .HasKey(os => new { os.InstallationID, os.AiroportID, os.Code, os.ClientID, os.Fecha });
+        }
     }
 }
