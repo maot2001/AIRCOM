@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,10 +20,11 @@ namespace AIRCOM.Controllers
         // POST: RepairShipController/RequestRepair/5
         [HttpPost("{shipId}")]
         [Authorize(Policy = "Security")]
-        public IActionResult RequestRepair(string shipId, [FromBody] (int, int, int) repairId, [FromBody] string state)
+        public IActionResult RequestRepair(string shipId, [FromBody] RepairInstallationDTO repairId)
         {
             var ship = _context.Ships.Find(shipId);
-            var repair = _context.RepairInstallations.Find(repairId);
+            var repair = _context.RepairInstallations.SingleOrDefault(r => 
+            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID);
 
             if (ship is not null && repair is not null)
             {
@@ -36,13 +38,13 @@ namespace AIRCOM.Controllers
                     Repair = repair.Repair,
                     Installation = repair.Installation,
                     Airport = repair.Airport,
-                    State = state,
+                    State = repairId.State,
                     Price = repair.Price
                 };
 
                 _context.RepairShips.Add(RS);
                 _context.SaveChanges();
-                return View();
+                return RedirectToAction(nameof(GetRepairs));
             }
 
             return NotFound();
@@ -50,10 +52,89 @@ namespace AIRCOM.Controllers
         // ---------------------------------------------------------------------
 
         // Mechanic ------------------------------------------------------------
-        // GET: RepairShipController/Get/5
-        [HttpGet("{type}")]
+        [HttpGet("GetRequest")]
+        public IActionResult GetRequest()
+        {
+            return View(Get(0));
+        }
+
+        [HttpGet("GetProcess")]
+        public IActionResult GetProcess()
+        {
+            return View(Get(1));
+        }
+
+        [HttpGet("GetFinish")]
+        public IActionResult GetFinish()
+        {
+            return View(Get(2));
+        }
+
+        [HttpGet("GetRepairs")]
+        public IActionResult GetRepairs()
+        {
+            return View(Get(3));
+        }
+
+
+        // PUT: RepairShipController/ProcessRepair
+        [HttpPut("ProcessRepair")]
         [Authorize(Policy = "Mechanic")]
-        public IActionResult Get(int type)
+        public IActionResult ProcessRepair([FromBody] RepairShipDTO repairId)
+        {
+            if (repairId.newTime == default(DateTime))
+                repairId.newTime = DateTime.Now;
+
+            var shipRepair = _context.RepairShips.SingleOrDefault(r =>
+            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID &&
+            r.Plate == repairId.Plate && r.Init == repairId.Init);
+            if (shipRepair is null)
+                return NotFound();
+
+            try
+            {
+                shipRepair.Init = (DateTime) repairId.newTime;
+                _context.SaveChanges();
+                return RedirectToAction(nameof(GetRequest));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        // PUT: RepairShipController/FinishRepair
+        [HttpPut("FinishRepair")]
+        [Authorize(Policy = "Mechanic")]
+        public IActionResult FinishRepair([FromBody] RepairShipDTO repairId)
+        {
+            if (repairId.newTime == default(DateTime))
+                repairId.newTime = DateTime.Now;
+
+            var shipRepair = _context.RepairShips.SingleOrDefault(r =>
+            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID &&
+            r.Plate == repairId.Plate && r.Init == repairId.Init);
+            if (shipRepair is null)
+                return NotFound();
+
+            try
+            {
+                TimeSpan time = (DateTime) repairId.newTime - shipRepair.Init;
+                int cost = shipRepair.Time - (int)time.TotalHours;
+                if (cost > 0)
+                    shipRepair.Price *= (1 + cost / 100);
+
+                shipRepair.Finish = (DateTime) repairId.newTime;
+                _context.SaveChanges();
+                return RedirectToAction(nameof(GetProcess));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        // ---------------------------------------------------------------------
+        private IEnumerable<RepairShip> Get(int type)
         {
             List<RepairShip> repairs;
             switch (type)
@@ -62,7 +143,7 @@ namespace AIRCOM.Controllers
                     repairs = _context.RepairShips.Where(SR => SR.Init == default(DateTime)).ToList();
                     break;
                 case 1:
-                    repairs = _context.RepairShips.Where(SR => SR.Finish == default(DateTime)).ToList();
+                    repairs = _context.RepairShips.Where(SR => SR.Finish == default(DateTime) && SR.Init != default(DateTime)).ToList();
                     break;
                 case 2:
                     repairs = _context.RepairShips.Where(SR => SR.Finish != default(DateTime)).ToList();
@@ -72,61 +153,8 @@ namespace AIRCOM.Controllers
                     break;
             }
 
-            return View((repairs, type));
+            return repairs;
         }
 
-        // PUT: RepairShipController/ProcessRepair
-        [HttpPut]
-        [Authorize(Policy = "Mechanic")]
-        public IActionResult ProcessRepair([FromBody] (int, int, int, string, DateTime) id, [FromBody] DateTime init = default(DateTime))
-        {
-            if (init == default(DateTime))
-                init = DateTime.Now;
-
-            var shipRepair = _context.RepairShips.Find(id);
-            if (shipRepair is null)
-                return NotFound();
-
-            try
-            {
-                shipRepair.Init = init;
-                _context.SaveChanges();
-                return Get(0);
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
-
-        // PUT: RepairShipController/FinishRepair
-        [HttpPut]
-        [Authorize(Policy = "Mechanic")]
-        public IActionResult FinishRepair([FromBody] (int, int, int, string, DateTime) id, [FromBody] DateTime finish = default(DateTime))
-        {
-            if (finish == default(DateTime))
-                finish = DateTime.Now;
-
-            var shipRepair = _context.RepairShips.Find(id);
-            if (shipRepair is null)
-                return NotFound();
-
-            try
-            {
-                TimeSpan time = finish - shipRepair.Init;
-                int cost = shipRepair.Time - (int)time.TotalHours;
-                if (cost > 0)
-                    shipRepair.Price *= (1 + cost / 100);
-
-                shipRepair.Finish = finish;
-                _context.SaveChanges();
-                return Get(1);
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
-        // ---------------------------------------------------------------------
     }
 }

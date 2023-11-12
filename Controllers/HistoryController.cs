@@ -42,33 +42,29 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] History history)
         {
-            try
-            {
+            var ship = _context.Ships.Find(history.Plate);
+            var airport = _context.Airports.Find(history.AirportID);
+
+            if (ship is null || airport is null)
+                return BadRequest();
+
                 _context.Histories.Add(history);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Get));
-            }
-            catch
-            {
-                return BadRequest();
-            }
         }
 
         // PUT: HistoryController/Edit
         [Authorize(Policy = "Security")]
         [HttpPut]
-        public IActionResult Edit([FromBody] (int, string, DateTime) id, [FromBody] History history)
+        public IActionResult Edit([FromBody] History history)
         {
-            if (id != (history.AirportID, history.Plate, history.Date))
-                return BadRequest();
-
-            var historyBD = _context.Histories.Find(id);
+            var historyBD = _context.Histories.SingleOrDefault(h =>
+            h.Plate == history.Plate && h.AirportID == history.AirportID && h.Date == history.Date);
             if (historyBD is null)
                 return NotFound();
 
             try
             {
-                historyBD.Date = history.Date;
                 historyBD.OwnerRole = history.OwnerRole;
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Get));
@@ -82,15 +78,16 @@ namespace AIRCOM.Controllers
         // GET: HistoryController/Delete
         [Authorize(Policy = "Security")]
         [HttpDelete]
-        public IActionResult Delete([FromBody] (int, string, DateTime) id)
+        public IActionResult Delete([FromBody] History history)
         {
-            var history = _context.Histories.Find(id);
-            if (history is null)
+            var historyBD = _context.Histories.SingleOrDefault(h =>
+            h.Plate == history.Plate && h.AirportID == history.AirportID && h.Date == history.Date);
+            if (historyBD is null)
                 return NotFound();
 
             try
             {
-                _context.Histories.Remove(history);
+                _context.Histories.Remove(historyBD);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Get));
             }

@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AIRCOM.Models;
 using Microsoft.EntityFrameworkCore;
-using AIRCOM.Models.Interfaces;
+using AIRCOM.Models.DTO;
 
 namespace AIRCOM.Controllers
 {
@@ -24,24 +24,26 @@ namespace AIRCOM.Controllers
 
         // POST: LoginController/Login
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] string Email, [FromBody] string Pwd, [FromBody] bool worker)
+        public async Task<IActionResult> Login([FromBody] Register register)
         {
-            IUser user;
-            if (worker)
-                user = await _context.Workers.SingleOrDefaultAsync(x => x.Email == Email && x.Pwd == Pwd);
-            else    
-                user = await _context.Clients.SingleOrDefaultAsync(x => x.Email == Email && x.Pwd == Pwd);
+            var user = await _context.Clients.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd); ;
 
             if (user is null)
                 return BadRequest(new { message = "Credenciales invalidas" });
 
-            string jwtToken = GenerateToken(user);
+            string jwtToken = GenerateToken(user, register.worker);
 
             return Ok(new { token = jwtToken });
         }
 
-        private string GenerateToken(IUser user)
+        private string GenerateToken(Client user, bool worker)
         {
+            Client client = null;
+            client.Email = user.Email;
+            if (worker)
+                client.Type = user.Type;
+            else client.Type = "Client";
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.Email),
