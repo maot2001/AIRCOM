@@ -24,6 +24,12 @@ namespace AIRCOM.Models
 
             modelBuilder.Entity<on_site>()
            .HasKey(os => new { os.InstallationID, os.AiroportID, os.Code, os.ClientID, os.Fecha });
+
+            modelBuilder.Entity<RepairInstallation>()
+            .HasKey(ri => new { ri.InstallationID, ri.AiroportID, ri.RepairID });
+
+            modelBuilder.Entity<RepairShip>()
+           .HasKey(rs => new { rs.InstallationID, rs.AiroportID, rs.RepairID, rs.Plate, rs.Init });
         }
     }
 }
