@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -88,6 +89,39 @@ namespace AIRCOM.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        // POST: ShipsController/RequestRepair/5
+        [HttpPost("{shipId}")]
+        [Authorize(Policy = "Security")]
+        public IActionResult RequestRepair(string shipId, [FromBody] RepairInstallationDTO repairId)
+        {
+            var ship = _context.Ships.Find(shipId);
+            var repair = _context.RepairInstallations.SingleOrDefault(r => 
+            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID);
+
+            if (ship is not null && repair is not null)
+            {
+                var RS = new RepairShip
+                {
+                    Plate = shipId,
+                    RepairID = repair.RepairID,
+                    InstallationID = repair.InstallationID,
+                    AirportID = repair.AirportID,
+                    Ships = ship,
+                    Repair = repair.Repair,
+                    Installation = repair.Installation,
+                    Airport = repair.Airport,
+                    State = repairId.State,
+                    Price = repair.Price
+                };
+
+                _context.RepairShips.Add(RS);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Get));
+            }
+
+            return NotFound();
         }
         // -----------------------------------------------------------   
     }
