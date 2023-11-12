@@ -12,15 +12,14 @@ namespace AIRCOM.Models
         public int InstallationID { get; set; }
         [ForeignKey(nameof(InstallationID))]
         public virtual Installation? Installation { get; set; }
-        public int AiroportID { get; set; }
-        [ForeignKey(nameof(AiroportID))]
-        public virtual Airoport? Airoport { get; set; }
+        public int AirportID { get; set; }
+        [ForeignKey(nameof(AirportID))]
+        public virtual Airport? Airport { get; set; }
         public int Code { get; set; }
         [ForeignKey(nameof(Code))]
         public virtual CustomerService? CustomerService { get; set; }
-
         public int ClientID { get; set; }
         [ForeignKey(nameof(ClientID))]
-        public virtual Client? Clients { get; set; }
+        public virtual Client? Client { get; set; }
     }
 }
