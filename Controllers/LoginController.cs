@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AIRCOM.Models;
 using Microsoft.EntityFrameworkCore;
+using AIRCOM.Models.DTO;
 
 namespace AIRCOM.Controllers
 {
@@ -20,27 +21,33 @@ namespace AIRCOM.Controllers
             _context = context;
             _config = config;
         }
-        
-        [HttpPost(Name = "authenticate")]
-        public async Task<IActionResult> Login(IFormCollection collection)
+
+        // POST: LoginController/Login
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] Register register)
         {
-            var user = await _context.Users.
-                SingleOrDefaultAsync(x => x.Email == collection["Email"] && x.Pwd == collection["Pwd"]);
+            var user = await _context.Clients.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd); ;
 
             if (user is null)
                 return BadRequest(new { message = "Credenciales invalidas" });
 
-            string jwtToken = GenerateToken(user);
+            string jwtToken = GenerateToken(user, register.worker);
 
             return Ok(new { token = jwtToken });
         }
 
-        private string GenerateToken(User user)
+        private string GenerateToken(Client user, bool worker)
         {
+            Client client = null;
+            client.Email = user.Email;
+            if (worker)
+                client.Type = user.Type;
+            else client.Type = "Client";
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("UserType", user.Role),
+                new Claim("UserType", user.Type),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("JWT:Key").Value));
