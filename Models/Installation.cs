@@ -14,8 +14,9 @@ namespace AIRCOM.Models
         public int AiroportID { get; set; }
         [ForeignKey(nameof(AiroportID))]
 
-        public virtual Airoport Airoport { get; set; }
+        public virtual Airport Airoport { get; set; }
         public virtual ICollection<ServicesInstallation> ServicesInstallations { get; set; }
         public virtual ICollection<on_site> on_sites { get; set; }
+        public virtual ICollection<InstReparation> InstReparation { get; set; }
     }
 }

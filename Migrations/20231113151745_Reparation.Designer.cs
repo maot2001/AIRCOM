@@ -3,6 +3,7 @@ using System;
 using AIRCOM.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIRCOM.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20231113151745_Reparation")]
+    partial class Reparation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("AirportID");
 
-                    b.ToTable("Airoports", (string)null);
+                    b.ToTable("Airoports");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Client", b =>
@@ -62,7 +65,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("ClientID");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.CustomerService", b =>
@@ -81,7 +84,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("CustomerServices", (string)null);
+                    b.ToTable("CustomerServices");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.InstReparation", b =>
@@ -110,7 +113,7 @@ namespace AIRCOM.Migrations
 
                     b.HasIndex("InstallationID");
 
-                    b.ToTable("InstReparations", (string)null);
+                    b.ToTable("InstReparations");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Installation", b =>
@@ -138,7 +141,7 @@ namespace AIRCOM.Migrations
 
                     b.HasIndex("AiroportID");
 
-                    b.ToTable("Installments", (string)null);
+                    b.ToTable("Installments");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Reparation", b =>
@@ -156,7 +159,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("Reparation", (string)null);
+                    b.ToTable("Reparation");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.ServicesInstallation", b =>
@@ -180,7 +183,7 @@ namespace AIRCOM.Migrations
 
                     b.HasIndex("InstallationID");
 
-                    b.ToTable("ServicesInstallations", (string)null);
+                    b.ToTable("ServicesInstallations");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Ships", b =>
@@ -205,7 +208,7 @@ namespace AIRCOM.Migrations
 
                     b.HasIndex("ClientID");
 
-                    b.ToTable("Shipss", (string)null);
+                    b.ToTable("Shipss");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.User", b =>
@@ -225,7 +228,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.on_site", b =>
@@ -262,7 +265,7 @@ namespace AIRCOM.Migrations
 
                     b.HasIndex("InstallationID");
 
-                    b.ToTable("On_Sites", (string)null);
+                    b.ToTable("On_Sites");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.InstReparation", b =>

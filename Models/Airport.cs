@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace AIRCOM.Models
 {
-    public class Airoport
+    public class Airport
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -14,6 +14,7 @@ namespace AIRCOM.Models
         public virtual ICollection<Installation> Installations { get; set; }
         public virtual ICollection<ServicesInstallation> ServicesInstallations { get; set; }
         public virtual ICollection<on_site> On_Sites { get; set; }
+        public virtual ICollection<InstReparation> InstReparation { get; set; }
         
     }
 }

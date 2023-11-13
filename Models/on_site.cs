@@ -14,7 +14,7 @@ namespace AIRCOM.Models
         public virtual Installation Installation { get; set; }
         public int AiroportID { get; set; }
         [ForeignKey(nameof(AiroportID))]
-        public virtual Airoport Airoport { get; set; }
+        public virtual Airport Airoport { get; set; }
         public int Code { get; set; }
         [ForeignKey(nameof(Code))]
         public virtual CustomerService CustomerService { get; set; }
