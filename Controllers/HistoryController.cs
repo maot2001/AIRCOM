@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,10 @@ namespace AIRCOM.Controllers
     [Route("[controller]")]
     public class HistoryController : Controller
     {
-        private readonly DBContext _context;
-        public HistoryController(DBContext context)
+        private readonly HistoryService _service;
+        public HistoryController(HistoryService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // Security-Client -------------------------------------------
@@ -20,9 +21,9 @@ namespace AIRCOM.Controllers
         [Authorize(Policy = "Security")]
         [Authorize(Policy = "Client")]
         [HttpGet("{id}")]
-        public IActionResult GetHistoryShips(string id)
+        public async Task<IActionResult> GetHistoryShips(string id)
         {
-            var histories = _context.Histories.Where(h => h.Plate == id).ToList();
+            var histories = await _service.GetHistoryShips(id);
             return View(histories);
         }
         // -----------------------------------------------------------   
@@ -31,69 +32,50 @@ namespace AIRCOM.Controllers
         // GET: HistoryController/GetHistory
         [Authorize(Policy = "Security")]
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var histories = _context.Histories.ToList();
+            var histories = await _service.Get();
             return View(histories);
         }
 
         // POST: HistoryController/Create
         [Authorize(Policy = "Security")]
         [HttpPost]
-        public IActionResult Create([FromBody] History history)
+        public async Task<IActionResult> Create([FromBody] History history)
         {
-            var ship = _context.Ships.Find(history.Plate);
-            var airport = _context.Airports.Find(history.AirportID);
-
-            if (ship is null || airport is null)
-                return BadRequest();
-
-                _context.Histories.Add(history);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Get));
+            await _service.Create(history);
+            return RedirectToAction(nameof(Get));
         }
 
         // PUT: HistoryController/Edit
         [Authorize(Policy = "Security")]
         [HttpPut]
-        public IActionResult Edit([FromBody] History history)
+        public async Task<IActionResult> Edit([FromBody] History history)
         {
-            var historyBD = _context.Histories.SingleOrDefault(h =>
-            h.Plate == history.Plate && h.AirportID == history.AirportID && h.Date == history.Date);
-            if (historyBD is null)
-                return NotFound();
-
             try
             {
-                historyBD.OwnerRole = history.OwnerRole;
-                _context.SaveChanges();
+                await _service.Edit(history);
                 return RedirectToAction(nameof(Get));
             }
             catch
             {
-                return BadRequest();
+                return NotFound();
             }
         }
 
         // GET: HistoryController/Delete
         [Authorize(Policy = "Security")]
         [HttpDelete]
-        public IActionResult Delete([FromBody] History history)
+        public async Task<IActionResult> Delete([FromBody] History history)
         {
-            var historyBD = _context.Histories.SingleOrDefault(h =>
-            h.Plate == history.Plate && h.AirportID == history.AirportID && h.Date == history.Date);
-            if (historyBD is null)
-                return NotFound();
-
             try
             {
-                _context.Histories.Remove(historyBD);
-                _context.SaveChanges();
+                await _service.Delete(history);
                 return RedirectToAction(nameof(Get));
             }
             catch
             {
-                return BadRequest();
+                return NotFound();
             }
         }
         // -----------------------------------------------------------   

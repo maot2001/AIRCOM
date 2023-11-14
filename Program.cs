@@ -1,4 +1,5 @@
 using AIRCOM.Models;
+using AIRCOM.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -29,12 +30,22 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UserMechanic", policy => policy.RequireClaim("UserType", "Mechanic"));
     options.AddPolicy("UserDirection", policy => policy.RequireClaim("UserType", "Direction"));
 }); 
+
 builder.Services.AddDbContext<DBContext>(options =>
 {
     var defaults = builder.Configuration.GetConnectionString("DBConnection");
     if (!options.IsConfigured)
         options.UseMySql(defaults, ServerVersion.AutoDetect(defaults));
 });
+
+//Service Layer
+builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<HistoryService>();
+builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<RepairShipService>();
+builder.Services.AddScoped<ShipsService>();
+
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

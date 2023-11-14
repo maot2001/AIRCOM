@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,84 +10,63 @@ namespace AIRCOM.Controllers
     [Route("[controller]")]
     public class ShipsController : Controller
     {
-        private readonly DBContext _context;
-        public ShipsController(DBContext context)
+        private readonly ShipsService _service;
+        public ShipsController(ShipsService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // Security --------------------------------------------------
         // GET: ShipsController/Get
         [Authorize(Policy = "Security")]
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var ships = _context.Ships.ToList();
+            var ships = await _service.Get();
             return View(ships);
         }
 
         // POST: ShipsController/Create
         [Authorize(Policy = "Security")]
         [HttpPost]
-        public IActionResult Create([FromBody] Ships ship)
+        public async Task<IActionResult> Create([FromBody] Ships ship)
         {
-            try
-            {
-                _context.Ships.Add(ship);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Get));
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            await _service.Create(ship);
+            return RedirectToAction(nameof(Get));
         }
 
         // PUT: ShipsController/Edit/5
         [Authorize(Policy = "Security")]
         [HttpPut("{id}")]
-        public IActionResult Edit(string id, [FromBody] Ships ship)
+        public async Task<IActionResult> Edit(string id, [FromBody] Ships ship)
         {
             if (id != ship.Plate)
                 return BadRequest();
 
-            var shipBD = _context.Ships.Find(id);
-            if (shipBD is null)
-                return NotFound();
-
             try
             {
-                shipBD.Model = ship.Model;
-                shipBD.Capacity = ship.Capacity;
-                shipBD.Crew = ship.Crew;
-                shipBD.ClientID = ship.ClientID;
-                _context.SaveChanges();
+                await _service.Edit(id, ship);
                 return RedirectToAction(nameof(Get));
             }
             catch
             {
-                return BadRequest();
+                return NotFound();
             }
         }
 
         // GET: ShipsController/Delete
         [Authorize(Policy = "Security")]
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var ship = _context.Ships.Find(id);
-            if (ship is null)
-                return NotFound();
-
             try
             {
-                _context.Ships.Remove(ship);
-                _context.SaveChanges();
+                await _service.Delete(id);
                 return RedirectToAction(nameof(Get));
             }
             catch
             {
-                return BadRequest();
+                return NotFound();
             }
         }
         // -----------------------------------------------------------   

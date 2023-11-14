@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,85 +10,63 @@ namespace AIRCOM.Controllers
     [Route("[controller]")]
     public class ClientController : Controller
     {
-        private readonly DBContext _context;
-        public ClientController(DBContext context)
+        private readonly ClientService _service;
+        public ClientController(ClientService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // Security --------------------------------------------------
         // GET: ClientController/Get
         [Authorize(Policy = "Security")]
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var clients = _context.Clients.ToList();
+            var clients = await _service.Get();
             return View(clients);
         }
 
         // POST: ClientController/Create
         [Authorize(Policy = "Security")]
         [HttpPost]
-        public IActionResult Create([FromBody] Client client)
+        public async Task<IActionResult> Create([FromBody] Client client)
         {
-            try
-            {
-                _context.Clients.Add(client);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Get));
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            await _service.Create(client);
+            return RedirectToAction(nameof(Get));
         }
 
         // PUT: ClientController/Edit/5
         [Authorize(Policy = "Security")]
         [HttpPut("{id}")]
-        public IActionResult Edit(int id, [FromBody] Client client)
+        public async Task<IActionResult> Edit(int id, [FromBody] Client client)
         {
             if (id != client.ClientID)
                 return BadRequest();
 
-            var clientBD = _context.Clients.Find(id);
-            if (clientBD is null)
-                return NotFound();
-
             try
             {
-                clientBD.Name = client.Name;
-                clientBD.Type = client.Type;
-                clientBD.Nationality = client.Nationality;
-                clientBD.Email = client.Email;
-                clientBD.Pwd = client.Pwd;
-                _context.SaveChanges();
+                await _service.Edit(id, client);
                 return RedirectToAction(nameof(Get));
             }
             catch
             {
-                return BadRequest();
+                return NotFound();
             }
         }
 
         // GET: ClientController/Delete/5
         [Authorize(Policy = "Security")]
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var client = _context.Clients.Find(id);
-            if (client is null)
-                return NotFound();
-
             try
             {
-                _context.Clients.Remove(client);
-                _context.SaveChanges();
+                await _service.Delete(id);
                 return RedirectToAction(nameof(Get));
             }
             catch
             {
-                return BadRequest();
+                return NotFound();
             }
         }
         // ------------------------------------------------------------   

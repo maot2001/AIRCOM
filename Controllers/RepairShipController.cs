@@ -1,5 +1,6 @@
 ﻿using AIRCOM.Models;
 using AIRCOM.Models.DTO;
+using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,151 +11,95 @@ namespace AIRCOM.Controllers
     [Route("[controller]")]
     public class RepairShipController : Controller
     {
-        private readonly DBContext _context;
-        public RepairShipController(DBContext context)
+        private readonly RepairShipService _service;
+        public RepairShipController(RepairShipService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // Security ------------------------------------------------------------
         // POST: RepairShipController/RequestRepair/5
         [HttpPost("{shipId}")]
         [Authorize(Policy = "Security")]
-        public IActionResult RequestRepair(string shipId, [FromBody] RepairInstallationDTO repairId)
+        public async Task<IActionResult> RequestRepair(string shipId, [FromBody] RepairInstallationDTO repairId)
         {
-            var ship = _context.Ships.Find(shipId);
-            var repair = _context.RepairInstallations.SingleOrDefault(r => 
-            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID);
-
-            if (ship is not null && repair is not null)
+            try
             {
-                var RS = new RepairShip
-                {
-                    Plate = shipId,
-                    RepairID = repair.RepairID,
-                    InstallationID = repair.InstallationID,
-                    AirportID = repair.AirportID,
-                    Ships = ship,
-                    Repair = repair.Repair,
-                    Installation = repair.Installation,
-                    Airport = repair.Airport,
-                    State = repairId.State,
-                    Price = repair.Price
-                };
-
-                _context.RepairShips.Add(RS);
-                _context.SaveChanges();
+                await _service.RequestRepair(shipId, repairId);
                 return RedirectToAction(nameof(GetRepairs));
             }
-
-            return NotFound();
+            catch
+            {
+                return NotFound();
+            }
         }
         // ---------------------------------------------------------------------
 
         // Mechanic ------------------------------------------------------------
         [HttpGet("GetRequest")]
-        public IActionResult GetRequest()
+        [Authorize(Policy = "Mechanic")]
+        public async Task<IActionResult> GetRequest()
         {
-            return View(Get(0));
+            var rep = await _service.Get(0);
+            return View(rep);
         }
 
         [HttpGet("GetProcess")]
-        public IActionResult GetProcess()
+        [Authorize(Policy = "Mechanic")]
+        public async Task<IActionResult> GetProcess()
         {
-            return View(Get(1));
+            var rep = await _service.Get(1);
+            return View(rep);
         }
 
         [HttpGet("GetFinish")]
-        public IActionResult GetFinish()
+        [Authorize(Policy = "Mechanic")]
+        public async Task<IActionResult> GetFinish()
         {
-            return View(Get(2));
+            var rep = await _service.Get(2);
+            return View(rep);
         }
 
         [HttpGet("GetRepairs")]
-        public IActionResult GetRepairs()
+        [Authorize(Policy = "Security")]
+        [Authorize(Policy = "Mechanic")]
+        public async Task<IActionResult> GetRepairs()
         {
-            return View(Get(3));
+            var rep = await _service.Get(3);
+            return View(rep);
         }
-
 
         // PUT: RepairShipController/ProcessRepair
         [HttpPut("ProcessRepair")]
         [Authorize(Policy = "Mechanic")]
-        public IActionResult ProcessRepair([FromBody] RepairShipDTO repairId)
+        public async Task<IActionResult> ProcessRepair([FromBody] RepairShipDTO repairId)
         {
-            if (repairId.newTime == default(DateTime))
-                repairId.newTime = DateTime.Now;
-
-            var shipRepair = _context.RepairShips.SingleOrDefault(r =>
-            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID &&
-            r.Plate == repairId.Plate && r.Init == repairId.Init);
-            if (shipRepair is null)
-                return NotFound();
-
             try
             {
-                shipRepair.Init = (DateTime) repairId.newTime;
-                _context.SaveChanges();
+                await _service.ProcessRepair(repairId);
                 return RedirectToAction(nameof(GetRequest));
             }
             catch
             {
-                return BadRequest();
+                return NotFound();
             }
         }
 
         // PUT: RepairShipController/FinishRepair
         [HttpPut("FinishRepair")]
         [Authorize(Policy = "Mechanic")]
-        public IActionResult FinishRepair([FromBody] RepairShipDTO repairId)
+        public async Task<IActionResult> FinishRepair([FromBody] RepairShipDTO repairId)
         {
-            if (repairId.newTime == default(DateTime))
-                repairId.newTime = DateTime.Now;
-
-            var shipRepair = _context.RepairShips.SingleOrDefault(r =>
-            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID &&
-            r.Plate == repairId.Plate && r.Init == repairId.Init);
-            if (shipRepair is null)
-                return NotFound();
-
             try
             {
-                TimeSpan time = (DateTime) repairId.newTime - shipRepair.Init;
-                int cost = shipRepair.Time - (int)time.TotalHours;
-                if (cost > 0)
-                    shipRepair.Price *= (1 + cost / 100);
-
-                shipRepair.Finish = (DateTime) repairId.newTime;
-                _context.SaveChanges();
+                await _service.FinishRepair(repairId);
                 return RedirectToAction(nameof(GetProcess));
             }
             catch
             {
-                return BadRequest();
+                return NotFound();
             }
         }
         // ---------------------------------------------------------------------
-        private IEnumerable<RepairShip> Get(int type)
-        {
-            List<RepairShip> repairs;
-            switch (type)
-            {
-                case 0:
-                    repairs = _context.RepairShips.Where(SR => SR.Init == default(DateTime)).ToList();
-                    break;
-                case 1:
-                    repairs = _context.RepairShips.Where(SR => SR.Finish == default(DateTime) && SR.Init != default(DateTime)).ToList();
-                    break;
-                case 2:
-                    repairs = _context.RepairShips.Where(SR => SR.Finish != default(DateTime)).ToList();
-                    break;
-                default:
-                    repairs = _context.RepairShips.ToList();
-                    break;
-            }
-
-            return repairs;
-        }
-
     }
 }
