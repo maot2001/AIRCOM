@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Models
 {
+    [Index(nameof(Code),IsUnique =true)]
+    [Index(nameof(Fecha),IsUnique =true)]
     public class on_site
     {
         [Key]

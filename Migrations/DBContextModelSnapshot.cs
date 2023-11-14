@@ -19,27 +19,27 @@ namespace AIRCOM.Migrations
                 .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("AIRCOM.Models.Airoport", b =>
+            modelBuilder.Entity("AIRCOM.Models.Airport", b =>
                 {
                     b.Property<int>("AirportID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("Coordinates")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Direction")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("AirportID");
 
-                    b.ToTable("Airoports", (string)null);
+                    b.HasIndex("AirportID")
+                        .IsUnique();
+
+                    b.ToTable("Airports");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Client", b =>
@@ -48,21 +48,27 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Nationality")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Tipo")
-                        .IsRequired()
+                    b.Property<string>("Pwd")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
                         .HasColumnType("longtext");
 
                     b.HasKey("ClientID");
 
-                    b.ToTable("Clients", (string)null);
+                    b.HasIndex("ClientID")
+                        .IsUnique();
+
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.CustomerService", b =>
@@ -72,45 +78,45 @@ namespace AIRCOM.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Code");
 
-                    b.ToTable("CustomerServices", (string)null);
+                    b.ToTable("CustomerServices");
                 });
 
-            modelBuilder.Entity("AIRCOM.Models.InstReparation", b =>
+            modelBuilder.Entity("AIRCOM.Models.History", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AiroportID")
+                    b.Property<int>("AirportID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<int>("InstallationID")
-                        .HasColumnType("int");
+                    b.Property<string>("OwnerRole")
+                        .HasColumnType("longtext");
 
-                    b.Property<int>("Price")
+                    b.Property<int?>("Plate")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AiroportID");
+                    b.HasIndex("AirportID");
 
-                    b.HasIndex("Code");
+                    b.HasIndex("Date")
+                        .IsUnique();
 
-                    b.HasIndex("InstallationID");
+                    b.HasIndex("Plate")
+                        .IsUnique();
 
-                    b.ToTable("InstReparations", (string)null);
+                    b.ToTable("Historys");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Installation", b =>
@@ -119,49 +125,132 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AiroportID")
+                    b.Property<int>("AirportID")
                         .HasColumnType("int");
 
                     b.Property<string>("Direction")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Ubication")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("InstallationID");
 
-                    b.HasIndex("AiroportID");
+                    b.HasIndex("AirportID");
 
-                    b.ToTable("Installments", (string)null);
+                    b.HasIndex("InstallationID")
+                        .IsUnique();
+
+                    b.ToTable("Installation");
                 });
 
-            modelBuilder.Entity("AIRCOM.Models.Reparation", b =>
+            modelBuilder.Entity("AIRCOM.Models.Repair", b =>
                 {
-                    b.Property<int>("Code")
+                    b.Property<int>("RepairID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Descriptipon")
-                        .IsRequired()
+                    b.Property<string>("Description")
                         .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("RepairID");
+
+                    b.HasIndex("RepairID")
+                        .IsUnique();
+
+                    b.ToTable("Repairs");
+                });
+
+            modelBuilder.Entity("AIRCOM.Models.RepairInstallation", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("AiroportID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InstallationID")
+                        .HasColumnType("int");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.HasKey("Code");
+                    b.Property<int>("RepairID")
+                        .HasColumnType("int");
 
-                    b.ToTable("Reparation", (string)null);
+                    b.HasKey("Id");
+
+                    b.HasIndex("AiroportID");
+
+                    b.HasIndex("InstallationID");
+
+                    b.HasIndex("RepairID");
+
+                    b.ToTable("RepairInstallations");
+                });
+
+            modelBuilder.Entity("AIRCOM.Models.RepairShip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AiroportID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Finish")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Init")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("InstallationID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Plate")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RepairID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("State")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Time")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Valoration")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AiroportID");
+
+                    b.HasIndex("Init")
+                        .IsUnique();
+
+                    b.HasIndex("InstallationID");
+
+                    b.HasIndex("Plate");
+
+                    b.HasIndex("RepairID");
+
+                    b.ToTable("RepairShips");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.ServicesInstallation", b =>
                 {
-                    b.Property<int>("Price")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -174,19 +263,28 @@ namespace AIRCOM.Migrations
                     b.Property<int>("InstallationID")
                         .HasColumnType("int");
 
-                    b.HasKey("Price");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Valoration")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AiroportID");
 
                     b.HasIndex("Code");
 
                     b.HasIndex("InstallationID");
 
-                    b.ToTable("ServicesInstallations", (string)null);
+                    b.ToTable("ServicesInstallations");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Ships", b =>
                 {
-                    b.Property<string>("Plate")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Plate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
@@ -198,14 +296,16 @@ namespace AIRCOM.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Model")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Plate");
 
                     b.HasIndex("ClientID");
 
-                    b.ToTable("Shipss", (string)null);
+                    b.HasIndex("Plate")
+                        .IsUnique();
+
+                    b.ToTable("Shipss");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.User", b =>
@@ -225,7 +325,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.on_site", b =>
@@ -233,11 +333,10 @@ namespace AIRCOM.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("AiroportID")
+                    b.Property<int>("AirportID")
                         .HasColumnType("int");
 
                     b.Property<string>("Assessment")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("ClientID")
@@ -254,70 +353,126 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("Fecha");
 
-                    b.HasIndex("AiroportID");
+                    b.HasIndex("AirportID");
 
                     b.HasIndex("ClientID");
 
-                    b.HasIndex("Code");
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("Fecha")
+                        .IsUnique();
 
                     b.HasIndex("InstallationID");
 
-                    b.ToTable("On_Sites", (string)null);
+                    b.ToTable("On_Site");
                 });
 
-            modelBuilder.Entity("AIRCOM.Models.InstReparation", b =>
+            modelBuilder.Entity("AIRCOM.Models.History", b =>
                 {
-                    b.HasOne("AIRCOM.Models.Airoport", "Airoports")
-                        .WithMany("InstReparation")
-                        .HasForeignKey("AiroportID")
+                    b.HasOne("AIRCOM.Models.Airport", "Airport")
+                        .WithMany("History")
+                        .HasForeignKey("AirportID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AIRCOM.Models.Reparation", "ReparationS")
-                        .WithMany("InstReparation")
-                        .HasForeignKey("Code")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("AIRCOM.Models.Ships", "Ships")
+                        .WithMany()
+                        .HasForeignKey("Plate");
 
-                    b.HasOne("AIRCOM.Models.Installation", "Installations")
-                        .WithMany("InstReparation")
-                        .HasForeignKey("InstallationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Airport");
 
-                    b.Navigation("Airoports");
-
-                    b.Navigation("Installations");
-
-                    b.Navigation("ReparationS");
+                    b.Navigation("Ships");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Installation", b =>
                 {
-                    b.HasOne("AIRCOM.Models.Airoport", "Airoport")
+                    b.HasOne("AIRCOM.Models.Airport", "Airport")
                         .WithMany("Installations")
+                        .HasForeignKey("AirportID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Airport");
+                });
+
+            modelBuilder.Entity("AIRCOM.Models.RepairInstallation", b =>
+                {
+                    b.HasOne("AIRCOM.Models.Installation", "Installation")
+                        .WithMany("RepairInstallations")
                         .HasForeignKey("AiroportID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AIRCOM.Models.Airport", "Airoport")
+                        .WithMany("RepairInstallation")
+                        .HasForeignKey("InstallationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AIRCOM.Models.Repair", "Repair")
+                        .WithMany("RepairInstallations")
+                        .HasForeignKey("RepairID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Airoport");
+
+                    b.Navigation("Installation");
+
+                    b.Navigation("Repair");
+                });
+
+            modelBuilder.Entity("AIRCOM.Models.RepairShip", b =>
+                {
+                    b.HasOne("AIRCOM.Models.Installation", "Installation")
+                        .WithMany("RepairShip")
+                        .HasForeignKey("AiroportID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AIRCOM.Models.Airport", "Airoport")
+                        .WithMany("RepairShip")
+                        .HasForeignKey("InstallationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AIRCOM.Models.Ships", "Ships")
+                        .WithMany("Reports")
+                        .HasForeignKey("Plate")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AIRCOM.Models.Repair", "Repair")
+                        .WithMany("RepairShip")
+                        .HasForeignKey("RepairID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Airoport");
+
+                    b.Navigation("Installation");
+
+                    b.Navigation("Repair");
+
+                    b.Navigation("Ships");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.ServicesInstallation", b =>
                 {
+                    b.HasOne("AIRCOM.Models.Installation", "Installation")
+                        .WithMany("ServicesInstallations")
+                        .HasForeignKey("AiroportID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AIRCOM.Models.CustomerService", "CustomerService")
                         .WithMany("ServicesInstallations")
                         .HasForeignKey("Code")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AIRCOM.Models.Airoport", "Airoport")
-                        .WithMany("ServicesInstallations")
-                        .HasForeignKey("InstallationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AIRCOM.Models.Installation", "Installation")
+                    b.HasOne("AIRCOM.Models.Airport", "Airoport")
                         .WithMany("ServicesInstallations")
                         .HasForeignKey("InstallationID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -343,13 +498,13 @@ namespace AIRCOM.Migrations
 
             modelBuilder.Entity("AIRCOM.Models.on_site", b =>
                 {
-                    b.HasOne("AIRCOM.Models.Airoport", "Airoport")
+                    b.HasOne("AIRCOM.Models.Airport", "Airport")
                         .WithMany("On_Sites")
-                        .HasForeignKey("AiroportID")
+                        .HasForeignKey("AirportID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AIRCOM.Models.Client", "Clients")
+                    b.HasOne("AIRCOM.Models.Client", "Client")
                         .WithMany("On_Sites")
                         .HasForeignKey("ClientID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -367,22 +522,26 @@ namespace AIRCOM.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Airoport");
+                    b.Navigation("Airport");
 
-                    b.Navigation("Clients");
+                    b.Navigation("Client");
 
                     b.Navigation("CustomerService");
 
                     b.Navigation("Installation");
                 });
 
-            modelBuilder.Entity("AIRCOM.Models.Airoport", b =>
+            modelBuilder.Entity("AIRCOM.Models.Airport", b =>
                 {
-                    b.Navigation("InstReparation");
+                    b.Navigation("History");
 
                     b.Navigation("Installations");
 
                     b.Navigation("On_Sites");
+
+                    b.Navigation("RepairInstallation");
+
+                    b.Navigation("RepairShip");
 
                     b.Navigation("ServicesInstallations");
                 });
@@ -403,16 +562,25 @@ namespace AIRCOM.Migrations
 
             modelBuilder.Entity("AIRCOM.Models.Installation", b =>
                 {
-                    b.Navigation("InstReparation");
+                    b.Navigation("RepairInstallations");
+
+                    b.Navigation("RepairShip");
 
                     b.Navigation("ServicesInstallations");
 
                     b.Navigation("on_sites");
                 });
 
-            modelBuilder.Entity("AIRCOM.Models.Reparation", b =>
+            modelBuilder.Entity("AIRCOM.Models.Repair", b =>
                 {
-                    b.Navigation("InstReparation");
+                    b.Navigation("RepairInstallations");
+
+                    b.Navigation("RepairShip");
+                });
+
+            modelBuilder.Entity("AIRCOM.Models.Ships", b =>
+                {
+                    b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618
         }

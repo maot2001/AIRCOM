@@ -9,6 +9,27 @@ namespace AIRCOM.Models
         {
 
         }
+
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Airport> Airports { get; set; }    
+        public virtual DbSet<Client> Clients { get; set; }  
+        public virtual DbSet<CustomerService> CustomerServices { get; set; }
+        public virtual DbSet<Installation> Installments { get; set; }
+        public virtual DbSet<on_site> On_Site { get; set; }
+        public virtual DbSet<ServicesInstallation> ServicesInstallations { get; set; }
+        public virtual DbSet<Ships> Shipss { get; set; }
+
+        public virtual DbSet<History> Historys { get; set; }
+        public virtual DbSet<Installation> Installations { get; set; }
+        public virtual DbSet<Repair> Repairs { get; set; }
+        public virtual DbSet<RepairInstallation> RepairInstallations { get; set; }
+        public virtual DbSet<RepairShip> RepairShips { get; set; }
+
+
+        //public virtual DbSet<Reparation > Reparation { get; set; }  
+        //public virtual DbSet<InstReparation> InstReparations { get; set; }
+
+/*
         public virtual DbSet<Worker> Workers { get; set; } = null!;
         public virtual DbSet<Airport> Airports { get; set; } = null!;
         public virtual DbSet<Client> Clients { get; set; } = null!;
@@ -16,9 +37,9 @@ namespace AIRCOM.Models
         public virtual DbSet<Repair> Repairs { get; set; } = null!;
         public virtual DbSet<RepairInstallation> RepairInstallations { get; set; } = null!;
         public virtual DbSet<RepairShip> RepairShips { get; set; } = null!;
-        public virtual DbSet<History> Histories { get; set; } = null!;
+        public virtual DbSet<History> Histories { get; set; } = null!;*/
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+     /*   protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Installation>()
            .HasKey(i => new { i.InstallationID, i.AirportID });
@@ -75,5 +96,6 @@ namespace AIRCOM.Models
                 Pwd = "1234"
             });
         }
+*/
     }
 }

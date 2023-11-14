@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using AIRCOM.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Models
 {
+    [Index(nameof(ClientID),IsUnique =true)]
     public class Client : IUser
     {
         [Key]

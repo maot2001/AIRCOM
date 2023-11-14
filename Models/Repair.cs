@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AIRCOM.Models
 {
+    [Index(nameof(RepairID),IsUnique =true)]
     public class Repair
     {
         [Key]
@@ -10,5 +12,8 @@ namespace AIRCOM.Models
         public int RepairID { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
+
+        public virtual  ICollection<RepairShip> RepairShip { get; set; } 
+        public virtual ICollection<RepairInstallation> RepairInstallations { get; set; }
     }
 }
