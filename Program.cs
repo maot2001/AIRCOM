@@ -29,6 +29,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UserSecurity", policy => policy.RequireClaim("UserType", "Security"));
     options.AddPolicy("UserMechanic", policy => policy.RequireClaim("UserType", "Mechanic"));
     options.AddPolicy("UserDirection", policy => policy.RequireClaim("UserType", "Direction"));
+    options.AddPolicy("UserAdmin", policy => policy.RequireClaim("UserType", "Admin")); 
 }); 
 
 builder.Services.AddDbContext<DBContext>(options =>
@@ -38,19 +39,25 @@ builder.Services.AddDbContext<DBContext>(options =>
         options.UseMySql(defaults, ServerVersion.AutoDetect(defaults));
 });
 
-//Service Layer
+// Service Layer
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<HistoryService>();
+builder.Services.AddScoped<InstallationService>();
 builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<RepairInstallationService>();
 builder.Services.AddScoped<RepairShipService>();
+builder.Services.AddScoped<ServiceInstallationService>();
 builder.Services.AddScoped<ShipsService>();
 
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<DBContext>();
+    
     dataContext.Database.Migrate();
 }
 

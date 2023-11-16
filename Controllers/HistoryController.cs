@@ -17,7 +17,7 @@ namespace AIRCOM.Controllers
         }
 
         // Security-Client -------------------------------------------
-        // GET: HistoryController/GetHistoryShips/5
+        // GET: History/5
         [Authorize(Policy = "Security")]
         [Authorize(Policy = "Client")]
         [HttpGet("{id}")]
@@ -29,7 +29,7 @@ namespace AIRCOM.Controllers
         // -----------------------------------------------------------   
 
         // Security --------------------------------------------------
-        // GET: HistoryController/GetHistory
+        // GET: History
         [Authorize(Policy = "Security")]
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -38,23 +38,25 @@ namespace AIRCOM.Controllers
             return View(histories);
         }
 
-        // POST: HistoryController/Create
+        // POST: History
         [Authorize(Policy = "Security")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] History history)
         {
-            await _service.Create(history);
+            var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+            await _service.Create(history, userId);
             return RedirectToAction(nameof(Get));
         }
 
-        // PUT: HistoryController/Edit
+        // PUT: History
         [Authorize(Policy = "Security")]
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] History history)
         {
             try
             {
-                await _service.Edit(history);
+                var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+                await _service.Edit(history, userId);
                 return RedirectToAction(nameof(Get));
             }
             catch
@@ -63,14 +65,15 @@ namespace AIRCOM.Controllers
             }
         }
 
-        // GET: HistoryController/Delete
+        // DELETE: History
         [Authorize(Policy = "Security")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] History history)
         {
             try
             {
-                await _service.Delete(history);
+                var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+                await _service.Delete(history, userId);
                 return RedirectToAction(nameof(Get));
             }
             catch
@@ -78,6 +81,24 @@ namespace AIRCOM.Controllers
                 return NotFound();
             }
         }
-        // -----------------------------------------------------------   
+        // -----------------------------------------------------------
+
+        // Client ----------------------------------------------------
+        // PUT: History/Include
+        [Authorize(Policy = "Client")]
+        [HttpPut("Include")]
+        public async Task<IActionResult> Include([FromBody] History history)
+        {
+            try
+            {
+                await _service.Include(history);
+                return RedirectToAction(nameof(ShipsController.ClientShips), "Ships");
+            }   
+            catch
+            {
+                return NotFound();
+            }
+        }
+        // -----------------------------------------------------------
     }
 }

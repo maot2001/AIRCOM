@@ -1,5 +1,4 @@
-﻿using AIRCOM.Models;
-using AIRCOM.Models.DTO;
+﻿using AIRCOM.Models.DTO;
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,7 @@ namespace AIRCOM.Controllers
         }
 
         // Security ------------------------------------------------------------
-        // POST: RepairShipController/RequestRepair/5
+        // POST: RepairShip/5
         [HttpPost("{shipId}")]
         [Authorize(Policy = "Security")]
         public async Task<IActionResult> RequestRepair(string shipId, [FromBody] RepairInstallationDTO repairId)
@@ -36,6 +35,7 @@ namespace AIRCOM.Controllers
         // ---------------------------------------------------------------------
 
         // Mechanic ------------------------------------------------------------
+        // GET: RepairShip/GetRequest
         [HttpGet("GetRequest")]
         [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetRequest()
@@ -44,6 +44,7 @@ namespace AIRCOM.Controllers
             return View(rep);
         }
 
+        // GET: RepairShip/GetProcess
         [HttpGet("GetProcess")]
         [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetProcess()
@@ -52,6 +53,7 @@ namespace AIRCOM.Controllers
             return View(rep);
         }
 
+        // GET: RepairShip/GetFinish
         [HttpGet("GetFinish")]
         [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetFinish()
@@ -60,6 +62,7 @@ namespace AIRCOM.Controllers
             return View(rep);
         }
 
+        // GET: RepairShip/GetRepairs
         [HttpGet("GetRepairs")]
         [Authorize(Policy = "Security")]
         [Authorize(Policy = "Mechanic")]
@@ -69,7 +72,7 @@ namespace AIRCOM.Controllers
             return View(rep);
         }
 
-        // PUT: RepairShipController/ProcessRepair
+        // PUT: RepairShip/ProcessRepair
         [HttpPut("ProcessRepair")]
         [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> ProcessRepair([FromBody] RepairShipDTO repairId)
@@ -85,7 +88,7 @@ namespace AIRCOM.Controllers
             }
         }
 
-        // PUT: RepairShipController/FinishRepair
+        // PUT: RepairShip/FinishRepair
         [HttpPut("FinishRepair")]
         [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> FinishRepair([FromBody] RepairShipDTO repairId)
@@ -100,6 +103,10 @@ namespace AIRCOM.Controllers
                 return NotFound();
             }
         }
+        // ---------------------------------------------------------------------
+
+        // Client --------------------------------------------------------------
+        // GET Reparaciones en Naves Propias
         // ---------------------------------------------------------------------
     }
 }

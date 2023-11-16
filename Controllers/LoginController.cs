@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using AIRCOM.Models;
-using Microsoft.EntityFrameworkCore;
 using AIRCOM.Models.DTO;
 using AIRCOM.Services;
 
@@ -21,7 +15,7 @@ namespace AIRCOM.Controllers
             _service = service;
         }
 
-        // POST: LoginController/Login
+        // POST: Login
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] Register register)
         {

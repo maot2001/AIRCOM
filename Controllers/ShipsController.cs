@@ -17,7 +17,7 @@ namespace AIRCOM.Controllers
         }
 
         // Security --------------------------------------------------
-        // GET: ShipsController/Get
+        // GET: Ships
         [Authorize(Policy = "Security")]
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -26,7 +26,7 @@ namespace AIRCOM.Controllers
             return View(ships);
         }
 
-        // POST: ShipsController/Create
+        // POST: Ships
         [Authorize(Policy = "Security")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Ships ship)
@@ -35,7 +35,7 @@ namespace AIRCOM.Controllers
             return RedirectToAction(nameof(Get));
         }
 
-        // PUT: ShipsController/Edit/5
+        // PUT: Ships/5
         [Authorize(Policy = "Security")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(string id, [FromBody] Ships ship)
@@ -54,7 +54,7 @@ namespace AIRCOM.Controllers
             }
         }
 
-        // GET: ShipsController/Delete
+        // DELETE: Ships/5
         [Authorize(Policy = "Security")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
@@ -70,5 +70,16 @@ namespace AIRCOM.Controllers
             }
         }
         // -----------------------------------------------------------   
+
+        // Client ----------------------------------------------------
+        // GET: Ships/Client
+        [Authorize(Policy = "Client")]
+        [HttpGet("Client")]
+        public async Task<IActionResult> ClientShips()
+        {
+            var userId = HttpContext.User.FindFirst("Id")?.Value;
+        }
+        // -----------------------------------------------------------   
+
     }
 }

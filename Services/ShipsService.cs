@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Services
@@ -6,19 +7,21 @@ namespace AIRCOM.Services
     public class ShipsService
     {
         private readonly DBContext _context;
-        public ShipsService(DBContext context)
+        private readonly IMapper _mapper;
+        public ShipsService(DBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Ships>> Get()
         {
-            return await _context.Ships.ToListAsync();
+            return await _context.Shipss.ToListAsync();
         }
 
         public async Task Create(Ships ship)
         {
-            _context.Ships.Add(ship);
+            _context.Shipss.Add(ship);
             await _context.SaveChangesAsync();
         }
 
@@ -35,14 +38,14 @@ namespace AIRCOM.Services
         public async Task Delete(string id)
         {
             var ship = await GetShipById(id);
-            _context.Ships.Remove(ship);
+            _context.Shipss.Remove(ship);
             _context.SaveChanges();
         }
 
         // -----------------------------------------------------------
         private async Task<Ships> GetShipById(string id)
         {
-            var ship = await _context.Ships.FindAsync(id);
+            var ship = await _context.Shipss.FindAsync(id);
             if (ship is null)
                 throw new Exception();
             return ship;

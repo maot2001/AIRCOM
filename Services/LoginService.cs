@@ -1,5 +1,6 @@
 ﻿using AIRCOM.Models;
 using AIRCOM.Models.DTO;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,41 +13,44 @@ namespace AIRCOM.Services
     {
         private IConfiguration _config;
         private readonly DBContext _context;
-        public LoginService(DBContext context, IConfiguration config)
+        private readonly IMapper _mapper;
+        public LoginService(DBContext context, IMapper mapper, IConfiguration config)
         {
             _context = context;
+            _mapper = mapper;
             _config = config;
         }
 
         public async Task<string> Login(Register register)
         {
-            bool worker = register.worker > 0;
-            IUser user;
+            string jwtToken;
 
-            if (worker)
-                user = await _context.Workers.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
+            if (register.worker > 0)
+            {
+                var worker = await _context.Workers.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
+                if (worker is null)
+                    throw new Exception();
+                jwtToken = GenerateToken(worker.AirportId.ToString(), worker.WorkerId.ToString(), worker.Type);
+            }
             else
             {
-                user = await _context.Clients.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
+                var client = await _context.Clients.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
+                if (client is null)
+                    throw new Exception();
+                jwtToken = GenerateToken("0", client.ClientID.ToString(), "Client");
             }
-
-            if (user is null)
-                throw new Exception();
-            if (!worker)
-                user.AirportId = 0;
-
-            string jwtToken = GenerateToken(user);
 
             return jwtToken;
         }
 
         //------------------------------------------------------------------
-        private string GenerateToken(IUser user)
+        private string GenerateToken(string AirportId, string Id, string Type)
         {
             var claims = new[]
             {
-                new Claim("Airport", user.AirportId.ToString()),
-                new Claim("UserType", user.Type)
+                new Claim("Airport", AirportId),
+                new Claim("Id", Id),
+                new Claim("UserType", Type)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("JWT:Key").Value));

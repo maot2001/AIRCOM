@@ -17,25 +17,27 @@ namespace AIRCOM.Controllers
         }
 
         // Security --------------------------------------------------
-        // GET: ClientController/Get
+        // GET: Client
         [Authorize(Policy = "Security")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var clients = await _service.Get();
+            var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+            var clients = await _service.Get(userId);
             return View(clients);
         }
 
-        // POST: ClientController/Create
+        // POST: Client
         [Authorize(Policy = "Security")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Client client)
         {
-            await _service.Create(client);
+            var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+            await _service.Create(client, userId);
             return RedirectToAction(nameof(Get));
         }
 
-        // PUT: ClientController/Edit/5
+        // PUT: Client/5
         [Authorize(Policy = "Security")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(int id, [FromBody] Client client)
@@ -54,7 +56,7 @@ namespace AIRCOM.Controllers
             }
         }
 
-        // GET: ClientController/Delete/5
+        // DELETE: Client/5
         [Authorize(Policy = "Security")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

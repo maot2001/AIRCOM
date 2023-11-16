@@ -4,6 +4,6 @@
     {
         public string? Email { get; set; }
         public string? Pwd { get; set; }
-        public bool worker { get; set; }
+        public int worker { get; set; }
     }
 }

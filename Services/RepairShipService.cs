@@ -1,5 +1,6 @@
 ﻿using AIRCOM.Models;
 using AIRCOM.Models.DTO;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Services
@@ -7,14 +8,16 @@ namespace AIRCOM.Services
     public class RepairShipService
     {
         private readonly DBContext _context;
-        public RepairShipService(DBContext context)
+        private readonly IMapper _mapper;
+        public RepairShipService(DBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task RequestRepair(string shipId, RepairInstallationDTO repairId)
         {
-            var ship = await _context.Ships.FindAsync(shipId);
+            var ship = await _context.Shipss.FindAsync(shipId);
             var repair = await _context.RepairInstallations.SingleOrDefaultAsync(r =>
             r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID);
 

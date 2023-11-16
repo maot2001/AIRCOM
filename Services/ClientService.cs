@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Services
@@ -6,17 +7,19 @@ namespace AIRCOM.Services
     public class ClientService
     {
         private readonly DBContext _context;
-        public ClientService(DBContext context)
+        private readonly IMapper _mapper;
+        public ClientService(DBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Client>> Get()
+        public async Task<IEnumerable<Client>> Get(string userId)
         {
             return await _context.Clients.ToListAsync();
         }
 
-        public async Task Create(Client client)
+        public async Task Create(Client client, string userId)
         {
             _context.Clients.Add(client);
             await _context.SaveChangesAsync();
