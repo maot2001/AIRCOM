@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Models.DTO;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,40 +9,75 @@ namespace AIRCOM.Services
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
+        private readonly string[] types = new string[] { "Seguridad", "Mecanico", "Direccion", "Administrador" };
         public ClientService(DBContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Client>> Get(string userId)
+        public async Task<IEnumerable<ClientDTO>> Get(string userId)
         {
-            return await _context.Clients.ToListAsync();
+            var clients = await _context.Clients.ToListAsync();
+            var workers = await _context.Workers.Where(w => w.AirportId == int.Parse(userId)).ToListAsync();
+            return _mapper.Map<List<ClientDTO>>(clients).Concat(_mapper.Map<List<ClientDTO>>(workers));
         }
 
-        public async Task Create(Client client, string userId)
+        public async Task Create(ClientDTO client, string userId)
         {
-            _context.Clients.Add(client);
+            await Errors(client);
+            if (types.Contains(client.Type))
+            {
+                var worker = _mapper.Map<Worker>(client);
+                worker.WorkerId = 0;
+                worker.AirportId = int.Parse(userId);
+                _context.Workers.Add(worker);
+            }
+            else
+            {
+                var clientDB = _mapper.Map<Client>(client);
+                clientDB.ClientID = 0;
+                _context.Clients.Add(clientDB);
+            }
             await _context.SaveChangesAsync();
         }
 
-        public async Task Edit(int id, Client client)
+        public async Task Edit(ClientDTO client)
         {
-            var clientBD = await GetClientById(id);
-                
-            clientBD.Name = client.Name;
-            clientBD.Type = client.Type;
-            clientBD.Nationality = client.Nationality;
-            clientBD.Email = client.Email;
-            clientBD.Pwd = client.Pwd;
-            
+            await Errors(client);
+            if (types.Contains(client.Type))
+            {
+                var worker = await GetWorkerById(client.ClientID);
+                worker.Name = client.Name;
+                worker.CI = client.CI;
+                worker.Email = client.Email;
+                worker.Nationality = client.Nationality;
+                worker.Type = client.Type;
+            }
+            else
+            {
+                var clientDB = await GetClientById(client.ClientID);
+                clientDB.Name = client.Name;
+                clientDB.CI = client.CI;
+                clientDB.Email = client.Email;
+                clientDB.Nationality = client.Nationality;
+                clientDB.Type = client.Type;
+            }
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(ClientDTO client)
         {
-            var client = await GetClientById(id);
-            _context.Clients.Remove(client);
+            if (types.Contains(client.Type))
+            {
+                var worker = await GetWorkerById(client.ClientID);
+                _context.Workers.Remove(worker);
+            }
+            else
+            {
+                var clientDB = await GetClientById(client.ClientID);
+                _context.Clients.Remove(clientDB);
+            }
             await _context.SaveChangesAsync();
         }
 
@@ -52,6 +88,21 @@ namespace AIRCOM.Services
             if (client is null)
                 throw new Exception();
             return client;
+        }
+
+        private async Task<Worker> GetWorkerById(int id)
+        {
+            var worker = await _context.Workers.FindAsync(id);
+            if (worker is null)
+                throw new Exception();
+            return worker;
+        }
+
+        private async Task Errors(ClientDTO client)
+        {
+            var errors = _context.Clients.SingleOrDefaultAsync(c => c.CI == client.CI && c.Nationality == client.Nationality);
+            if (errors != null)
+                throw new Exception();
         }
     }
 }

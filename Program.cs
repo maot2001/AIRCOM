@@ -40,13 +40,17 @@ builder.Services.AddDbContext<DBContext>(options =>
 });
 
 // Service Layer
+builder.Services.AddScoped<AirportService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<HistoryService>();
 builder.Services.AddScoped<InstallationService>();
 builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<On_siteService>();
 builder.Services.AddScoped<RepairInstallationService>();
+builder.Services.AddScoped<RepairService>();
 builder.Services.AddScoped<RepairShipService>();
 builder.Services.AddScoped<ServiceInstallationService>();
+builder.Services.AddScoped<ServicesService>();
 builder.Services.AddScoped<ShipsService>();
 
 // AutoMapper

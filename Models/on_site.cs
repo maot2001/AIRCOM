@@ -10,8 +10,9 @@ namespace AIRCOM.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public string? Name { get; set; }
         public DateTime? Fecha { get; set; }
-        public int? Price { get; set; }
+        public float? Price { get; set; }
         public int Stars { get; set; } = 0;
         public string Comment { get; set; }
         public int? InstallationID { get; set; }

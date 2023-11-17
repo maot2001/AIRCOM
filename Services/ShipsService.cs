@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Models.DTO;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,24 +15,41 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Ships>> Get()
+        public async Task<IEnumerable<ShipsDTO>> Get(string userId = "")
         {
-            return await _context.Shipss.ToListAsync();
+            List<Ships> ships;
+            if (userId == "")
+                ships = await _context.Shipss.ToListAsync();
+            else
+                ships = await _context.Shipss.Where(s => s.ClientID == int.Parse(userId)).ToListAsync();
+            return _mapper.Map<List<ShipsDTO>>(ships);
         }
 
-        public async Task Create(Ships ship)
+        public async Task Create(ShipsDTO ship)
         {
-            _context.Shipss.Add(ship);
+            var ships = _mapper.Map<Ships>(ship);
+            if (ship.ClientID != 0)
+            {
+                var client = await Errors(ship.ClientID);
+                ships.Clients = client;
+            }
+            _context.Shipss.Add(ships);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Edit(string id, Ships ship)
+        public async Task Edit(ShipsDTO ship)
         {
-            var shipBD = await GetShipById(id);
+            var shipBD = await GetShipById(ship.Plate);
+            if (ship.ClientID != 0)
+            {
+                var client = await Errors(ship.ClientID);
+                shipBD.Clients = client;
+            }
             shipBD.Model = ship.Model;
             shipBD.Capacity = ship.Capacity;
             shipBD.Crew = ship.Crew;
             shipBD.ClientID = ship.ClientID;
+            shipBD.State = ship.State;
             await _context.SaveChangesAsync();
         }
 
@@ -39,7 +57,7 @@ namespace AIRCOM.Services
         {
             var ship = await GetShipById(id);
             _context.Shipss.Remove(ship);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         // -----------------------------------------------------------
@@ -49,6 +67,14 @@ namespace AIRCOM.Services
             if (ship is null)
                 throw new Exception();
             return ship;
+        }
+
+        private async Task<Client> Errors(int id)
+        {
+            var client = await _context.Clients.FindAsync(id);
+            if (client is null)
+                throw new Exception();
+            return client;
         }
     }
 }

@@ -9,95 +9,116 @@ namespace AIRCOM.Services
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        public RepairShipService(DBContext context, IMapper mapper)
+        private readonly RepairInstallationService _aux;
+        public RepairShipService(DBContext context, IMapper mapper, RepairInstallationService aux)
         {
             _context = context;
             _mapper = mapper;
+            _aux = aux;
         }
 
-        public async Task RequestRepair(string shipId, RepairInstallationDTO repairId)
+        public async Task RequestRepair(string shipId, RepairInstallationDTO repair)
         {
+            await Errors(repair, shipId);
+
             var ship = await _context.Shipss.FindAsync(shipId);
-            var repair = await _context.RepairInstallations.SingleOrDefaultAsync(r =>
-            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID);
-
-            if (ship is null || repair is null)
-                throw new Exception();
-
-            var RS = new RepairShip
-            {
-                Plate = shipId,
-                RepairID = repair.RepairID,
-                InstallationID = repair.InstallationID,
-                AirportID = repair.AirportID,
-                Ships = ship,
-                Repair = repair.Repair,
-                Installation = repair.Installation,
-                Airport = repair.Airport,
-                State = repairId.State,
-                Price = repair.Price
-            };
+            var RS = _mapper.Map<RepairShip>(repair);
+            RS.Id = 0;
+            RS.State = ship.State;
 
             _context.RepairShips.Add(RS);
             await _context.SaveChangesAsync();
         }
 
-        public async Task ProcessRepair(RepairShipDTO repairId)
+        public async Task ProcessRepair(RepairShipDTO repair)
         {
-            var shipRepair = await RepairAux(repairId);
-            shipRepair.Init = (DateTime)repairId.newTime;
+            var shipRepair = await RepairAux(repair);
+            shipRepair.Init = (DateTime)repair.newTime;
             await _context.SaveChangesAsync();
         }
 
-        public async Task FinishRepair(RepairShipDTO repairId)
+        public async Task FinishRepair(RepairShipDTO repair)
         {
-            var shipRepair = await RepairAux(repairId);
+            var shipRepair = await RepairAux(repair);
             
-            TimeSpan time = (DateTime)repairId.newTime - shipRepair.Init;
-            int cost = shipRepair.Time - (int)time.TotalHours;
+            TimeSpan time = (DateTime)repair.newTime - shipRepair.Init;
+            int cost = shipRepair.Time - (int) time.TotalHours;
             if (cost > 0)
                 shipRepair.Price *= (1 + cost / 100);
 
-            shipRepair.Finish = (DateTime)repairId.newTime;
+            shipRepair.Finish = (DateTime)repair.newTime;
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<RepairShip>> Get(int type)
+        public async Task<IEnumerable<RepairShipDTO>> Get(int type, string userId = "", int id = 0)
         {
             List<RepairShip> repairs;
             switch (type)
             {
                 case 0:
-                    repairs = await _context.RepairShips.Where(SR => SR.Init == default(DateTime)).ToListAsync();
+                    repairs = await _context.RepairShips.Where(SR => SR.Init == default(DateTime) && SR.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 1:
-                    repairs = await _context.RepairShips.Where(SR => SR.Finish == default(DateTime) && SR.Init != default(DateTime)).ToListAsync();
+                    repairs = await _context.RepairShips.Where(SR => SR.Finish == default(DateTime) && SR.Init != default(DateTime) && SR.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 2:
-                    repairs = await _context.RepairShips.Where(SR => SR.Finish != default(DateTime)).ToListAsync();
+                    repairs = await _context.RepairShips.Where(SR => SR.Finish != default(DateTime) && SR.AirportID == int.Parse(userId)).ToListAsync();
+                    break;
+                case 3:
+                    repairs = await _context.RepairShips.Where(SR => SR.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 default:
-                    repairs = await _context.RepairShips.ToListAsync();
+                    repairs = await _context.RepairShips.Where(SR => SR.Ships.ClientID == id).ToListAsync();
                     break;
             }
 
-            return repairs;
+            return _mapper.Map<List<RepairShipDTO>>(repairs);
+        }
+
+        public async Task Valorate(RepairShipDTO repair)
+        {
+            var repairShipDB = await RepairAux(repair);
+            repairShipDB.Stars = repair.Stars;
+            repairShipDB.Comment = repair.Comment;
+
+            var repairDB = await _aux.GetRepairInstallation(_mapper.Map<RepairInstallationDTO>(repair));
+            var prom = repairDB.Stars * (float) repairDB.Votes;
+            prom += repairShipDB.Stars;
+            repairDB.Votes++;
+            prom /= repairDB.Votes;
+            repairDB.Stars = prom;
+
+            await _context.SaveChangesAsync();
         }
 
         // ---------------------------------------------------------------------
-        private async Task<RepairShip> RepairAux(RepairShipDTO repairId)
+        private async Task<RepairShip> RepairAux(RepairShipDTO repair)
         {
-            if (repairId.newTime == default(DateTime))
-                repairId.newTime = DateTime.Now;
+            if (repair.newTime == default(DateTime))
+                repair.newTime = DateTime.Now;
 
             var shipRepair = await _context.RepairShips.SingleOrDefaultAsync(r =>
-            r.InstallationID == repairId.InstallationID && r.AirportID == repairId.AirportID && r.RepairID == repairId.RepairID &&
-            r.Plate == repairId.Plate && r.Init == repairId.Init);
+            r.InstallationID == repair.InstallationID && r.AirportID == repair.AirportID && r.RepairID == repair.RepairID &&
+            r.Plate == repair.Plate && r.Init == repair.Init);
 
             if (shipRepair is null)
                 throw new Exception();
             return shipRepair;
         }
 
+        private async Task Errors(RepairInstallationDTO repair, string shipId)
+        {
+            var repairDB = await _aux.GetRepairInstallation(repair);
+
+            var ship = await _context.Shipss.FindAsync(shipId);
+            if (ship is null)
+                throw new Exception();
+
+            var exist = _context.RepairShips.SingleOrDefaultAsync(rs =>
+            rs.InstallationID == repair.InstallationID && rs.AirportID == repair.AirportID &&
+            rs.RepairID == repair.RepairID && rs.Plate == shipId);
+            if (exist is not null)
+                throw new Exception();
+        }
     }
 }

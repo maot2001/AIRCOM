@@ -11,7 +11,9 @@ namespace AIRCOM.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? Name { get; set; }
-        public int? Price { get; set; }
+        public float? Price { get; set; }
+        public float? Stars { get; set; } = 0;
+        public int? Votes { get; set; } = 0;
         public int? InstallationID { get; set; }
         [ForeignKey(nameof(InstallationID))]
         public virtual Installation? Installation { get; set; }

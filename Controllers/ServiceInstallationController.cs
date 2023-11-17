@@ -13,20 +13,15 @@ namespace AIRCOM.Controllers
             _service = service;
         }
 
-        // Client --------------------------------------------------------------
-        // POST Valorar Servicio
-        // POST Solicitar Servicio
-        // ---------------------------------------------------------------------
-
         // Direction -----------------------------------------------------------
         // GET: ServiceInstallation
         [Authorize(Policy = "Direction")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var userId = HttpContext.User.FindFirst("AirportId")?.Value;
-            var servicecInstallations = await _service.Get(userId);
-            return View(servicecInstallations);
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
+            var serviceInstallations = await _service.Get(userId);
+            return View(serviceInstallations);
         }
 
         // POST: ServiceInstallation
@@ -36,7 +31,8 @@ namespace AIRCOM.Controllers
         {
             try
             {
-                await _service.Create(service);
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(service, userId);
                 return RedirectToAction(nameof(Get));
             }
             catch
@@ -52,7 +48,8 @@ namespace AIRCOM.Controllers
         {
             try
             {
-                await _service.Edit(service);
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Edit(service, userId);
                 return RedirectToAction(nameof(Get));
             }
             catch
@@ -75,6 +72,17 @@ namespace AIRCOM.Controllers
             {
                 return NotFound();
             }
+        }
+        // ---------------------------------------------------------------------
+
+        // Client --------------------------------------------------------------
+        // GET : ServiceInstallation/Client
+        [Authorize(Policy = "Client")]
+        [HttpGet("Client")]
+        public async Task<IActionResult> GetClient()
+        {
+            var serviceInstallations = await _service.Get();
+            return View(serviceInstallations);
         }
         // ---------------------------------------------------------------------
     }

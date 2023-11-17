@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Models.DTO;
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace AIRCOM.Controllers
         // POST: Ships
         [Authorize(Policy = "Security")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Ships ship)
+        public async Task<IActionResult> Create([FromBody] ShipsDTO ship)
         {
             await _service.Create(ship);
             return RedirectToAction(nameof(Get));
@@ -37,15 +38,12 @@ namespace AIRCOM.Controllers
 
         // PUT: Ships/5
         [Authorize(Policy = "Security")]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(string id, [FromBody] Ships ship)
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] ShipsDTO ship)
         {
-            if (id != ship.Plate)
-                return BadRequest();
-
             try
             {
-                await _service.Edit(id, ship);
+                await _service.Edit(ship);
                 return RedirectToAction(nameof(Get));
             }
             catch
@@ -75,9 +73,11 @@ namespace AIRCOM.Controllers
         // GET: Ships/Client
         [Authorize(Policy = "Client")]
         [HttpGet("Client")]
-        public async Task<IActionResult> ClientShips()
+        public async Task<IActionResult> ClientShips(string token = "")
         {
             var userId = HttpContext.User.FindFirst("Id")?.Value;
+            var ships = await _service.Get(userId);
+            return View((ships, token));
         }
         // -----------------------------------------------------------   
 

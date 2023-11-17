@@ -20,11 +20,11 @@ namespace AIRCOM.Controllers
         // POST: RepairShip/5
         [HttpPost("{shipId}")]
         [Authorize(Policy = "Security")]
-        public async Task<IActionResult> RequestRepair(string shipId, [FromBody] RepairInstallationDTO repairId)
+        public async Task<IActionResult> RequestRepair(string shipId, [FromBody] RepairInstallationDTO repair)
         {
             try
             {
-                await _service.RequestRepair(shipId, repairId);
+                await _service.RequestRepair(shipId, repair);
                 return RedirectToAction(nameof(GetRepairs));
             }
             catch
@@ -38,10 +38,11 @@ namespace AIRCOM.Controllers
         // GET: RepairShip/GetRequest
         [HttpGet("GetRequest")]
         [Authorize(Policy = "Mechanic")]
-        public async Task<IActionResult> GetRequest()
+        public async Task<IActionResult> GetRequest(string token = "")
         {
-            var rep = await _service.Get(0);
-            return View(rep);
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
+            var rep = await _service.Get(0, userId);
+            return View((rep, token));
         }
 
         // GET: RepairShip/GetProcess
@@ -49,7 +50,8 @@ namespace AIRCOM.Controllers
         [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetProcess()
         {
-            var rep = await _service.Get(1);
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
+            var rep = await _service.Get(1, userId);
             return View(rep);
         }
 
@@ -58,7 +60,8 @@ namespace AIRCOM.Controllers
         [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetFinish()
         {
-            var rep = await _service.Get(2);
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
+            var rep = await _service.Get(2, userId);
             return View(rep);
         }
 
@@ -68,18 +71,19 @@ namespace AIRCOM.Controllers
         [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetRepairs()
         {
-            var rep = await _service.Get(3);
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
+            var rep = await _service.Get(3, userId);
             return View(rep);
         }
 
         // PUT: RepairShip/ProcessRepair
         [HttpPut("ProcessRepair")]
         [Authorize(Policy = "Mechanic")]
-        public async Task<IActionResult> ProcessRepair([FromBody] RepairShipDTO repairId)
+        public async Task<IActionResult> ProcessRepair([FromBody] RepairShipDTO repair)
         {
             try
             {
-                await _service.ProcessRepair(repairId);
+                await _service.ProcessRepair(repair);
                 return RedirectToAction(nameof(GetRequest));
             }
             catch
@@ -91,11 +95,11 @@ namespace AIRCOM.Controllers
         // PUT: RepairShip/FinishRepair
         [HttpPut("FinishRepair")]
         [Authorize(Policy = "Mechanic")]
-        public async Task<IActionResult> FinishRepair([FromBody] RepairShipDTO repairId)
+        public async Task<IActionResult> FinishRepair([FromBody] RepairShipDTO repair)
         {
             try
             {
-                await _service.FinishRepair(repairId);
+                await _service.FinishRepair(repair);
                 return RedirectToAction(nameof(GetProcess));
             }
             catch
@@ -106,7 +110,31 @@ namespace AIRCOM.Controllers
         // ---------------------------------------------------------------------
 
         // Client --------------------------------------------------------------
-        // GET Reparaciones en Naves Propias
+        // GET: RepairShip/ClientShip
+        [HttpGet("ClientShip")]
+        [Authorize(Policy = "Client")]
+        public async Task<IActionResult> CSRepair()
+        {
+            var userId = int.Parse(HttpContext.User.FindFirst("Id")?.Value);
+            var rep = await _service.Get(4, "", userId);
+            return View(rep);
+        }
+
+        // PUT: Valorar Reparacion
+        [HttpPut("Valorate")]
+        [Authorize(Policy = "Client")]
+        public async Task<IActionResult> Valorate([FromBody] RepairShipDTO repair)
+        {
+            try
+            {
+                await _service.Valorate(repair);
+                return RedirectToAction(nameof(ShipsController.ClientShips), "Ships");
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
         // ---------------------------------------------------------------------
     }
 }

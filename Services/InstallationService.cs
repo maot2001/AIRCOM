@@ -15,44 +15,55 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Installation>> Get(string userId)
+        public async Task<IEnumerable<InstallationDTO>> Get(string userId)
         {
-            int id = int.Parse(userId);
-            return await _context.Installations.Where(i => i.AirportID == id).ToListAsync();
+            var installation = await _context.Installations.Where(i => i.AirportID == int.Parse(userId)).ToListAsync();
+            return _mapper.Map<List<InstallationDTO>>(installation);
         }
 
-        public async Task Create(Installation intallation, string userId)
+        public async Task Create(InstallationDTO installation, string userId)
         {
-            _context.Installations.Add(intallation);
+            await Errors(installation, userId);
+            var installationDB = _mapper.Map<Installation>(installation);
+            installationDB.AirportID = int.Parse(userId);
+            installationDB.Airport = await _context.Airports.FindAsync(int.Parse(userId));
+            _context.Installations.Add(installationDB);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Edit(Installation installation)
+        public async Task Edit(InstallationDTO installation)
         {
-            var installationDB = await GetInstallation(installation);
+            await Errors(installation, installation.AirportID.ToString());
+            var installationDB = await GetInstallationById(installation.Id);
             installationDB.Name = installation.Name;
             installationDB.Direction = installation.Direction;
             installationDB.Ubication = installation.Ubication;
-            
+            installationDB.InstallationID = installation.InstallationID;
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(Installation installation)
+        public async Task Delete(InstallationDTO installation)
         {
-            var installationDB = await GetInstallation(installation);
+            var installationDB = await GetInstallationById(installation.Id);
             _context.Installations.Remove(installationDB);
             await _context.SaveChangesAsync();
         }
 
         //--------------------------------------------------------------------
-        public async Task<Installation> GetInstallation(Installation installation)
+        public async Task<Installation> GetInstallationById(int id)
         {
-            var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
-            i.InstallationID == installation.InstallationID && i.AirportID == installation.AirportID);
-
+            var installationDB = await _context.Installations.SingleOrDefaultAsync(i => i.Id == id);
             if (installationDB is null)
                 throw new Exception();
             return installationDB;
+        }
+
+        private async Task Errors(InstallationDTO installation, string userId)
+        {
+            var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
+            i.InstallationID == installation.InstallationID && i.AirportID == int.Parse(userId));
+            if (installationDB is not null)
+                throw new Exception();
         }
     }
 }

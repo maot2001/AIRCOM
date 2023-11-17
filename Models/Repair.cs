@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AIRCOM.Models
 {
     [Index(nameof(RepairID),IsUnique =true)]
+    [Index(nameof(Name),IsUnique =true)]
     public class Repair
     {
         [Key]

@@ -19,7 +19,7 @@ namespace AIRCOM.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
             var repairInstallations = await _service.Get(userId);
             return View(repairInstallations);
         }
@@ -31,7 +31,8 @@ namespace AIRCOM.Controllers
         {
             try
             {
-                await _service.Create(repair);
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(repair, userId);
                 return RedirectToAction(nameof(Get));
             }
             catch
@@ -47,7 +48,8 @@ namespace AIRCOM.Controllers
         {
             try
             {
-                await _service.Edit(repair);
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Edit(repair, userId);
                 return RedirectToAction(nameof(Get));
             }
             catch

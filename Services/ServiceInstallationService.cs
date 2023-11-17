@@ -15,30 +15,34 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ServicesInstallation>> Get(string userId)
+        public async Task<IEnumerable<ServiceInstallationDTO>> Get(string userId = "")
         {
-            int id = int.Parse(userId);
-            return await _context.ServicesInstallations.Where(ri => ri.AirportID == id).ToListAsync();
+            List<ServicesInstallation> service;
+            if (userId == "")
+                service = await _context.ServicesInstallations.ToListAsync();
+            else
+                service = await _context.ServicesInstallations.Where(si => si.AirportID == int.Parse(userId)).ToListAsync();
+            return _mapper.Map<List<ServiceInstallationDTO>>(service);
         }
 
-        public async Task Create(ServiceInstallationDTO service)
+        public async Task Create(ServiceInstallationDTO service, string userId)
         {
-            Installation installation = new() { InstallationID = service.InstallationID, AirportID = service.AirportID };
-            InstallationService aux = null;
-            var installationDB = await aux.GetInstallation(installation);
-            var serviceDB = await _context.CustomerServices.SingleOrDefaultAsync(s => s.Code == service.Code);
-            if (serviceDB is null)
-                throw new Exception();
-
-            ServicesInstallation serviceInstallation = new()
-            { InstallationID = service.InstallationID, AirportID = service.AirportID, Code = service.Code};
+            await Errors(service, userId);
+            service.AirportID = int.Parse(userId);
+            var serviceInstallation = _mapper.Map<ServicesInstallation>(service);
             _context.ServicesInstallations.Add(serviceInstallation);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Edit(ServiceInstallationDTO service)
+        public async Task Edit(ServiceInstallationDTO service, string userId)
         {
+            await Errors(service, userId);
             var serviceDB = await GetServiceInstallation(service);
+            serviceDB.InstallationID = service.InstallationID;
+            serviceDB.Name = service.Name;
+            serviceDB.Price = service.Price;
+            serviceDB.Code = service.Code;
+            serviceDB.CustomerService = await _context.CustomerServices.FindAsync(service.Code);
             await _context.SaveChangesAsync();
         }
 
@@ -50,7 +54,7 @@ namespace AIRCOM.Services
         }
 
         //-------------------------------------------------------------------------
-        private async Task<ServicesInstallation> GetServiceInstallation(ServiceInstallationDTO service)
+        public async Task<ServicesInstallation> GetServiceInstallation(ServiceInstallationDTO service)
         {
             var serviceDB = await _context.ServicesInstallations.SingleOrDefaultAsync(si =>
             si.InstallationID == service.InstallationID && si.AirportID == service.AirportID && si.Code == service.Code);
@@ -59,5 +63,18 @@ namespace AIRCOM.Services
             return serviceDB;
         }
 
+        private async Task Errors(ServiceInstallationDTO service, string userId)
+        {
+            var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
+            i.InstallationID == service.InstallationID && i.AirportID == service.AirportID);
+            var serviceDB = await _context.Repairs.SingleOrDefaultAsync(r => r.RepairID == service.Code);
+            if (serviceDB is null || installationDB is null)
+                throw new Exception();
+
+            var exist = _context.RepairInstallations.SingleOrDefaultAsync(si =>
+            si.InstallationID == service.InstallationID && si.AirportID == int.Parse(userId) && si.RepairID == service.Code);
+            if (exist is not null)
+                throw new Exception();
+        }
     }
 }

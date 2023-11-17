@@ -1,4 +1,5 @@
 ﻿using AIRCOM.Models;
+using AIRCOM.Models.DTO;
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace AIRCOM.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHistoryShips(string id)
         {
-            var histories = await _service.GetHistoryShips(id);
+            var histories = await _service.Get(id);
             return View(histories);
         }
         // -----------------------------------------------------------   
@@ -41,9 +42,9 @@ namespace AIRCOM.Controllers
         // POST: History
         [Authorize(Policy = "Security")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] History history)
+        public async Task<IActionResult> Create([FromBody] HistoryDTO history)
         {
-            var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
             await _service.Create(history, userId);
             return RedirectToAction(nameof(Get));
         }
@@ -51,11 +52,11 @@ namespace AIRCOM.Controllers
         // PUT: History
         [Authorize(Policy = "Security")]
         [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] History history)
+        public async Task<IActionResult> Edit([FromBody] HistoryDTO history)
         {
             try
             {
-                var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
                 await _service.Edit(history, userId);
                 return RedirectToAction(nameof(Get));
             }
@@ -68,11 +69,11 @@ namespace AIRCOM.Controllers
         // DELETE: History
         [Authorize(Policy = "Security")]
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] History history)
+        public async Task<IActionResult> Delete([FromBody] HistoryDTO history)
         {
             try
             {
-                var userId = HttpContext.User.FindFirst("AirportId")?.Value;
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
                 await _service.Delete(history, userId);
                 return RedirectToAction(nameof(Get));
             }
@@ -87,7 +88,7 @@ namespace AIRCOM.Controllers
         // PUT: History/Include
         [Authorize(Policy = "Client")]
         [HttpPut("Include")]
-        public async Task<IActionResult> Include([FromBody] History history)
+        public async Task<IActionResult> Include([FromBody] HistoryDTO history)
         {
             try
             {
