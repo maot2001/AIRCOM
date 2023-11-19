@@ -10,6 +10,7 @@ namespace AIRCOM.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public string? Name { get; set; }
         public DateTime Init { get; set; }
         public DateTime Finish { get; set; }
         public string? State { get; set; }

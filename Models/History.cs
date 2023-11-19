@@ -10,13 +10,17 @@ namespace AIRCOM.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public DateTime? Date { get; set; }
+        public DateTime ArrivalDate { get; set; }
+        public DateTime ExitDate { get; set; }
         public string OwnerRole { get; set; }
         public string? Plate { get; set; }
         [ForeignKey(nameof(Plate))]
         public virtual Ships? Ships { get; set; }
-        public int? AirportID { get; set; }
-        [ForeignKey(nameof(AirportID))]
-        public virtual Airport? Airport { get; set; }
+        public int ArrivalID { get; set; }
+        [ForeignKey(nameof(ArrivalID))]
+        public virtual Airport ArrivalAirport { get; set; }
+        public int ExitID { get; set; }
+        [ForeignKey(nameof(ExitID))]
+        public virtual Airport ExitAirport { get; set; }
     }
 }

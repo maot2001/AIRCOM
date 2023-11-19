@@ -19,7 +19,7 @@ namespace AIRCOM.Models
         public virtual ICollection<on_site> On_Sites { get; set; }
         public virtual ICollection<RepairShip> RepairShip { get; set; }
         public virtual ICollection<RepairInstallation> RepairInstallation { get; set; }
-        public virtual ICollection<History> History { get; set; }
-        
+        //public virtual ICollection<History> Arrival { get; set; }
+        //public virtual ICollection<History> Exit { get; set; }
     }
 }
