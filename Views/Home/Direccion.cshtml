@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    int p = 2;
+    int[] sol = new int[] { 1, 1, 1 };
+    bool a = false;
+    string Cuadrado(int x) => p == x ? "active" : "pasive";
+}
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEREOPUERTO > USUARIO</h4>
+</nav>
+<nav class="navegacion">
+    <form method="post">
+        <div>
+            <button class=@Cuadrado(1) type="submit"><h2>Instalaciones</h2></button>
+            <p style="color:white;">____</p>
+            <button class=@Cuadrado(2) type="submit"><h2>Servicios</h2></button>
+            <p style="color:white;">____</p>
+            <button class=@Cuadrado(3) type="submit"><h2>Reparaciones</h2></button>
+        </div>
+    </form>
+    <aside>
+        <button class="no">➕</button>
+        <input type="text" placeholder="🔍buscar">
+    </aside>
+</nav>
+@if (p == 1)
+{
+    <div class="ofertas">
+        @for (int i = 1; i < 10; i++)
+        {
+            <div>
+                <div>
+                    <div>
+                        <strong>Instalación #@i</strong>
+                    </div>
+                    <div>
+                        <strong>Nombre:</strong> No tiene
+                    </div>
+                    <div>
+                        <strong>Tipo:</strong> Oficina
+                    </div>
+                    <div>
+                        <strong>Ubicación:</strong> Norte
+                    </div>
+                    <center>
+                        <button class="boton" style="background-color:rgb(20,150,20)">Editar</button>
+                    </center>
+                    <div>
+                        <button class="boton">Servicios</button>
+                        <button class="boton">Reparaciones</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+
+@if (p == 2)
+{
+    <div class="ofertas">
+        @for (int i = 0; i < 10; i++)
+        {
+            <div style="display:block">
+                <div style="display:flex;">
+                    <div>
+                        <div>
+                            Comida Rapida y Barata
+                        </div>
+                        <div>
+                            Instalacion #4
+                        </div>
+                    </div>
+                    <aside>
+                        <div>
+                            <h3>$5.99</h3>
+                        </div>
+                        <div>
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </aside>
+                </div>
+                <div style="margin-top:2%;">
+                    <button class="boton">Cambiar precio</button>
+                    <button class="boton" style="background-color:rgb(175,10,10)">Eliminar</button>
+                    <button class="boton">Ver reseñas</button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (p == 3)
+{
+    <div class="ofertas">
+        @for (int i = 0; i < 10; i++)
+        {
+            <div style="display:block">
+                <div style="display:flex;justify-content:space-between;">
+                    <div>
+                        <div>
+                            Reparacion capital
+                        </div>
+                        <div>
+                            Instalacion #4
+                        </div>
+                    </div>
+                    <aside>
+                        <div>
+                            <h3>$5.99/h</h3>
+                        </div>
+                        <div>
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </aside>
+                </div>
+                <div style="margin-top:2%;">
+                    <button class="boton">Cambiar precio</button>
+                    <button class="boton" style="background-color:rgb(175,10,10)">Eliminar</button>
+                    <button class="boton">Ver reseñas</button>
+                </div>
+            </div>
+        }
+    </div>
+}
