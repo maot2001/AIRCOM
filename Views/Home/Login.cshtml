@@ -1,0 +1,47 @@
+﻿
+@{
+    bool checkN = false;
+    bool checkP = false;
+}
+
+<header>
+    AIRCOM
+</header>
+
+<main id="LOGIN">
+    <center>
+        <h1>Inicie sesión</h1>
+
+        <div>
+            <center>
+                <form method="post">
+                    <div>Nombre:</div>
+                    @if (checkN)
+                    {
+                        <div class="error">Nombre incorrecto</div>
+                    }
+                    <input type="text" name="name" placeholder="introduzca nombre">
+                    <div>Contraseña:</div>
+                    @if (checkP)
+                    {
+                        <div class="error">Contraseña incorrecta</div>
+                    }
+                    <input type="password" name="password" placeholder="introduzca contraseña">
+
+                    <section>
+                        <h4>Rol</h4>
+                        <div>
+                            <input type="radio" checked name="rol"> Cliente
+                            <input type="radio" name="rol"> Seguridad
+                        </div>
+                        <input type="radio" name="rol"> Dirección
+                        <input type="radio" name="rol"> Mecánico
+                    </section>
+                    <div>
+                        <button class="boton" type="submit">ENVIAR</button>
+                    </div>
+                </form>
+            </center>
+        </div>
+    </center>
+</main>

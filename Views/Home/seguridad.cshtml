@@ -1,0 +1,228 @@
+﻿@{
+    int p = 4;
+    int[] sol = new int[] { 1, 1, 1 };
+    bool a = false;
+    string Cuadrado(int x) => p == x ? "yes" : "no";
+}
+
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEROPUERTO > USUARIO</h4>
+    <form method="post">
+        <div>
+            <div><button class=@Cuadrado(1) type="submit">🕑</button></div>
+            <div><button class=@Cuadrado(2) type="submit">✈️</button></div>
+            <div><button class=@Cuadrado(3) type="submit">👨‍💼</button></div>
+            <div><button class=@Cuadrado(4) type="submit">➕</button></div>
+        </div>
+    </form>
+</nav>
+
+@if (p == 1)
+{
+    <center>
+        <h1>Historial</h1>
+        <table>
+            <tr>
+                <th>
+                    <center>
+                        Fecha de arribo
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Matrícula
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Rol del Dueño
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Estado de la nave
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Próximo vuelo
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+            </tr>
+            @foreach (var solicitud in sol)
+            {
+                <tr>
+                    <td><center>06/10/2023</center></td>
+                    <td><center>251615</center></td>
+                    <td><center>Capitán</center></td>
+                    <td><center>BIEN</center></td>
+                    <td><center>06/01/2024</center></td>
+                </tr>
+            }
+        </table>
+    </center>
+}
+
+@if (p == 2)
+{
+
+    <div style="display:flex;justify-content:space-between; margin:0% 2%; align-items:center;">
+        <div><h1>Aviones en el aeropuerto</h1></div>
+        <div><input type="text" placeholder="🔍buscar"></div>
+    </div>
+    @foreach (var solicitud in sol)
+    {
+        <section class="dataToShow">
+            <div style="display: flex;">
+                <div>Matricula: aaaaaaaa</div>
+                <div>Estado: asadasdsd</div>
+                <div>ID Propietario: 90121212345</div>
+                @if (a)
+                {
+                    <button class="no">🔽</button>
+                }
+
+                @if (!a)
+                {
+                    <button class="no">🔼</button>
+                }
+            </div>
+            @if (!a)
+            {
+                <div class="tag">
+                    <aside>
+                        <div><h4>Características:</h4></div>
+                        <div><strong>Modelo:</strong> aireasdsd</div>
+                        <div><strong>Capacidad de carga:</strong> 20 ton</div>
+                        <div><strong>Cantidad de tripulantes:</strong> 10</div>
+                        <div><strong>Cantidad de pasajeros:</strong> 50</div>
+
+                    </aside>
+                    <div>
+                        <div>Fecha de salida programada:</div>
+                        <div>1/12/2024</div>
+                        <form method="post">
+                            <button class="boton" type="submit">
+                                Ver historial
+                            </button>
+                            <button class="boton" type="submit">
+                                Solicitar reparación
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </section>
+    }
+}
+
+@if (p == 3)
+{
+    <center>
+        <h1>Personas</h1>
+        <table>
+            <tr>
+                <th>
+                    <center>
+                        Rol
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Carnet de Identidad
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Nombre
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Nacionalidad
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Tipo
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+            </tr>
+            @foreach (var solicitud in sol)
+            {
+                <tr>
+                    <td><center>Cliente</center></td>
+                    <td><center>63122511615</center></td>
+                    <td><center>Alan Brito Prieto</center></td>
+                    <td><center>Cuba</center></td>
+                    <td><center>VIP</center></td>
+                </tr>
+            }
+        </table>
+    </center>
+}
+
+@if (p == 4)
+{
+    <details>
+        <summary>Añadir Cliente</summary>
+    </details>
+    <details>
+        <summary>Añadir Trabajador</summary>
+    </details>
+    <details>
+        <summary>Añadir Nave</summary>
+    </details>
+    <details>
+        <summary>Solicitar Reparación</summary>
+    </details>
+}

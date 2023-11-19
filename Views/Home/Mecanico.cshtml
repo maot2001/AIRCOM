@@ -1,0 +1,110 @@
+﻿@{
+    int p = 3;
+    int[] sol = new int[] { 1, 1, 1 };
+    bool a = false;
+    string Cuadrado(int x) => p == x ? "yes" : "no";
+}
+
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEROPUERTO > USUARIO</h4>
+    <form method="post">
+        <div>
+            <div><button class=@Cuadrado(1) type="submit">❗</button></div>
+            <div><button class=@Cuadrado(2) type="submit">🛠️</button></div>
+            <div><button class=@Cuadrado(3) type="submit">✉️</button></div>
+        </div>
+    </form>
+</nav>
+
+@if (p == 1)
+{
+    <h1>Solicitudes de reparación:</h1>
+    @foreach (var solicitud in sol)
+    {
+        <section class="dataToShow">
+            <div style="display: flex;">
+                <div>Matricula: aaaaaaaa</div>
+                <div>Estado: asadasdsd</div>
+                <div>tipo: sssdddqqw</div>
+                @if (a)
+                {
+                    <button class="no">🔽</button>
+                }
+
+                @if (!a)
+                {
+                    <button class="no">🔼</button>
+                }
+            </div>
+            @if (!a)
+            {
+                <div>
+                    <form method="post">
+                        <div>
+                            Cantidad de horas:
+                            <input type="number" min="0" style="width:20%;">
+                        </div>
+                        <div>
+                            Terminación:
+                            <input type="date" style="width:100%;">
+                        </div>
+                        <div style="flex:1;">
+                            <button type="submit" style="align-self:end;" class="boton">Reparar</button>
+                        </div>
+                    </form>
+                </div>
+            }
+        </section>
+    }
+}
+
+@if (p == 2)
+{
+    <h1>Reparaciones en proceso:</h1>
+    @foreach (var solicitud in sol)
+    {
+        <section class="dataToShow">
+            <div style="display: flex;">
+                <div>Matricula: aaaaaaaa</div>
+                <div>Estado: asadasdsd</div>
+                <div>tipo: sssdddqqw</div>
+            </div>
+            <div>
+                <div>Inicio: 10/10/2020</div>
+                <div>Terminación: 10/10/2020</div>
+                <div>Horas previstas: 4</div>
+            </div>
+
+        </section>
+    }
+}
+
+@if (p == 3)
+{
+    <h1>Reparaciones Realizadas:</h1>
+    @foreach (var solicitud in sol)
+    {
+        <section class="dataToShow" style="font-size:x-large">
+            <div style="display: flex;">
+                <div>Matricula: aaaaaaaa</div>
+                <div>Estado: asadasdsd</div>
+                <div>tipo: sssdddqqw</div>
+            </div>
+            <div>
+                <div>Inicio: 10/10/2020</div>
+                <div>Terminación: 10/10/2020</div>
+                <div>Costo: $400</div>
+            </div>
+            <div>
+                <div style="flex:none">⭐⭐⭐⭐⭐</div>
+                <div style="background-color:lightgrey; padding:0.5%; border:solid;"><strong>Comentario: </strong> Lo ame, que se repita</div>
+            </div>
+
+        </section>
+    }
+}
