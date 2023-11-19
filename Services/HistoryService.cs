@@ -27,11 +27,13 @@ namespace AIRCOM.Services
 
         public async Task Create(HistoryDTO history, string userId)
         {
-            await Errors(history);
+            await Errors(history, userId);
             var historyDB = _mapper.Map<History>(history);
-            historyDB.AirportID = int.Parse(userId);
             historyDB.Ships = await _context.Shipss.FindAsync(history.Plate);
-            historyDB.Airport = await _context.Airports.FindAsync(int.Parse(userId));
+            if (history.ArrivalID != 0)
+                historyDB.ArrivalAirport = await _context.Airports.FindAsync(history.ArrivalID);
+            if (history.ExitID != 0)
+                historyDB.ExitAirport = await _context.Airports.FindAsync(history.ExitID);
             _context.Historys.Add(historyDB);
             await _context.SaveChangesAsync();
         }
@@ -42,7 +44,8 @@ namespace AIRCOM.Services
             var historyBD = await GetHistoryById(history.Id);
             historyBD.OwnerRole = history.OwnerRole;
             historyBD.Plate = history.Plate;
-            historyBD.Date = history.Date;
+            historyBD.ArrivalDate = history.ArrivalDate;
+            historyBD.ExitDate = history.ExitDate;
             await _context.SaveChangesAsync();
         }
 
@@ -72,14 +75,16 @@ namespace AIRCOM.Services
 
         private async Task Errors(HistoryDTO history, string userId = "")
         {
-            if (userId != "" && history.AirportID != int.Parse(userId))
+            if (userId != "" && ((history.ArrivalID != int.Parse(userId) && history.ExitID != int.Parse(userId)) 
+                             ||  (history.ArrivalID == int.Parse(userId) && history.ExitID == int.Parse(userId))))
                 throw new Exception();
 
             var ship = await _context.Shipss.FindAsync(history.Plate);
             if (ship is null)
                 throw new Exception();
 
-            var fly = await _context.Historys.SingleOrDefaultAsync(h => h.Plate == history.Plate && h.Date == history.Date);
+            var fly = await _context.Historys.SingleOrDefaultAsync(h => h.Plate == history.Plate && 
+            ((h.ArrivalDate == history.ArrivalDate) || (h.ExitDate == history.ExitDate)));
             if (fly is not null)
                 throw new Exception();
         }

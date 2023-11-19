@@ -25,6 +25,7 @@ namespace AIRCOM.Services
             var RS = _mapper.Map<RepairShip>(repair);
             RS.Id = 0;
             RS.State = ship.State;
+            RS.Name = repair.Name;
 
             _context.RepairShips.Add(RS);
             await _context.SaveChangesAsync();

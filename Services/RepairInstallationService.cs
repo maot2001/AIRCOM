@@ -15,10 +15,10 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RepairInstallation>> Get(string userId)
+        public async Task<IEnumerable<RepairInstallationDTO>> Get(string userId)
         {
-            int id = int.Parse(userId);
-            return await _context.RepairInstallations.Where(ri => ri.AirportID == id).ToListAsync();
+            var repair = await _context.RepairInstallations.Where(ri => ri.AirportID == int.Parse(userId)).ToListAsync();
+            return _mapper.Map<List<RepairInstallationDTO>>(repair);
         }
 
         public async Task Create(RepairInstallationDTO repair, string userId)
