@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,19 +29,23 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UserSecurity", policy => policy.RequireClaim("UserType", "Security"));
     options.AddPolicy("UserMechanic", policy => policy.RequireClaim("UserType", "Mechanic"));
     options.AddPolicy("UserDirection", policy => policy.RequireClaim("UserType", "Direction"));
-}); 
-builder.Services.AddDbContext<DBContext>(options =>
+});
+/*builder.Services.AddDbContext<DBContext>(options =>
 {
     var defaults = builder.Configuration.GetConnectionString("DBConnection");
     if (!options.IsConfigured)
-        options.UseMySql(defaults, ServerVersion.AutoDetect(defaults));
+        options.UseSQLServer(defaults, ServerVersion.AutoDetect(defaults));
+});*/
+
+builder.Services.AddDbContext<DBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"));
 });
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<DBContext>();
-    
     dataContext.Database.Migrate();
 }
 

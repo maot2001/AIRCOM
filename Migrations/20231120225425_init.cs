@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -12,116 +11,90 @@ namespace AIRCOM.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateTable(
                 name: "Airports",
                 columns: table => new
                 {
                     AirportID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Coordinates = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Direction = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Coordinates = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Direction = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Airports", x => x.AirportID);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
                 {
                     ClientID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Type = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Nationality = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Pwd = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Pwd = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.ClientID);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "CustomerServices",
                 columns: table => new
                 {
                     Code = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomerServices", x => x.Code);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Repairs",
                 columns: table => new
                 {
                     RepairID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Repairs", x => x.RepairID);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Email = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Pwd = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Role = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Pwd = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Installation",
                 columns: table => new
                 {
                     InstallationID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Direction = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Ubication = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Direction = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ubication = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AirportID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -133,17 +106,15 @@ namespace AIRCOM.Migrations
                         principalTable: "Airports",
                         principalColumn: "AirportID",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Shipss",
                 columns: table => new
                 {
                     Plate = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Model = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     Crew = table.Column<int>(type: "int", nullable: false),
                     ClientID = table.Column<int>(type: "int", nullable: false)
@@ -157,16 +128,14 @@ namespace AIRCOM.Migrations
                         principalTable: "Clients",
                         principalColumn: "ClientID",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "On_Site",
                 columns: table => new
                 {
-                    Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Assessment = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Assessment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Total_price = table.Column<int>(type: "int", nullable: false),
                     InstallationID = table.Column<int>(type: "int", nullable: false),
                     AirportID = table.Column<int>(type: "int", nullable: false),
@@ -194,21 +163,13 @@ namespace AIRCOM.Migrations
                         principalTable: "CustomerServices",
                         principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_On_Site_Installation_InstallationID",
-                        column: x => x.InstallationID,
-                        principalTable: "Installation",
-                        principalColumn: "InstallationID",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "RepairInstallations",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
                     InstallationID = table.Column<int>(type: "int", nullable: false),
                     AiroportID = table.Column<int>(type: "int", nullable: false),
@@ -218,14 +179,14 @@ namespace AIRCOM.Migrations
                 {
                     table.PrimaryKey("PK_RepairInstallations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RepairInstallations_Airports_InstallationID",
-                        column: x => x.InstallationID,
+                        name: "FK_RepairInstallations_Airports_AiroportID",
+                        column: x => x.AiroportID,
                         principalTable: "Airports",
                         principalColumn: "AirportID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RepairInstallations_Installation_AiroportID",
-                        column: x => x.AiroportID,
+                        name: "FK_RepairInstallations_Installation_InstallationID",
+                        column: x => x.InstallationID,
                         principalTable: "Installation",
                         principalColumn: "InstallationID",
                         onDelete: ReferentialAction.Cascade);
@@ -235,15 +196,14 @@ namespace AIRCOM.Migrations
                         principalTable: "Repairs",
                         principalColumn: "RepairID",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "ServicesInstallations",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Price = table.Column<int>(type: "int", nullable: false),
                     Valoration = table.Column<int>(type: "int", nullable: false),
                     InstallationID = table.Column<int>(type: "int", nullable: false),
@@ -271,18 +231,16 @@ namespace AIRCOM.Migrations
                         principalTable: "Installation",
                         principalColumn: "InstallationID",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Historys",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    OwnerRole = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    OwnerRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Plate = table.Column<int>(type: "int", nullable: true),
                     AirportID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -300,19 +258,17 @@ namespace AIRCOM.Migrations
                         column: x => x.Plate,
                         principalTable: "Shipss",
                         principalColumn: "Plate");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "RepairShips",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Init = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Finish = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    State = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Init = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Finish = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    State = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Time = table.Column<int>(type: "int", nullable: false),
                     Valoration = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
@@ -348,8 +304,7 @@ namespace AIRCOM.Migrations
                         principalTable: "Shipss",
                         principalColumn: "Plate",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Airports_AirportID",
@@ -372,13 +327,15 @@ namespace AIRCOM.Migrations
                 name: "IX_Historys_Date",
                 table: "Historys",
                 column: "Date",
-                unique: true);
+                unique: true,
+                filter: "[Date] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Historys_Plate",
                 table: "Historys",
                 column: "Plate",
-                unique: true);
+                unique: true,
+                filter: "[Plate] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Installation_AirportID",
@@ -412,11 +369,6 @@ namespace AIRCOM.Migrations
                 table: "On_Site",
                 column: "Fecha",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_On_Site_InstallationID",
-                table: "On_Site",
-                column: "InstallationID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RepairInstallations_AiroportID",

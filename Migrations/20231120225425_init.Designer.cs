@@ -3,6 +3,7 @@ using System;
 using AIRCOM.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIRCOM.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20231114160342_init")]
+    [Migration("20231120225425_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -20,7 +21,9 @@ namespace AIRCOM.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.13")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("AIRCOM.Models.Airport", b =>
                 {
@@ -28,14 +31,16 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AirportID"));
+
                     b.Property<string>("Coordinates")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direction")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AirportID");
 
@@ -51,20 +56,22 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClientID"));
+
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nationality")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pwd")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ClientID");
 
@@ -80,11 +87,13 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Code"));
+
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Code");
 
@@ -97,14 +106,16 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("AirportID")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("OwnerRole")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Plate")
                         .HasColumnType("int");
@@ -114,10 +125,12 @@ namespace AIRCOM.Migrations
                     b.HasIndex("AirportID");
 
                     b.HasIndex("Date")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Date] IS NOT NULL");
 
                     b.HasIndex("Plate")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Plate] IS NOT NULL");
 
                     b.ToTable("Historys");
                 });
@@ -128,17 +141,19 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InstallationID"));
+
                     b.Property<int>("AirportID")
                         .HasColumnType("int");
 
                     b.Property<string>("Direction")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ubication")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InstallationID");
 
@@ -156,11 +171,13 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RepairID"));
+
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RepairID");
 
@@ -174,7 +191,7 @@ namespace AIRCOM.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AiroportID")
                         .HasColumnType("int");
@@ -205,14 +222,16 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("AiroportID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Finish")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Init")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("InstallationID")
                         .HasColumnType("int");
@@ -227,7 +246,7 @@ namespace AIRCOM.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("State")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Time")
                         .HasColumnType("int");
@@ -256,6 +275,8 @@ namespace AIRCOM.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<int>("AiroportID")
                         .HasColumnType("int");
@@ -289,6 +310,8 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Plate"));
+
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
@@ -299,7 +322,7 @@ namespace AIRCOM.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Model")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Plate");
 
@@ -317,14 +340,16 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pwd")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -334,13 +359,13 @@ namespace AIRCOM.Migrations
             modelBuilder.Entity("AIRCOM.Models.on_site", b =>
                 {
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("AirportID")
                         .HasColumnType("int");
 
                     b.Property<string>("Assessment")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClientID")
                         .HasColumnType("int");
@@ -365,8 +390,6 @@ namespace AIRCOM.Migrations
 
                     b.HasIndex("Fecha")
                         .IsUnique();
-
-                    b.HasIndex("InstallationID");
 
                     b.ToTable("On_Site");
                 });
@@ -401,14 +424,14 @@ namespace AIRCOM.Migrations
 
             modelBuilder.Entity("AIRCOM.Models.RepairInstallation", b =>
                 {
-                    b.HasOne("AIRCOM.Models.Installation", "Installation")
-                        .WithMany("RepairInstallations")
+                    b.HasOne("AIRCOM.Models.Airport", "Airoport")
+                        .WithMany("RepairInstallation")
                         .HasForeignKey("AiroportID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AIRCOM.Models.Airport", "Airoport")
-                        .WithMany("RepairInstallation")
+                    b.HasOne("AIRCOM.Models.Installation", null)
+                        .WithMany("RepairInstallations")
                         .HasForeignKey("InstallationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -420,8 +443,6 @@ namespace AIRCOM.Migrations
                         .IsRequired();
 
                     b.Navigation("Airoport");
-
-                    b.Navigation("Installation");
 
                     b.Navigation("Repair");
                 });
@@ -519,19 +540,11 @@ namespace AIRCOM.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AIRCOM.Models.Installation", "Installation")
-                        .WithMany("on_sites")
-                        .HasForeignKey("InstallationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Airport");
 
                     b.Navigation("Client");
 
                     b.Navigation("CustomerService");
-
-                    b.Navigation("Installation");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Airport", b =>
@@ -570,8 +583,6 @@ namespace AIRCOM.Migrations
                     b.Navigation("RepairShip");
 
                     b.Navigation("ServicesInstallations");
-
-                    b.Navigation("on_sites");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.Repair", b =>

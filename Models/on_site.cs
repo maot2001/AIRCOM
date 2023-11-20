@@ -13,8 +13,8 @@ namespace AIRCOM.Models
         public string? Assessment { get; set; }
         public int Total_price { get; set; }
         public int InstallationID { get; set; }
-        [ForeignKey(nameof(InstallationID))]
-        public virtual Installation? Installation { get; set; }
+        //[ForeignKey(nameof(InstallationID))]
+        //public virtual Installation? Installation { get; set; }
         public int AirportID { get; set; }
         [ForeignKey(nameof(AirportID))]
         public virtual Airport? Airport { get; set; }
