@@ -190,7 +190,7 @@ namespace AIRCOM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AiroportID")
+                    b.Property<int?>("AirportID")
                         .HasColumnType("int");
 
                     b.Property<int>("InstallationID")
@@ -204,7 +204,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AiroportID");
+                    b.HasIndex("AirportID");
 
                     b.HasIndex("InstallationID");
 
@@ -221,7 +221,7 @@ namespace AIRCOM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AiroportID")
+                    b.Property<int?>("AirportID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Finish")
@@ -253,7 +253,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AiroportID");
+                    b.HasIndex("AirportID");
 
                     b.HasIndex("Init")
                         .IsUnique();
@@ -275,7 +275,7 @@ namespace AIRCOM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("AiroportID")
+                    b.Property<int?>("AirportID")
                         .HasColumnType("int");
 
                     b.Property<int>("Code")
@@ -292,7 +292,7 @@ namespace AIRCOM.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("AiroportID");
+                    b.HasIndex("AirportID");
 
                     b.HasIndex("Code");
 
@@ -421,13 +421,11 @@ namespace AIRCOM.Migrations
 
             modelBuilder.Entity("AIRCOM.Models.RepairInstallation", b =>
                 {
-                    b.HasOne("AIRCOM.Models.Airport", "Airoport")
+                    b.HasOne("AIRCOM.Models.Airport", null)
                         .WithMany("RepairInstallation")
-                        .HasForeignKey("AiroportID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AirportID");
 
-                    b.HasOne("AIRCOM.Models.Installation", null)
+                    b.HasOne("AIRCOM.Models.Installation", "Installation")
                         .WithMany("RepairInstallations")
                         .HasForeignKey("InstallationID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -439,20 +437,18 @@ namespace AIRCOM.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Airoport");
+                    b.Navigation("Installation");
 
                     b.Navigation("Repair");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.RepairShip", b =>
                 {
-                    b.HasOne("AIRCOM.Models.Installation", "Installation")
+                    b.HasOne("AIRCOM.Models.Airport", null)
                         .WithMany("RepairShip")
-                        .HasForeignKey("AiroportID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AirportID");
 
-                    b.HasOne("AIRCOM.Models.Airport", "Airoport")
+                    b.HasOne("AIRCOM.Models.Installation", "Installation")
                         .WithMany("RepairShip")
                         .HasForeignKey("InstallationID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -470,8 +466,6 @@ namespace AIRCOM.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Airoport");
-
                     b.Navigation("Installation");
 
                     b.Navigation("Repair");
@@ -481,11 +475,9 @@ namespace AIRCOM.Migrations
 
             modelBuilder.Entity("AIRCOM.Models.ServicesInstallation", b =>
                 {
-                    b.HasOne("AIRCOM.Models.Installation", "Installation")
+                    b.HasOne("AIRCOM.Models.Airport", null)
                         .WithMany("ServicesInstallations")
-                        .HasForeignKey("AiroportID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AirportID");
 
                     b.HasOne("AIRCOM.Models.CustomerService", "CustomerService")
                         .WithMany("ServicesInstallations")
@@ -493,13 +485,11 @@ namespace AIRCOM.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AIRCOM.Models.Airport", "Airoport")
+                    b.HasOne("AIRCOM.Models.Installation", "Installation")
                         .WithMany("ServicesInstallations")
                         .HasForeignKey("InstallationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Airoport");
 
                     b.Navigation("CustomerService");
 

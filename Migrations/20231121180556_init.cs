@@ -172,18 +172,17 @@ namespace AIRCOM.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
                     InstallationID = table.Column<int>(type: "int", nullable: false),
-                    AiroportID = table.Column<int>(type: "int", nullable: false),
-                    RepairID = table.Column<int>(type: "int", nullable: false)
+                    RepairID = table.Column<int>(type: "int", nullable: false),
+                    AirportID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RepairInstallations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RepairInstallations_Airports_AiroportID",
-                        column: x => x.AiroportID,
+                        name: "FK_RepairInstallations_Airports_AirportID",
+                        column: x => x.AirportID,
                         principalTable: "Airports",
-                        principalColumn: "AirportID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AirportID");
                     table.ForeignKey(
                         name: "FK_RepairInstallations_Installation_InstallationID",
                         column: x => x.InstallationID,
@@ -207,18 +206,17 @@ namespace AIRCOM.Migrations
                     Price = table.Column<int>(type: "int", nullable: false),
                     Valoration = table.Column<int>(type: "int", nullable: false),
                     InstallationID = table.Column<int>(type: "int", nullable: false),
-                    AiroportID = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<int>(type: "int", nullable: false)
+                    Code = table.Column<int>(type: "int", nullable: false),
+                    AirportID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServicesInstallations", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_ServicesInstallations_Airports_InstallationID",
-                        column: x => x.InstallationID,
+                        name: "FK_ServicesInstallations_Airports_AirportID",
+                        column: x => x.AirportID,
                         principalTable: "Airports",
-                        principalColumn: "AirportID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AirportID");
                     table.ForeignKey(
                         name: "FK_ServicesInstallations_CustomerServices_Code",
                         column: x => x.Code,
@@ -226,8 +224,8 @@ namespace AIRCOM.Migrations
                         principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ServicesInstallations_Installation_AiroportID",
-                        column: x => x.AiroportID,
+                        name: "FK_ServicesInstallations_Installation_InstallationID",
+                        column: x => x.InstallationID,
                         principalTable: "Installation",
                         principalColumn: "InstallationID",
                         onDelete: ReferentialAction.Cascade);
@@ -273,22 +271,21 @@ namespace AIRCOM.Migrations
                     Valoration = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
                     InstallationID = table.Column<int>(type: "int", nullable: false),
-                    AiroportID = table.Column<int>(type: "int", nullable: false),
                     RepairID = table.Column<int>(type: "int", nullable: false),
-                    Plate = table.Column<int>(type: "int", nullable: false)
+                    Plate = table.Column<int>(type: "int", nullable: false),
+                    AirportID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RepairShips", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RepairShips_Airports_InstallationID",
-                        column: x => x.InstallationID,
+                        name: "FK_RepairShips_Airports_AirportID",
+                        column: x => x.AirportID,
                         principalTable: "Airports",
-                        principalColumn: "AirportID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AirportID");
                     table.ForeignKey(
-                        name: "FK_RepairShips_Installation_AiroportID",
-                        column: x => x.AiroportID,
+                        name: "FK_RepairShips_Installation_InstallationID",
+                        column: x => x.InstallationID,
                         principalTable: "Installation",
                         principalColumn: "InstallationID",
                         onDelete: ReferentialAction.Cascade);
@@ -371,9 +368,9 @@ namespace AIRCOM.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RepairInstallations_AiroportID",
+                name: "IX_RepairInstallations_AirportID",
                 table: "RepairInstallations",
-                column: "AiroportID");
+                column: "AirportID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RepairInstallations_InstallationID",
@@ -392,9 +389,9 @@ namespace AIRCOM.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RepairShips_AiroportID",
+                name: "IX_RepairShips_AirportID",
                 table: "RepairShips",
-                column: "AiroportID");
+                column: "AirportID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RepairShips_Init",
@@ -418,9 +415,9 @@ namespace AIRCOM.Migrations
                 column: "RepairID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServicesInstallations_AiroportID",
+                name: "IX_ServicesInstallations_AirportID",
                 table: "ServicesInstallations",
-                column: "AiroportID");
+                column: "AirportID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServicesInstallations_Code",
