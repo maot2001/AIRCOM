@@ -24,7 +24,7 @@ namespace AIRCOM.Services
         public async Task Create(ServiceDTO service)
         {
             var serviceDB = _mapper.Map<CustomerService>(service);
-            serviceDB.Code = 0;
+
             _context.CustomerServices.Add(serviceDB);
             await _context.SaveChangesAsync();
         }
@@ -32,24 +32,29 @@ namespace AIRCOM.Services
         public async Task Edit(ServiceDTO service)
         {
             var serviceDB = await GetServiceById(service.Code);
+
             serviceDB.Name = service.Name;
             serviceDB.Description = service.Description;
+
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int serviceId)
         {
             var serviceDB = await GetServiceById(serviceId);
+
             _context.CustomerServices.Remove(serviceDB);
             await _context.SaveChangesAsync();
         }
 
         // --------------------------------------------------------------
-        private async Task<CustomerService> GetServiceById(int serviceId)
+        private async Task<CustomerService> GetServiceById(int? serviceId)
         {
             var serviceDB = await _context.CustomerServices.FindAsync(serviceId);
+
             if (serviceDB is null)
-                throw new Exception();
+                throw new Exception("El servicio no existe");
+
             return serviceDB;
         }
 
