@@ -23,44 +23,40 @@ namespace AIRCOM.Services
 
         public async Task Create(AirportDTO airport)
         {
-            //await Errors(airport);
             var airportDB = _mapper.Map<Airport>(airport);
-            airportDB.AirportID = 0;
+
             _context.Airports.Add(airportDB);
             await _context.SaveChangesAsync();
         }
 
         public async Task Edit(AirportDTO airport)
         {
-            //await Errors(airport);
             var airportDB = await GetAirportById(airport.AirportID);
+
             airportDB.Name = airport.Name;
             airportDB.Coordinates = airport.Coordinates;
             airportDB.Direction = airport.Direction;
+
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int airportId)
         {
             var airportDB = await GetAirportById(airportId);
+
             _context.Airports.Remove(airportDB);
             await _context.SaveChangesAsync();
         }
 
         // --------------------------------------------------------------
-        /*private async Task Errors(AirportDTO airport)
-        {
-            var airportDB = await _context.Airports.SingleOrDefaultAsync(a => 
-            a.Coordinates == airport.Coordinates || a.Direction == airport.Direction);
-            if (airportDB is not null)
-                throw new Exception();
-        }*/
 
-        private async Task<Airport> GetAirportById(int airportId)
+        private async Task<Airport> GetAirportById(int? airportId)
         {
             var airportDB = await _context.Airports.FindAsync(airportId);
+
             if (airportDB is null)
-                throw new Exception();
+                throw new Exception("El aeropuerto no existe");
+
             return airportDB;
         }
     }
