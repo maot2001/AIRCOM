@@ -19,7 +19,9 @@ namespace AIRCOM.Helpers
             CreateMap<ClientDTO, Client>();
             CreateMap<ClientDTO, Client>().ReverseMap();
             CreateMap<ClientDTO, Worker>()
-                .ForMember(dest => dest.WorkerId, opt => opt.MapFrom(src => src.ClientID));
+                .ForMember(dest => dest.WorkerID, opt => opt.MapFrom(src => src.ClientID));
+            CreateMap<ClientDTO, Worker>().ReverseMap()
+                .ForMember(dest => dest.ClientID, opt => opt.MapFrom(src => src.WorkerID));
             CreateMap<ClientDTO, Worker>().ReverseMap();
             CreateMap<Ships, ShipsDTO>();
             CreateMap<Ships, ShipsDTO>().ReverseMap();
@@ -31,6 +33,8 @@ namespace AIRCOM.Helpers
             CreateMap<CustomerService, ServiceDTO>().ReverseMap();
             CreateMap<History, HistoryDTO>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Ships.State));
+            CreateMap<HistoryDTO, History>()
+                .ForPath(dest => dest.Ships.State, opt => opt.MapFrom(src => src.State));
             CreateMap<History, HistoryDTO>().ReverseMap();
             CreateMap<Installation, InstallationDTO>();
             CreateMap<Installation, InstallationDTO>().ReverseMap();
