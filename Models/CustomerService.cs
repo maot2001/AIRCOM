@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AIRCOM.Models
 {
     [Index(nameof(Code), IsUnique = true)]
+    [Index(nameof(Name), IsUnique = true)]
     public class CustomerService
     {
         [Key]
