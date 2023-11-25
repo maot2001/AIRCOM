@@ -2,6 +2,7 @@
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
@@ -18,8 +19,8 @@ namespace AIRCOM.Controllers
 
         // Admin -----------------------------------------------------
         // GET: Services
-        [HttpGet]
         [Authorize(Policy = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             var service = await _service.Get();
@@ -27,14 +28,18 @@ namespace AIRCOM.Controllers
         }
 
         // POST: Services
-        [HttpPost]
         [Authorize(Policy = "Admin")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] ServiceDTO service)
         {
             try
             {
                 await _service.Create(service);
                 return RedirectToAction(nameof(Get));
+            }
+            catch (DbUpdateException e)
+            {
+                return BadRequest("Error al insertar valores repetidos");
             }
             catch
             {
@@ -43,8 +48,8 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: Services
-        [HttpPut]
         [Authorize(Policy = "Admin")]
+        [HttpPut]
         public async Task<IActionResult> Edit([FromBody] ServiceDTO service)
         {
             try
@@ -52,15 +57,19 @@ namespace AIRCOM.Controllers
                 await _service.Edit(service);
                 return RedirectToAction(nameof(Get));
             }
-            catch
+            catch (DbUpdateException e)
             {
-                return NotFound();
+                return BadRequest("Error al insertar valores repetidos");
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 
         // DELETE: Services/5
-        [HttpDelete("{id}")]
         [Authorize(Policy = "Admin")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -68,9 +77,9 @@ namespace AIRCOM.Controllers
                 await _service.Delete(id);
                 return RedirectToAction(nameof(Get));
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                return NotFound(e.Message);
             }
         }
         // ---------------------------------------------------------------------
