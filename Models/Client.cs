@@ -15,6 +15,7 @@ namespace AIRCOM.Models
         public string Name { get; set; }
         public string Type { get; set; }
         public string Nationality { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
         public string Pwd { get; set; }
         public virtual ICollection<on_site>? On_Sites { get; set; }

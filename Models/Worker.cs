@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AIRCOM.Models
 {
     [Index(nameof(WorkerID),IsUnique =true)]
+    [Index(nameof(Email),IsUnique =true)]
     public class Worker
     {
         [Key]
@@ -16,6 +17,7 @@ namespace AIRCOM.Models
         [ForeignKey(nameof(AirportID))]
         public virtual Airport Airport { get; set; }
         public string Type { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
         public string Pwd { get; set; }
         public string Nationality { get; set; }
