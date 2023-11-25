@@ -11,9 +11,9 @@ namespace AIRCOM.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RepairID { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-        public virtual ICollection<RepairShip> RepairShip { get; set; } 
-        public virtual ICollection<RepairInstallation> RepairInstallations { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public virtual ICollection<RepairShip>? RepairShip { get; set; } 
+        public virtual ICollection<RepairInstallation>? RepairInstallations { get; set; }
     }
 }

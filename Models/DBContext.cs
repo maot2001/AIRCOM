@@ -10,18 +10,18 @@ namespace AIRCOM.Models
 
         }
 
-        public virtual DbSet<Airport> Airports { get; set; }
-        public virtual DbSet<Client> Clients { get; set; }
-        public virtual DbSet<CustomerService> CustomerServices { get; set; }
-        public virtual DbSet<on_site> On_Site { get; set; }
-        public virtual DbSet<ServicesInstallation> ServicesInstallations { get; set; }
-        public virtual DbSet<Ships> Shipss { get; set; }
-        public virtual DbSet<History> Historys { get; set; }
-        public virtual DbSet<Installation> Installations { get; set; }
-        public virtual DbSet<Repair> Repairs { get; set; }
-        public virtual DbSet<RepairInstallation> RepairInstallations { get; set; }
-        public virtual DbSet<RepairShip> RepairShips { get; set; }
-        public virtual DbSet<Worker> Workers { get; set; }
+        public virtual DbSet<Airport>? Airports { get; set; }
+        public virtual DbSet<Client>? Clients { get; set; }
+        public virtual DbSet<CustomerService>? CustomerServices { get; set; }
+        public virtual DbSet<Ships>? Shipss { get; set; }
+        public virtual DbSet<Repair>? Repairs { get; set; }
+        public virtual DbSet<Worker>? Workers { get; set; }
+        public virtual DbSet<on_site>? On_Site { get; set; }
+        public virtual DbSet<ServicesInstallation>? ServicesInstallations { get; set; }
+        public virtual DbSet<History>? Historys { get; set; }
+        public virtual DbSet<Installation>? Installations { get; set; }
+        public virtual DbSet<RepairInstallation>? RepairInstallations { get; set; }
+        public virtual DbSet<RepairShip>? RepairShips { get; set; }
 
         /*   protected override void OnModelCreating(ModelBuilder modelBuilder)
            {
