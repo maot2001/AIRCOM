@@ -3,6 +3,7 @@ using AIRCOM.Models.DTO;
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
@@ -21,7 +22,7 @@ namespace AIRCOM.Controllers
         // GET: Client
         [Authorize(Policy = "Security")]
         [HttpGet]
-        public async Task<IActionResult> Get(string token = "")
+        public async Task<IActionResult> Get(string? token = null)
         {
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
             var clients = await _service.Get(userId);
@@ -33,9 +34,20 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ClientDTO client)
         {
-            var userId = HttpContext.User.FindFirst("Airport")?.Value;
-            await _service.Create(client, userId);
-            return RedirectToAction(nameof(Get));
+            try
+            {
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(client, userId);
+                return RedirectToAction(nameof(Get));
+            }
+            catch (DbUpdateException e)
+            {
+                return BadRequest("Error al insertar valores");
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
 
         // PUT: Client/5
@@ -48,15 +60,19 @@ namespace AIRCOM.Controllers
                 await _service.Edit(client);
                 return RedirectToAction(nameof(Get));
             }
-            catch
+            catch (DbUpdateException e)
             {
-                return NotFound();
+                return BadRequest("Error al insertar valores");
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 
         // DELETE: Client/5
         [Authorize(Policy = "Security")]
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] ClientDTO client)
         {
             try
@@ -64,9 +80,9 @@ namespace AIRCOM.Controllers
                 await _service.Delete(client);
                 return RedirectToAction(nameof(Get));
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                return NotFound(e.Message);
             }
         }
         // ------------------------------------------------------------   
