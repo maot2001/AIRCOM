@@ -1,0 +1,140 @@
+﻿@{
+    int p = 1;
+    int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    string Cuadrado(int x) => p == x ? "active" : "pasive";
+    bool a = true;
+}
+
+
+<header style="background:darkred;">
+    AIRCOM ADMIN
+</header>
+
+<nav class="navegacion">
+    <form method="post">
+        <div>
+            <button class=@Cuadrado(1) type="submit"><h2>Administrar</h2></button>
+            <p style="color:white;">____</p>
+            <button class=@Cuadrado(2) type="submit"><h2>Ver estadísticas</h2></button>
+        </div>
+    </form>
+</nav>
+
+
+@if (p == 1)
+{
+    <section>
+        <details>
+            <summary>Añadir Aeropuerto</summary>
+            <center>
+                <form class="formulario">
+                    <table>
+                        <tr>
+                            <td>nombre: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Coordenadas geograficas </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Dirección: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                    </table>
+                    <h3>Empleado de Seguridad</h3>
+                    <table>
+                        <tr>
+                            <td>nombre: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Carnet de identidad: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Contraseña: </td>
+                            <td><input type="password"></td>
+                        </tr>
+                        <tr>
+                            <td>Comprobar contraseña: </td>
+                            <td><input type="password"></td>
+                        </tr>
+                    </table>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            El usuario ya existe
+                        </aside>
+                    }
+                    <button class="boton">Enviar</button>
+                </form>
+            </center>
+        </details>
+        <details>
+            <summary>Añadir tipo de reparacion</summary>
+            <center>
+                <form class="formulario">
+                    <div><input placeholder="Introducir nombre"></div>
+                    <div><textarea placeholder="Introducir descripcion"></textarea></div>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            La reparacion ya existe
+                        </aside>
+                    }
+                    <div><button class="boton">Enviar</button></div>
+                </form>
+            </center>
+        </details>
+        <details>
+            <summary>Añadir Dependencia de reparacion</summary>
+            <center>
+                <form class="formulario">
+                    <table>
+                        <tr>
+                            <td>Dependiente: </td>
+                            <td>
+                                <select>
+                                    @foreach (var item in sol)
+                                    {
+                                        <option>Reparacion capital</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Estado necesario: </td>
+                            <td>
+                                <select>
+                                    @foreach (var item in sol)
+                                    {
+                                        <option>MAL</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Dependencia: </td>
+                            <td>
+                                <select>
+                                    @foreach (var item in sol)
+                                    {
+                                        <option>Cambiar turbinas</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            Ya existe la dependencia
+                        </aside>
+                    }
+                    <button class="boton">Enviar</button>
+                </form>
+            </center>
+        </details>
+    </section>
+}
