@@ -24,9 +24,11 @@ namespace AIRCOM.Services
         public async Task Create(InstallationDTO installation, string userId)
         {
             await Errors(installation, userId);
+
             var installationDB = _mapper.Map<Installation>(installation);
+
             installationDB.AirportID = int.Parse(userId);
-            installationDB.Airport = await _context.Airports.FindAsync(int.Parse(userId));
+
             _context.Installations.Add(installationDB);
             await _context.SaveChangesAsync();
         }
@@ -34,27 +36,33 @@ namespace AIRCOM.Services
         public async Task Edit(InstallationDTO installation)
         {
             await Errors(installation, installation.AirportID.ToString());
-            var installationDB = await GetInstallationById(installation.Id);
+
+            var installationDB = await GetInstallationById(installation.ID);
+
             installationDB.Name = installation.Name;
             installationDB.Direction = installation.Direction;
             installationDB.Ubication = installation.Ubication;
             installationDB.InstallationID = installation.InstallationID;
+
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(InstallationDTO installation)
+        public async Task Delete(int id)
         {
-            var installationDB = await GetInstallationById(installation.Id);
+            var installationDB = await GetInstallationById(id);
+
             _context.Installations.Remove(installationDB);
             await _context.SaveChangesAsync();
         }
 
         //--------------------------------------------------------------------
-        public async Task<Installation> GetInstallationById(int id)
+        public async Task<Installation> GetInstallationById(int? id)
         {
-            var installationDB = await _context.Installations.SingleOrDefaultAsync(i => i.Id == id);
+            var installationDB = await _context.Installations.SingleOrDefaultAsync(i => i.ID == id);
+
             if (installationDB is null)
-                throw new Exception();
+                throw new ArgumentNullException("La instalación no existe");
+
             return installationDB;
         }
 
@@ -62,8 +70,15 @@ namespace AIRCOM.Services
         {
             var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
             i.InstallationID == installation.InstallationID && i.AirportID == int.Parse(userId));
+
             if (installationDB is not null)
-                throw new Exception();
+                throw new Exception("Este número de instalación ya existe en el aeropuerto");
+
+            installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
+            i.Name == installation.Name && i.AirportID == int.Parse(userId));
+
+            if (installationDB is not null)
+                throw new Exception("Este nombre de instalación ya existe en el aeropuerto");
         }
     }
 }
