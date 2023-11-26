@@ -1,8 +1,9 @@
-﻿@{
+@{
     int p = 4;
-    int[] sol = new int[] { 1, 1, 1 };
+    int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     bool a = false;
     string Cuadrado(int x) => p == x ? "yes" : "no";
+    string SeeMore() => a ? ("") : ("display:none;");
 }
 
 
@@ -12,12 +13,12 @@
 
 <nav>
     <h4>AEROPUERTO > USUARIO</h4>
-    <form method="post">
+    <form method="post" name="SecurityPages">
         <div>
-            <div><button class=@Cuadrado(1) type="submit">🕑</button></div>
-            <div><button class=@Cuadrado(2) type="submit">✈️</button></div>
-            <div><button class=@Cuadrado(3) type="submit">👨‍💼</button></div>
-            <div><button class=@Cuadrado(4) type="submit">➕</button></div>
+            <div><button class=@Cuadrado(1) type="submit" name="page" value="1">🕑</button></div>
+            <div><button class=@Cuadrado(2) type="submit" name="page" value="2">✈️</button></div>
+            <div><button class=@Cuadrado(3) type="submit" name="page" value="3">👨‍💼</button></div>
+            <div><button class=@Cuadrado(4) type="submit" name="page" value="4">➕</button></div>
         </div>
     </form>
 </nav>
@@ -76,7 +77,7 @@
                     <input type="text" placeholder="🔍filtrar">
                 </td>
             </tr>
-            @foreach (var solicitud in sol)
+            @foreach (var solicitud in sol.Take(10))
             {
                 <tr>
                     <td><center>06/10/2023</center></td>
@@ -86,7 +87,21 @@
                     <td><center>06/01/2024</center></td>
                 </tr>
             }
+            @foreach (var solicitud in sol.Skip(10))
+            {
+                <tr style=@SeeMore()>
+                    <td><center>06/10/2023</center></td>
+                    <td><center>251615</center></td>
+                    <td><center>Capitán</center></td>
+                    <td><center>BIEN</center></td>
+                    <td><center>06/01/2024</center></td>
+                </tr>
+            }
         </table>
+        @if (!a)
+        {
+            <button class="boton">🔽 Ver el resto de los registros 🔽</button>
+        }
     </center>
 }
 
@@ -104,41 +119,30 @@
                 <div>Matricula: aaaaaaaa</div>
                 <div>Estado: asadasdsd</div>
                 <div>ID Propietario: 90121212345</div>
-                @if (a)
-                {
-                    <button class="no">🔽</button>
-                }
 
-                @if (!a)
-                {
-                    <button class="no">🔼</button>
-                }
             </div>
-            @if (!a)
-            {
-                <div class="tag">
-                    <aside>
-                        <div><h4>Características:</h4></div>
-                        <div><strong>Modelo:</strong> aireasdsd</div>
-                        <div><strong>Capacidad de carga:</strong> 20 ton</div>
-                        <div><strong>Cantidad de tripulantes:</strong> 10</div>
-                        <div><strong>Cantidad de pasajeros:</strong> 50</div>
 
-                    </aside>
-                    <div>
-                        <div>Fecha de salida programada:</div>
-                        <div>1/12/2024</div>
-                        <form method="post">
-                            <button class="boton" type="submit">
-                                Ver historial
-                            </button>
-                            <button class="boton" type="submit">
-                                Solicitar reparación
-                            </button>
-                        </form>
-                    </div>
+            <div class="tag">
+                <aside>
+                    <div><h4>Características:</h4></div>
+                    <div><strong>Modelo:</strong> aireasdsd</div>
+                    <div><strong>Capacidad de carga:</strong> 20 ton</div>
+                    <div><strong>Cantidad de tripulantes:</strong> 10</div>
+                    <div><strong>Cantidad de pasajeros:</strong> 50</div>
+                </aside>
+                <div>
+                    <div>Fecha de salida programada:</div>
+                    <div>1/12/2024</div>
+                    <form method="post">
+                        <button class="boton" type="submit">
+                            Ver historial
+                        </button>
+                        <button class="boton" type="submit">
+                            Solicitar reparación
+                        </button>
+                    </form>
                 </div>
-            }
+            </div>
         </section>
     }
 }
@@ -197,7 +201,7 @@
                     <input type="text" placeholder="🔍filtrar">
                 </td>
             </tr>
-            @foreach (var solicitud in sol)
+            @foreach (var solicitud in sol.Take(10))
             {
                 <tr>
                     <td><center>Cliente</center></td>
@@ -207,22 +211,274 @@
                     <td><center>VIP</center></td>
                 </tr>
             }
+            @if (a)
+            {
+                @foreach (var solicitud in sol.Skip(10))
+                {
+                    <tr style=@SeeMore()>
+                        <td><center>Cliente</center></td>
+                        <td><center>63122511615</center></td>
+                        <td><center>Alan Brito Prieto</center></td>
+                        <td><center>Cuba</center></td>
+                        <td><center>VIP</center></td>
+                    </tr>
+                }
+            }
         </table>
+        @if (!a)
+        {
+            <button class="boton">🔽 Ver el resto de los registros 🔽</button>
+        }
+
     </center>
 }
 
 @if (p == 4)
 {
-    <details>
-        <summary>Añadir Cliente</summary>
-    </details>
-    <details>
-        <summary>Añadir Trabajador</summary>
-    </details>
-    <details>
-        <summary>Añadir Nave</summary>
-    </details>
-    <details>
-        <summary>Solicitar Reparación</summary>
-    </details>
+    <section>
+        <details>
+            <summary>Añadir Cliente</summary>
+            <center>
+                <form class="formulario">
+                    <table>
+                        <tr>
+                            <td>nombre: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Carnet de identidad: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Nacionalidad: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <td>Tipo de cliente: </td>
+                        <td>
+                            <select>
+                                @foreach (var item in sol)
+                                {
+                                    <option>VIP</option>
+                                }
+                            </select>
+                        </td>
+                        <tr>
+                            <td>Contraseña: </td>
+                            <td><input type="password"></td>
+                        </tr>
+                        <tr>
+                            <td>Comprobar contraseña: </td>
+                            <td><input type="password"></td>
+                        </tr>
+                    </table>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            Las contraseñas no coinciden
+                        </aside>
+                    }
+                    <button class="boton">Enviar</button>
+                </form>
+            </center>
+        </details>
+        <details>
+            <summary>Añadir Trabajador</summary>
+            <center>
+                <form class="formulario">
+                    <table>
+                        <tr>
+                            <td>nombre: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Carnet de identidad: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Puesto: </td>
+                            <td>
+                                <select>
+                                    <option>Seguridad</option>
+                                    <option>Direccion</option>
+                                    <option>Mecanico</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Contraseña: </td>
+                            <td><input type="password"></td>
+                        </tr>
+                        <tr>
+                            <td>Comprobar contraseña: </td>
+                            <td><input type="password"></td>
+                        </tr>
+                    </table>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            Las contraseñas no coinciden
+                        </aside>
+                    }
+                    <button class="boton">Enviar</button>
+                </form>
+            </center>
+        </details>
+        <details>
+            <summary>Añadir Nave</summary>
+            <center>
+                <form class="formulario">
+                    <table>
+                        <tr>
+                            <td>Matricula: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>ID Dueño(opcional): </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Modelo: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Capacidad de carga: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad de tripulacion: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad de pasajeros: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                    </table>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            No hay cliente con dicho ID
+                        </aside>
+                    }
+                    <button class="boton">Enviar</button>
+                </form>
+            </center>
+        </details>
+        <details>
+            <summary>Solicitar Reparación</summary>
+            <center>
+                <form class="formulario">
+                    <table>
+                        <tr>
+                            <td>Matricula: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Instalación de la reparación </td>
+                            <td>
+                                <select>
+                                    @foreach (var item in sol)
+                                    {
+                                        <option>Instalacion #1</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tipo de reparación: </td>
+                            <td>
+                                <select>
+                                    @foreach (var item in sol)
+                                    {
+                                        <option>Reparacion capital</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            No hay avion con tal matricula en el aeropuerto
+                        </aside>
+                    }
+                    <button class="boton">Enviar</button>
+                </form>
+            </center>
+        </details>
+        <details>
+            <summary>Registrar Arribo</summary>
+            <center>
+                <form class="formulario">
+                    <table>
+                        <tr>
+                            <td>Matricula: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Rol del dueño:</td>
+                            <td>
+                                <select>
+                                    @foreach (var item in sol)
+                                    {
+                                        <option>Capitan</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Estado de la nave: </td>
+                            <td>
+                                <select>
+                                    @foreach (var item in sol)
+                                    {
+                                        <option>Reparacion capital</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Proximo vuelo: </td>
+                            <td><input type="date"></td>
+                        </tr>
+                    </table>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            El proximo vuelo debe ser en el futuro
+                        </aside>
+                    }
+                    <button class="boton">Enviar</button>
+                </form>
+            </center>
+        </details>
+        <details style="background-color:lightgrey">
+            <summary>Editar informacion de cliente o trabajador</summary>
+            <center>
+                <form class="formulario">
+                    <table>
+                        <tr>
+                            <td>Carnet de identidad: </td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Cambiar Contraseña: </td>
+                            <td><input type="password"></td>
+                        </tr>
+                        <tr>
+                            <td>Comprobar contraseña: </td>
+                            <td><input type="password"></td>
+                        </tr>
+                    </table>
+                    @if (a)
+                    {
+                        <aside class="error">
+                            El usuario no existe
+                        </aside>
+                    }
+                    <button class="boton">Cambiar Contraseña</button>
+                    <button class="boton" style="background-color:rgb(165,5,5)">Eliminar usuario</button>
+                </form>
+            </center>
+        </details>
+    </section>
 }
