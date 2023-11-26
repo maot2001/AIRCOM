@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
+    [Authorize]
+    [ApiController]
+    [Route("[controller]")]
     public class InstallationController : Controller
     {
         private readonly InstallationService _service;
@@ -18,7 +21,7 @@ namespace AIRCOM.Controllers
         // GET: Installation
         [Authorize(Policy = "Direction")]
         [HttpGet]
-        public async Task<IActionResult> Get(string token = "")
+        public async Task<IActionResult> Get(string? token = null)
         {
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
             var installations = await _service.Get(userId);
@@ -30,9 +33,16 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] InstallationDTO installation)
         {
-            var userId = HttpContext.User.FindFirst("Airport")?.Value;
-            await _service.Create(installation, userId);
-            return RedirectToAction(nameof(Get));
+            try
+            {
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(installation, userId);
+                return RedirectToAction(nameof(Get));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // PUT: Installation
@@ -45,26 +55,29 @@ namespace AIRCOM.Controllers
                 await _service.Edit(installation);
                 return RedirectToAction(nameof(Get));
             }
-            catch
+            catch (ArgumentNullException e)
             {
-                return NotFound();
+                return NotFound(e.Message);
             }
-
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // DELETE: Installation
         [Authorize(Policy = "Direction")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] InstallationDTO installation)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _service.Delete(installation);
+                await _service.Delete(id);
                 return RedirectToAction(nameof(Get));
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                return NotFound(e.Message);
             }
         }
         // ---------------------------------------------------------------------
