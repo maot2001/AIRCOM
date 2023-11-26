@@ -1,8 +1,13 @@
-﻿@{
+@{
     int p = 3;
-    int[] sol = new int[] { 1, 1, 1 };
+    bool[] sol = new bool[] { true, true, true };
     bool a = false;
     string Cuadrado(int x) => p == x ? "yes" : "no";
+    string Calificacion(bool i)
+    //ponerlo en funcion de la calificacion
+    {
+        return "⭐⭐🌗🌑🌑";
+    }
 }
 
 
@@ -12,11 +17,11 @@
 
 <nav>
     <h4>AEROPUERTO > USUARIO</h4>
-    <form method="post">
+    <form method="post" name="MecanicPages">
         <div>
-            <div><button class=@Cuadrado(1) type="submit">❗</button></div>
-            <div><button class=@Cuadrado(2) type="submit">🛠️</button></div>
-            <div><button class=@Cuadrado(3) type="submit">✉️</button></div>
+            <div><button class=@Cuadrado(1) type="submit" name="page" value="1">❗</button></div>
+            <div><button class=@Cuadrado(2) type="submit" name="page" value="2">🛠️</button></div>
+            <div><button class=@Cuadrado(3) type="submit" name="page" value="3">✉️</button></div>
         </div>
     </form>
 </nav>
@@ -24,27 +29,19 @@
 @if (p == 1)
 {
     <h1>Solicitudes de reparación:</h1>
-    @foreach (var solicitud in sol)
+    @for (int i = 0; i < sol.Length; i++)
     {
         <section class="dataToShow">
             <div style="display: flex;">
                 <div>Matricula: aaaaaaaa</div>
                 <div>Estado: asadasdsd</div>
                 <div>tipo: sssdddqqw</div>
-                @if (a)
-                {
-                    <button class="no">🔽</button>
-                }
 
-                @if (!a)
-                {
-                    <button class="no">🔼</button>
-                }
             </div>
             @if (!a)
             {
                 <div>
-                    <form method="post">
+                    <form method="post" name="newReparation">
                         <div>
                             Cantidad de horas:
                             <input type="number" min="0" style="width:20%;">
@@ -101,8 +98,13 @@
                 <div>Costo: $400</div>
             </div>
             <div>
-                <div style="flex:none">⭐⭐⭐⭐⭐</div>
-                <div style="background-color:lightgrey; padding:0.5%; border:solid;"><strong>Comentario: </strong> Lo ame, que se repita</div>
+                <div style="flex:none;">@Calificacion(solicitud)</div>
+                <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
+                    <details>
+                        <summary><strong>Leer Comentario: </strong></summary>
+                        Poner aqui el comentario correspondiente si existe
+                    </details>
+                </div>
             </div>
 
         </section>
