@@ -1,7 +1,6 @@
-﻿
 @{
-    bool checkN = false;
-    bool checkP = false;
+    //aqui cambiar a la variable que se me pase
+    bool check = false;
 }
 
 <header>
@@ -13,35 +12,58 @@
         <h1>Inicie sesión</h1>
 
         <div>
-            <center>
-                <form method="post">
-                    <div>Nombre:</div>
-                    @if (checkN)
-                    {
-                        <div class="error">Nombre incorrecto</div>
-                    }
-                    <input type="text" name="name" placeholder="introduzca nombre">
-                    <div>Contraseña:</div>
-                    @if (checkP)
-                    {
-                        <div class="error">Contraseña incorrecta</div>
-                    }
-                    <input type="password" name="password" placeholder="introduzca contraseña">
+            <form method="post">
 
+                <div>
+                    <div>Nombre:</div>
+                    <div>
+                        <input type="text" name="name" placeholder="introduzca nombre">
+                    </div>
+                </div>
+                <div>
+                    <div>Contraseña:</div>
+                    <div class="ignorar">___</div>
+                    <div>
+                        <input type="password" name="password" placeholder="introduzca contraseña">
+                    </div>
+                </div>
+                @if (check)
+                {
+                    <aside class="error">
+                        contraseña incorrecta
+                    </aside>
+                }
+                <div>
                     <section>
-                        <h4>Rol</h4>
+                        <h5>Rol</h5>
                         <div>
-                            <input type="radio" checked name="rol"> Cliente
-                            <input type="radio" name="rol"> Seguridad
+                            <div>
+                                <div>
+                                    <input type="radio" checked name="rol" value="Cliente"> Cliente
+                                </div>
+                                <div>
+                                    <input type="radio" name="rol" value="Seguridad"> Seguridad
+                                </div>
+                            </div>
+                            <div class="ignorar">__</div>
+                            <div>
+                                <div>
+                                    <input type="radio" name="rol" value="Dirección"> Dirección
+                                </div>
+                                <div>
+                                    <input type="radio" name="rol" value="Mecánico"> Mecánico
+                                </div>
+                            </div>
                         </div>
-                        <input type="radio" name="rol"> Dirección
-                        <input type="radio" name="rol"> Mecánico
                     </section>
                     <div>
                         <button class="boton" type="submit">ENVIAR</button>
                     </div>
-                </form>
-            </center>
+
+                    <div class="ignorar">_</div>
+                </div>
+            </form>
         </div>
+
     </center>
 </main>
