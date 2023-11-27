@@ -1,6 +1,5 @@
 using AIRCOM.Models;
 using AIRCOM.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,18 +24,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("UserClient", policy => policy.RequireClaim("UserType", "Client"));
-    options.AddPolicy("UserSecurity", policy => policy.RequireClaim("UserType", "Security"));
-    options.AddPolicy("UserMechanic", policy => policy.RequireClaim("UserType", "Mechanic"));
-    options.AddPolicy("UserDirection", policy => policy.RequireClaim("UserType", "Direction"));
-    options.AddPolicy("UserAdmin", policy => policy.RequireClaim("UserType", "Admin")); 
-}); 
+    options.AddPolicy("Client", policy => policy.RequireClaim("UserType", "Cliente"));
+    options.AddPolicy("Security", policy => policy.RequireClaim("UserType", "Seguridad"));
+    options.AddPolicy("Mechanic", policy => policy.RequireClaim("UserType", "Mecanico"));
+    options.AddPolicy("Direction", policy => policy.RequireClaim("UserType", "Direccion"));
+    options.AddPolicy("Admin", policy => policy.RequireClaim("UserType", "Administrador"));
+});
 
+    
 builder.Services.AddDbContext<DBContext>(options =>
 {
-    var defaults = builder.Configuration.GetConnectionString("DBConnection");
-    if (!options.IsConfigured)
-        options.UseMySql(defaults, ServerVersion.AutoDetect(defaults));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"));
 });
 
 // Service Layer
@@ -57,13 +55,6 @@ builder.Services.AddScoped<ShipsService>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<DBContext>();
-    
-    dataContext.Database.Migrate();
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
