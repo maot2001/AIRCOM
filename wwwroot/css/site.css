@@ -83,6 +83,22 @@ header {
     box-shadow: 2px 2px 5px grey;
     align-self:center;
 }
+.goodboton {
+    background-color: rgb(5, 160, 5);
+    color: white;
+    border: solid rgb(0, 0, 0) 2px;
+    box-shadow: 2px 2px 5px grey;
+    align-self: center;
+}
+
+.badboton {
+    background-color: rgb(175, 10, 10);
+    color: white;
+    border: solid rgb(0, 0, 0) 2px;
+    box-shadow: 2px 2px 5px grey;
+    align-self: center;
+}
+
 
 nav {
     color: grey;
@@ -296,4 +312,18 @@ section > details {
 
 select{
     background-color:white;
+}
+
+.dangerousZone{
+    background-color:lightgray;
+}
+
+.persons {
+    margin: 2%;
+    padding: 1%;
+}
+
+.persons summary{
+    font-size: xx-large;
+    text-align:center
 }
