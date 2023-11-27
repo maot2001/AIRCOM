@@ -1,5 +1,5 @@
 @{
-    int p = 3;
+    int p = 1;
     bool[] sol = new bool[] { true, true, true };
     bool a = false;
     string Cuadrado(int x) => p == x ? "yes" : "no";
@@ -41,14 +41,14 @@
             @if (!a)
             {
                 <div>
-                    <form method="post" name="newReparation">
+                    <form method="post" name="newReparation" name="Reparar">
                         <div>
                             Cantidad de horas:
-                            <input type="number" min="0" style="width:20%;">
+                            <input type="number" name="horas" min="0" max="24" style="width:20%;">
                         </div>
                         <div>
                             Terminación:
-                            <input type="date" style="width:100%;">
+                            <input type="date" name="fecha" style="width:100%;" min="@DateTime.Today.Date.ToString().Split().First()">
                         </div>
                         <div style="flex:1;">
                             <button type="submit" style="align-self:end;" class="boton">Reparar</button>
