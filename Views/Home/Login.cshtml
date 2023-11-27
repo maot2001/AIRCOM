@@ -1,6 +1,7 @@
 @{
     //aqui cambiar a la variable que se me pase
-    bool check = false;
+    bool check = true;
+    string error = "El usuario no existe";
 }
 
 <header>
@@ -12,25 +13,25 @@
         <h1>Inicie sesión</h1>
 
         <div>
-            <form method="post">
+            <form method="post" name="login">
 
                 <div>
-                    <div>Nombre:</div>
+                    <div>Correo:</div>
                     <div>
-                        <input type="text" name="name" placeholder="introduzca nombre">
+                        <input type="email" name="correo" placeholder="introduzca su correo">
                     </div>
                 </div>
                 <div>
                     <div>Contraseña:</div>
                     <div class="ignorar">___</div>
                     <div>
-                        <input type="password" name="password" placeholder="introduzca contraseña">
+                        <input type="password" name="contraseña" placeholder="introduzca contraseña">
                     </div>
                 </div>
                 @if (check)
                 {
                     <aside class="error">
-                        contraseña incorrecta
+                        @error
                     </aside>
                 }
                 <div>
