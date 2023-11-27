@@ -14,5 +14,286 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: rgb(255, 255, 255);
+}
+
+header {
+    margin: 1% 1% 0% 1%;
+    background: -webkit-radial-gradient(rgb(10, 60, 160),rgb(15, 70, 170));
+    color: white;
+    text-align: center;
+    padding: 1%;
+    font-size: 500%;
+}
+
+.error {
+    font-size: medium;
+    background-color: rgb(255, 173, 173);
+    border: 1px solid rgb(200, 0, 0);
+    color: rgb(200, 0, 0);
+    padding: 0% 4%;
+    width:fit-content;
+    height:fit-content;
+    align-self:center;
+}
+
+#LOGIN center {
+    margin-top: 1%;
+}
+
+#LOGIN section {
+    background-color: rgb(200, 200, 200);
+    border: solid 1px black;
+    padding: 1% 3%;
+    margin:3%;
+    font-size:medium;
+}
+#LOGIN section > div{
+    display:flex;
+}
+
+#LOGIN section > div div{
+    display:block;
+    justify-content:start;
+    text-align:start;
+}
+#LOGIN center > div {
+    background-color: rgb(220, 220, 220);
+    width: fit-content;
+    padding: 1% 3%;
+    font-size: large;
+    border: solid black;
+}
+
+#LOGIN form > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#LOGIN form div {
+    margin: 1% 0%;
+}
+
+.boton {
+    background-color: rgb(22, 92, 203);
+    color: white;
+    border: solid rgb(0, 0, 0) 2px;
+    box-shadow: 2px 2px 5px grey;
+    align-self:center;
+}
+
+nav {
+    color: grey;
+    display: flex;
+    padding: 0.5% 3%;
+    justify-content: space-between;
+}
+
+nav div {
+    display: flex;
+    padding: 0.5% 3%;
+}
+
+.yes {
+    background-color:rgb(80, 80, 80);
+}
+
+.no{
+    background-color:white;
+    border:none;
+}
+
+.dataToShow{
+    border: solid 4px grey;
+    padding:1%;
+    margin:2%;
+    font-size: x-large;
+}
+.dataToShow form{
+    display:flex;
+}
+.dataToShow div {
+    margin: 1%;
+    display: flex;
+    flex: 1;
+}
+.tag > form{
+    display:block;
+    align-self:center;
+    flex: 2;
+    display:grid;
+    justify-content:center;
+}
+
+.tag > form > div{
+    display:flex;
+}
+
+.tag aside{
+    flex:2;
+    border: solid 2px black;
+    font-size:70%;
+    padding: 0.5% 2%;
+    margin: 0% 3% 0% 3%;
+}
+.tag aside strong{
+    text-decoration:underline 2px;
+}
+.tag div{
+    display:block;
+    flex: 3;
+}
+.tag div button{
+    margin:1%;
+}
+
+th 
+{
+    border: solid 2px grey;
+}
+td{
+    border:solid 2px grey;
+}
+
+section > details {
+    font-size: xx-large;
+    margin:2%;
+    padding:1%;
+    border:solid grey 2px;
+    border-radius:2px;
+    box-shadow:2px 2px 5px grey;
+}
+
+.navegacion .active {
+    border-bottom: solid 3px blue;
+}
+
+.navegacion button {
+    background-color: white;
+    border: none;
+    margin-bottom:0%;
+    padding-bottom:0%;
+    box-shadow:none;
+}
+
+.navegacion div {
+    border-bottom: solid rgb(0,0,100) 2px;
+    padding: 0%;
+}
+
+.ofertas{
+    display: flex;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    font-size:large;
+    column-count:1;
+    text-align:center;
+}
+
+.ofertas form > div{
+    text-align:end;
+}
+
+.ofertas > div{
+    display:flex;
+    align-content:center;
+    border: solid 2px grey;
+    padding:1%;
+    margin:1%;
+    justify-content:space-between;
+}
+
+.ofertas aside{
+    text-align:end;
+}
+
+.ofertas aside > div {
+    margin-bottom: 2%;
+}
+
+.ofertas > div > div div {
+    margin-bottom: 2%;
+}
+
+.ofertas center{
+    margin:3% 0%;
+}
+
+.ignorar{
+    color:transparent;
+}
+
+.calificar{
+    padding:1%;
+}
+.calificar > form > div{
+    display:flex;
+    justify-content:space-between;
+}
+
+
+.calificar > form > div > div
+{
+    margin:1%;
+}
+
+
+.calificar section{
+    background-color:grey;
+    width:stretch;
+    margin-bottom:1%;   
+}
+
+.calificar section textarea{
+    margin:1%;
+    width:98%;
+}
+
+.add{
+    padding:0% 20%;
+}
+
+.add > div{
+    border:solid grey 2px;
+    padding:1% 4%;
+}
+
+.add > div > div{
+    display:flex;
+    justify-content:space-between;
+}
+
+.add form > div{
+    display:flex;
+    text-align:center;
+}
+
+.add form > div > div {
+    flex: 1;
+    margin:2% 2% 2% 0%;
+}
+
+.add select
+{
+    background:white;
+    border:solid grey;
+}
+
+.formulario{
+    font-size:large;
+}
+.formulario td{
+    border:solid transparent 10px;
+}
+.formulario button{
+    margin: 1%;
+}
+.formulario div{
+    margin:1%;
+}
+
+select{
+    background-color:white;
 }
