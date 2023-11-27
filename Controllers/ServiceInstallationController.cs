@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
+    //[Authorize]
+    [ApiController]
+    [Route("[controller]")]
     public class ServiceInstallationController : Controller
     {
         private readonly ServiceInstallationService _service;
@@ -15,7 +18,7 @@ namespace AIRCOM.Controllers
 
         // Direction -----------------------------------------------------------
         // GET: ServiceInstallation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -25,7 +28,7 @@ namespace AIRCOM.Controllers
         }
 
         // POST: ServiceInstallation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ServiceInstallationDTO service)
         {
@@ -42,7 +45,7 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: ServiceInstallation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] ServiceInstallationDTO service)
         {
@@ -59,7 +62,7 @@ namespace AIRCOM.Controllers
         }
 
         // DELETE: ServiceInstallation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] ServiceInstallationDTO service)
         {
@@ -77,8 +80,8 @@ namespace AIRCOM.Controllers
 
         // Client --------------------------------------------------------------
         // GET : ServiceInstallation/Client
-        [Authorize(Policy = "Client")]
-        [HttpGet("Client")]
+        //[Authorize(Policy = "Client")]
+        [HttpGet("GetClient")]
         public async Task<IActionResult> GetClient()
         {
             var serviceInstallations = await _service.Get();

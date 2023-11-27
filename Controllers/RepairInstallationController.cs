@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
+    //[Authorize]
+    [ApiController]
+    [Route("[controller]")]
     public class RepairInstallationController : Controller
     {
         private readonly RepairInstallationService _service;
@@ -15,7 +18,7 @@ namespace AIRCOM.Controllers
 
         // Direction -----------------------------------------------------------
         // GET: RepairInstallation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -25,7 +28,7 @@ namespace AIRCOM.Controllers
         }
 
         // POST: RepairInstallation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] RepairInstallationDTO repair)
         {
@@ -42,7 +45,7 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: RepairInstallation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] RepairInstallationDTO repair)
         {
@@ -59,7 +62,7 @@ namespace AIRCOM.Controllers
         }
 
         // DELETE: RepairInstallation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] RepairInstallationDTO repair)
         {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class HistoryController : Controller
@@ -19,8 +19,8 @@ namespace AIRCOM.Controllers
 
         // Security-Client -------------------------------------------
         // GET: History/5
-        [Authorize(Policy = "Security")]
-        [Authorize(Policy = "Client")]
+        //[Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Client")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHistoryShips(string id)
         {
@@ -31,7 +31,7 @@ namespace AIRCOM.Controllers
 
         // Security --------------------------------------------------
         // GET: History
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Security")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -40,7 +40,7 @@ namespace AIRCOM.Controllers
         }
 
         // POST: History
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Security")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] HistoryDTO history)
         {
@@ -50,7 +50,7 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: History
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Security")]
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] HistoryDTO history)
         {
@@ -67,7 +67,7 @@ namespace AIRCOM.Controllers
         }
 
         // DELETE: History
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Security")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] HistoryDTO history)
         {
@@ -86,7 +86,7 @@ namespace AIRCOM.Controllers
 
         // Client ----------------------------------------------------
         // PUT: History/Include
-        [Authorize(Policy = "Client")]
+        //[Authorize(Policy = "Client")]
         [HttpPut("Include")]
         public async Task<IActionResult> Include([FromBody] HistoryDTO history)
         {

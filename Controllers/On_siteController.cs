@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class On_siteController : Controller
@@ -18,8 +18,8 @@ namespace AIRCOM.Controllers
 
         // Client ---------------------------------------------------------------
         // GET: On_site
+        //[Authorize(Policy = "Client")]
         [HttpGet]
-        [Authorize(Policy = "Client")]
         public async Task<IActionResult> Get()
         {
             var userId = HttpContext.User.FindFirst("Id")?.Value;
@@ -28,8 +28,8 @@ namespace AIRCOM.Controllers
         }
 
         // POST: On_site/5
+        //[Authorize(Policy = "Client")]
         [HttpPost]
-        [Authorize(Policy = "Client")]
         public async Task<IActionResult> Create([FromBody] ServiceInstallationDTO service)
         {
             var userId = HttpContext.User.FindFirst("Id")?.Value;
@@ -38,8 +38,8 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: On_site
+        //[Authorize(Policy = "Client")]
         [HttpPut]
-        [Authorize(Policy = "Client")]
         public async Task<IActionResult> Valorate([FromBody] On_siteDTO service)
         {
             await _service.Valorate(service);

@@ -9,7 +9,7 @@ namespace AIRCOM.Services
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        private readonly string[] types = new string[] { "Seguridad", "Mecanico", "Direccion", "Administrador", "Mecánico", "Dirección" };
+        private readonly string[] types = new string[] { "Seguridad", "Administrador", "Mecánico", "Dirección" };
         public ClientService(DBContext context, IMapper mapper)
         {
             _context = context;
@@ -20,7 +20,12 @@ namespace AIRCOM.Services
         {
             var clients = await _context.Clients.ToListAsync();
             var workers = await _context.Workers.Where(w => w.AirportID == int.Parse(userId)).ToListAsync();
-            return _mapper.Map<List<ClientDTO>>(clients).Concat(_mapper.Map<List<ClientDTO>>(workers));
+            List<ClientDTO> result = new();
+            foreach (var client in clients)
+                result.Add(_mapper.Map<ClientDTO>(client));
+            foreach (var worker in workers)
+                result.Add(_mapper.Map<ClientDTO>(worker));
+            return result;
         }
 
         public async Task Create(ClientDTO client, string userId)
@@ -112,7 +117,7 @@ namespace AIRCOM.Services
 
         private async Task Errors(ClientDTO client)
         {
-            var errors = _context.Clients.SingleOrDefaultAsync(c => c.CI == client.CI && c.Nationality == client.Nationality);
+            var errors = await _context.Clients.SingleOrDefaultAsync(c => c.CI == client.CI && c.Nationality == client.Nationality);
 
             if (errors is not null)
                 throw new Exception("Credenciales existentes");

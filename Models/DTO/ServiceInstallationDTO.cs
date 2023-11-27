@@ -7,7 +7,7 @@
         public float Price { get; set; }
         public float? Stars { get; set; }
         public int InstallationID { get; set; }
-        //public int? AirportID { get; set; }
+        public int? AirportID { get; set; }
         public int Code { get; set; }
     }
 }

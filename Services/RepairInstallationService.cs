@@ -17,15 +17,16 @@ namespace AIRCOM.Services
 
         public async Task<IEnumerable<RepairInstallationDTO>> Get(string userId)
         {
-            var repair = await _context.RepairInstallations.Where(ri => ri.AirportID == int.Parse(userId)).ToListAsync();
+            var repair = await _context.RepairInstallations.Where(ri => ri.Installation.AirportID == int.Parse(userId)).ToListAsync();
             return _mapper.Map<List<RepairInstallationDTO>>(repair);
         }
 
         public async Task Create(RepairInstallationDTO repair, string userId)
         {
             await Errors(repair, userId);
-            repair.AirportID = int.Parse(userId);
+
             var repairInstallation = _mapper.Map<RepairInstallation>(repair);
+
             _context.RepairInstallations.Add(repairInstallation);
             await _context.SaveChangesAsync();
         }
@@ -33,18 +34,17 @@ namespace AIRCOM.Services
         public async Task Edit(RepairInstallationDTO repair, string userId)
         {
             await Errors(repair, userId);
+
             var repairDB = await GetRepairInstallation(repair);
-            repairDB.InstallationID = repair.InstallationID;
-            repairDB.Name = repair.Name;
             repairDB.Price = repair.Price;
-            repairDB.RepairID = repair.RepairID;
-            repairDB.Repair = await _context.Repairs.FindAsync(repair.RepairID);
+
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(RepairInstallationDTO repair)
         {
             var repairDB = await GetRepairInstallation(repair);
+
             _context.RepairInstallations.Remove(repairDB);
             await _context.SaveChangesAsync();
         }
@@ -54,23 +54,28 @@ namespace AIRCOM.Services
         {
             var repairDB = await _context.RepairInstallations.SingleOrDefaultAsync(ri => 
             ri.InstallationID == repair.InstallationID && ri.AirportID == repair.AirportID && ri.RepairID == repair.RepairID);
+
             if (repairDB is null)
-                throw new Exception();
+                throw new Exception("En esta instalación no se realiza esta reparación");
+
             return repairDB;
         }
 
         private async Task Errors(RepairInstallationDTO repair, string userId)
         {
-            var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
-            i.InstallationID == repair.InstallationID && i.AirportID == repair.AirportID);
-            var repairDB = await _context.Repairs.SingleOrDefaultAsync(r => r.RepairID == repair.RepairID);
-            if (repairDB is null || installationDB is null)
-                throw new Exception();
+            var installationDB = await _context.Installations.SingleOrDefaultAsync(i => 
+            i.InstallationID == repair.InstallationID && i.AirportID == int.Parse(userId));
+            if (installationDB is null)
+                throw new Exception("La instalación no existe");
 
-            var exist = _context.RepairInstallations.SingleOrDefaultAsync(ri =>
+            var repairDB = await _context.Repairs.SingleOrDefaultAsync(r => r.RepairID == repair.RepairID);
+            if (repairDB is null)
+                throw new Exception("La reparación no existe");
+
+            var exist = await _context.RepairInstallations.SingleOrDefaultAsync(ri =>
             ri.InstallationID == repair.InstallationID && ri.AirportID == int.Parse(userId) && ri.RepairID == repair.RepairID);
             if (exist is not null)
-                throw new Exception();
+                throw new Exception("En esta instalación ya se realiza esta reparación");
         }
     }
 }

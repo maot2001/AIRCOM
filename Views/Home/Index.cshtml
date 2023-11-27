@@ -1,8 +1,82 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+@model Register
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<header>
+    AIRCOM
+</header>
+
+<main id="LOGIN">
+    <center>
+        <h1>Inicie sesión</h1>
+
+        <div>
+            <form asp-action="Index">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <div>Correo:</div>
+                    <input type='email' name='email' class="form-control" placeholder="introduzca su correo" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div>Contraseña:</div>
+                    <div class="ignorar">___</div>
+                    <input type="password" name="Pwd" class="form-control" placeholder="introduzca contraseña" />
+                    <span asp-validation-for="Pwd" class="text-danger"></span>
+                </div>
+
+                @if (ViewBag.check)
+                {
+                    <aside class="error">
+                        @ViewBag.error
+                    </aside>
+                }
+
+                <div>
+                    <section>
+                        <h5>Rol</h5>
+                        <div class="form-group">
+                            <div>
+                                <div>
+                                    <input name="Rol" type="radio" checked value="Cliente" /> Cliente
+                                </div>
+
+                                <div>
+                                    <input name="Rol" type="radio" value="Seguridad" /> Seguridad
+                                </div>
+
+                            </div>
+
+                            <div class="ignorar">__</div>
+
+                            <div>
+
+                                <div>
+                                    <input name="Rol" type="radio" value="Dirección" /> Dirección
+                                </div>
+
+                                <div>
+                                    <input name="Rol" type="radio" value="Mecánico" /> Mecánico
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </section>
+                    <div class="form-group">
+                        <input type="submit" value="Enviar" class="btn btn-primary" />
+                    </div>
+
+                    <div class="ignorar">_</div>
+                </div>
+            </form>
+        </div>
+
+    </center>
+</main>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

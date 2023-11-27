@@ -15,20 +15,19 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ServiceInstallationDTO>> Get(string userId = "")
+        public async Task<IEnumerable<ServiceInstallationDTO>> Get(string? userId = null)
         {
             List<ServicesInstallation> service;
-            if (userId == "")
+            if (userId is null)
                 service = await _context.ServicesInstallations.ToListAsync();
             else
-                service = await _context.ServicesInstallations.Where(si => si.AirportID == int.Parse(userId)).ToListAsync();
+                service = await _context.ServicesInstallations.Where(si => si.Installation.AirportID == int.Parse(userId)).ToListAsync();
             return _mapper.Map<List<ServiceInstallationDTO>>(service);
         }
 
         public async Task Create(ServiceInstallationDTO service, string userId)
         {
             await Errors(service, userId);
-            service.AirportID = int.Parse(userId);
             var serviceInstallation = _mapper.Map<ServicesInstallation>(service);
             _context.ServicesInstallations.Add(serviceInstallation);
             await _context.SaveChangesAsync();
@@ -57,7 +56,7 @@ namespace AIRCOM.Services
         public async Task<ServicesInstallation> GetServiceInstallation(ServiceInstallationDTO service)
         {
             var serviceDB = await _context.ServicesInstallations.SingleOrDefaultAsync(si =>
-            si.InstallationID == service.InstallationID && si.AirportID == service.AirportID && si.Code == service.Code);
+            si.InstallationID == service.InstallationID && si.Code == service.Code);
             if (serviceDB is null)
                 throw new Exception();
             return serviceDB;
@@ -66,13 +65,13 @@ namespace AIRCOM.Services
         private async Task Errors(ServiceInstallationDTO service, string userId)
         {
             var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
-            i.InstallationID == service.InstallationID && i.AirportID == service.AirportID);
+            i.InstallationID == service.InstallationID);
             var serviceDB = await _context.Repairs.SingleOrDefaultAsync(r => r.RepairID == service.Code);
             if (serviceDB is null || installationDB is null)
                 throw new Exception();
 
             var exist = _context.RepairInstallations.SingleOrDefaultAsync(si =>
-            si.InstallationID == service.InstallationID && si.AirportID == int.Parse(userId) && si.RepairID == service.Code);
+            si.InstallationID == service.InstallationID && si.Installation.AirportID == int.Parse(userId) && si.RepairID == service.Code);
             if (exist is not null)
                 throw new Exception();
         }

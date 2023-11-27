@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class InstallationController : Controller
@@ -19,7 +19,7 @@ namespace AIRCOM.Controllers
 
         // Direction -----------------------------------------------------------
         // GET: Installation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpGet]
         public async Task<IActionResult> Get(string? token = null)
         {
@@ -29,7 +29,7 @@ namespace AIRCOM.Controllers
         }
 
         // POST: Installation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] InstallationDTO installation)
         {
@@ -46,7 +46,7 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: Installation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] InstallationDTO installation)
         {
@@ -66,7 +66,7 @@ namespace AIRCOM.Controllers
         }
 
         // DELETE: Installation
-        [Authorize(Policy = "Direction")]
+        //[Authorize(Policy = "Direction")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

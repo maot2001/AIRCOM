@@ -15,10 +15,10 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<HistoryDTO>> Get(string id = "")
+        public async Task<IEnumerable<HistoryDTO>> Get(string? id = null)
         {
             List<History> histories;
-            if (id == "")
+            if (id is null)
                 histories = await _context.Historys.ToListAsync();
             else
                 histories = await _context.Historys.Where(h => h.Plate == id).ToListAsync();
@@ -41,7 +41,7 @@ namespace AIRCOM.Services
         public async Task Edit(HistoryDTO history, string userId)
         {
             await Errors(history, userId);
-            var historyBD = await GetHistoryById(history.Id);
+            var historyBD = await GetHistoryById(history.ID);
             historyBD.OwnerRole = history.OwnerRole;
             historyBD.Plate = history.Plate;
             historyBD.ArrivalDate = history.ArrivalDate;
@@ -52,30 +52,30 @@ namespace AIRCOM.Services
         public async Task Delete(HistoryDTO history, string userId)
         {
             await Errors(history, userId);
-            var historyBD = await GetHistoryById(history.Id);
+            var historyBD = await GetHistoryById(history.ID);
             _context.Historys.Remove(historyBD);
             await _context.SaveChangesAsync();
         }
 
         public async Task Include(HistoryDTO history)
         {
-            var historyDB = await GetHistoryById(history.Id);
+            var historyDB = await GetHistoryById(history.ID);
             historyDB.OwnerRole = history.OwnerRole;
             await _context.SaveChangesAsync();
         }
 
         //----------------------------------------------------------------------
-        private async Task<History> GetHistoryById(int id)
+        private async Task<History> GetHistoryById(int? id)
         {
-            var historyBD = await _context.Historys.SingleOrDefaultAsync(h => h.Id == id);
+            var historyBD = await _context.Historys.SingleOrDefaultAsync(h => h.ID == id);
             if (historyBD is null)
                 throw new Exception();
             return historyBD;
         }
 
-        private async Task Errors(HistoryDTO history, string userId = "")
+        private async Task Errors(HistoryDTO history, string? userId = null)
         {
-            if (userId != "" && ((history.ArrivalID != int.Parse(userId) && history.ExitID != int.Parse(userId)) 
+            if (userId is not null && ((history.ArrivalID != int.Parse(userId) && history.ExitID != int.Parse(userId)) 
                              ||  (history.ArrivalID == int.Parse(userId) && history.ExitID == int.Parse(userId))))
                 throw new Exception();
 

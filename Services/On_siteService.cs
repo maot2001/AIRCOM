@@ -37,7 +37,7 @@ namespace AIRCOM.Services
 
         public async Task Valorate(On_siteDTO service)
         {
-            var on_site = await _context.On_Site.FindAsync(service.Id);
+            var on_site = await _context.On_Site.FindAsync(service.ID);
             on_site.Stars = service.Stars;
             on_site.Comment = service.Comment;
 

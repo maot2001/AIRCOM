@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class RepairController : Controller
@@ -19,7 +19,7 @@ namespace AIRCOM.Controllers
 
         // Admin -----------------------------------------------------
         // GET: Repair
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -28,7 +28,7 @@ namespace AIRCOM.Controllers
         }
 
         // POST: Repair
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] RepairDTO repair)
         {
@@ -48,7 +48,7 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: Repair
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] RepairDTO repair)
         {
@@ -68,7 +68,7 @@ namespace AIRCOM.Controllers
         }
 
         // DELETE: Repair/5
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

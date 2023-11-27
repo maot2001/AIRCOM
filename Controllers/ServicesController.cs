@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ServicesController : Controller
@@ -19,7 +19,7 @@ namespace AIRCOM.Controllers
 
         // Admin -----------------------------------------------------
         // GET: Services
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -28,7 +28,7 @@ namespace AIRCOM.Controllers
         }
 
         // POST: Services
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ServiceDTO service)
         {
@@ -48,7 +48,7 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: Services
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] ServiceDTO service)
         {
@@ -68,7 +68,7 @@ namespace AIRCOM.Controllers
         }
 
         // DELETE: Services/5
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -14,6 +14,7 @@ namespace AIRCOM.Services
         private IConfiguration _config;
         private readonly DBContext _context;
         private readonly IMapper _mapper;
+        private readonly string[] types = new string[] { "Seguridad", "Administrador", "Mecánico", "Dirección" };
         public LoginService(DBContext context, IMapper mapper, IConfiguration config)
         {
             _context = context;
@@ -25,12 +26,12 @@ namespace AIRCOM.Services
         {
             string jwtToken;
 
-            if (register.worker > 0)
+            if (types.Contains(register.Rol))
             {
                 var worker = await _context.Workers.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
                 if (worker is null)
                     throw new Exception();
-                jwtToken = GenerateToken(worker.AirportId.ToString(), worker.WorkerId.ToString(), worker.Type);
+                jwtToken = GenerateToken(worker.AirportID.ToString(), worker.WorkerID.ToString(), worker.Type);
             }
             else
             {

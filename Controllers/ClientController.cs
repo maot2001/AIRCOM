@@ -1,15 +1,14 @@
 ﻿using AIRCOM.Models;
 using AIRCOM.Models.DTO;
 using AIRCOM.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [Route("[controller]")]
+    //[Authorize]
     public class ClientController : Controller
     {
         private readonly ClientService _service;
@@ -18,31 +17,31 @@ namespace AIRCOM.Controllers
             _service = service;
         }
 
-        // Security --------------------------------------------------
-        // GET: Client
-        [Authorize(Policy = "Security")]
-        [HttpGet]
-        public async Task<IActionResult> Get(string? token = null)
-        {
-            var userId = HttpContext.User.FindFirst("Airport")?.Value;
-            var clients = await _service.Get(userId);
-            return View((clients, token));
-        }
+        //[Authorize(Policy = "Client")]
+        public async Task<IActionResult> Index()
+            => View(await _service.Get("1"));
+        /*{
+            var clients = await _service.Get("1");
+            return View(_mapper.Map<List<ClientDTO>>(clients));
+        }*/
 
-        // POST: Client
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Client")]
+        public IActionResult Create()
+            => View();
+
+        //[Authorize(Policy = "Client")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ClientDTO client)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ClientDTO client)
         {
             try
             {
-                var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Create(client, userId);
-                return RedirectToAction(nameof(Get));
+                await _service.Create(client, "1");
+                return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores");
+                return BadRequest("Error al insertar valores repetidos");
             }
             catch
             {
@@ -50,19 +49,21 @@ namespace AIRCOM.Controllers
             }
         }
 
-        // PUT: Client/5
-        [Authorize(Policy = "Security")]
-        [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] ClientDTO client)
+        public IActionResult Edit(int id)
+            => View(new ClientDTO { ClientID = id});
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ClientDTO client)
         {
             try
             {
                 await _service.Edit(client);
-                return RedirectToAction(nameof(Get));
+                return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores");
+                return BadRequest("Error al insertar valores repetidos");
             }
             catch (Exception e)
             {
@@ -70,21 +71,17 @@ namespace AIRCOM.Controllers
             }
         }
 
-        // DELETE: Client/5
-        [Authorize(Policy = "Security")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] ClientDTO client)
+        public async Task<IActionResult> Delete(int id, string name)
         {
             try
             {
-                await _service.Delete(client);
-                return RedirectToAction(nameof(Get));
+                await _service.Delete(new ClientDTO { ClientID = id, Type = name });
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
             {
                 return NotFound(e.Message);
             }
         }
-        // ------------------------------------------------------------   
     }
 }

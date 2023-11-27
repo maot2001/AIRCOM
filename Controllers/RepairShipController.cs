@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class RepairShipController : Controller
@@ -18,8 +18,8 @@ namespace AIRCOM.Controllers
 
         // Security ------------------------------------------------------------
         // POST: RepairShip/5
+        //[Authorize(Policy = "Security")]
         [HttpPost("{shipId}")]
-        [Authorize(Policy = "Security")]
         public async Task<IActionResult> RequestRepair(string shipId, [FromBody] RepairInstallationDTO repair)
         {
             try
@@ -36,9 +36,9 @@ namespace AIRCOM.Controllers
 
         // Mechanic ------------------------------------------------------------
         // GET: RepairShip/GetRequest
+        //[Authorize(Policy = "Mechanic")]
         [HttpGet("GetRequest")]
-        [Authorize(Policy = "Mechanic")]
-        public async Task<IActionResult> GetRequest(string token = "")
+        public async Task<IActionResult> GetRequest(string? token = null)
         {
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
             var rep = await _service.Get(0, userId);
@@ -46,8 +46,8 @@ namespace AIRCOM.Controllers
         }
 
         // GET: RepairShip/GetProcess
+        //[Authorize(Policy = "Mechanic")]
         [HttpGet("GetProcess")]
-        [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetProcess()
         {
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
@@ -56,8 +56,8 @@ namespace AIRCOM.Controllers
         }
 
         // GET: RepairShip/GetFinish
+        //[Authorize(Policy = "Mechanic")]
         [HttpGet("GetFinish")]
-        [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetFinish()
         {
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
@@ -66,9 +66,9 @@ namespace AIRCOM.Controllers
         }
 
         // GET: RepairShip/GetRepairs
+        //[Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Mechanic")]
         [HttpGet("GetRepairs")]
-        [Authorize(Policy = "Security")]
-        [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> GetRepairs()
         {
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
@@ -77,8 +77,8 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: RepairShip/ProcessRepair
+        //[Authorize(Policy = "Mechanic")]
         [HttpPut("ProcessRepair")]
-        [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> ProcessRepair([FromBody] RepairShipDTO repair)
         {
             try
@@ -93,8 +93,8 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: RepairShip/FinishRepair
+        //[Authorize(Policy = "Mechanic")]
         [HttpPut("FinishRepair")]
-        [Authorize(Policy = "Mechanic")]
         public async Task<IActionResult> FinishRepair([FromBody] RepairShipDTO repair)
         {
             try
@@ -111,8 +111,8 @@ namespace AIRCOM.Controllers
 
         // Client --------------------------------------------------------------
         // GET: RepairShip/ClientShip
+        //[Authorize(Policy = "Client")]
         [HttpGet("ClientShip")]
-        [Authorize(Policy = "Client")]
         public async Task<IActionResult> CSRepair()
         {
             var userId = int.Parse(HttpContext.User.FindFirst("Id")?.Value);
@@ -121,8 +121,8 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: Valorar Reparacion
+        //[Authorize(Policy = "Client")]
         [HttpPut("Valorate")]
-        [Authorize(Policy = "Client")]
         public async Task<IActionResult> Valorate([FromBody] RepairShipDTO repair)
         {
             try

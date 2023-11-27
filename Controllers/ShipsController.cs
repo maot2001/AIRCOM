@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ShipsController : Controller
@@ -20,7 +20,7 @@ namespace AIRCOM.Controllers
 
         // Security --------------------------------------------------
         // GET: Ships
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Security")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -29,7 +29,7 @@ namespace AIRCOM.Controllers
         }
 
         // POST: Ships
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Security")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ShipsDTO ship)
         {
@@ -49,7 +49,7 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: Ships/5
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Security")]
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] ShipsDTO ship)
         {
@@ -69,7 +69,7 @@ namespace AIRCOM.Controllers
         }
 
         // DELETE: Ships/5
-        [Authorize(Policy = "Security")]
+        //[Authorize(Policy = "Security")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -87,7 +87,7 @@ namespace AIRCOM.Controllers
 
         // Client ----------------------------------------------------
         // GET: Ships/Client
-        [Authorize(Policy = "Client")]
+        //[Authorize(Policy = "Client")]
         [HttpGet("Client")]
         public async Task<IActionResult> ClientShips(string? token = null)
         {

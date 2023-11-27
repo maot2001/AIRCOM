@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [Route("[controller]")]
+    //[Authorize]
+    //[ApiController]
+    //[Route("[controller]")]
     public class AirportController : Controller
     {
         private readonly AirportService _service;
@@ -19,23 +19,28 @@ namespace AIRCOM.Controllers
 
         // Admin -----------------------------------------------------
         // GET: Airport
-        [Authorize(Policy = "Admin")]
-        [HttpGet]
+        //[Authorize(Policy = "Admin")]
+        /*[HttpGet]
         public async Task<IActionResult> Get(string? token = null)
         {
             var airports = await _service.Get();
             return View((airports, token));
-        }
-        
+        }*/
+        public async Task<IActionResult> Index()
+            => View(await _service.Get());
+
+        public IActionResult Create()
+            => View();
+
         // POST: Airport
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AirportDTO airport)
+        public async Task<IActionResult> Create(AirportDTO airport)
         {
             try
             {
                 await _service.Create(airport);
-                return RedirectToAction(nameof(Get));
+                return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException e)
             {
@@ -48,8 +53,8 @@ namespace AIRCOM.Controllers
         }
         
         // PUT: Airport
-        [Authorize(Policy = "Admin")]
-        [HttpPut]
+        //[Authorize(Policy = "Admin")]
+        /*[HttpPut]
         public async Task<IActionResult> Edit([FromBody] AirportDTO airport)
         {
             try
@@ -68,7 +73,7 @@ namespace AIRCOM.Controllers
         }
 
         // DELETE: Airport/5
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -81,7 +86,7 @@ namespace AIRCOM.Controllers
             {
                 return NotFound(e.Message);
             }
-        }
+        }*/
         // ---------------------------------------------------------------------
 
     }
