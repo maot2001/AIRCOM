@@ -1,5 +1,5 @@
 @{
-    int p = 1;
+    int p = 2;
     int[] sol = new int[] { 1, 1, 1 };
     bool a = true;
     string Cuadrado(int x) => p == x ? "active" : "pasive";
@@ -85,163 +85,47 @@
 
 @if (p == 2)
 {
-    <div class="ofertas" style="text-align:left">
+    <div class="ofertas" style="text-align:left;">
         @for (int i = 0; i < 10; i++)
         {
-            <div>
-                <div>
+            <div style="display:block">
+                <div style="display:flex">
                     <div>
-                        Comida Rapida y Barata
-                    </div>
-                    <div>
-                        Aeropuerto: Jose Marti
-                    </div>
-                    <div>
-                        Instalacion #4
-                    </div>
-                    <form method="post">
-                        <button class="boton">Valorar</button>
-                    </form>
-                </div>
-
-                <aside>
-                    <div>
-                        <h3>$5.99</h3>
-                    </div>
-                    <div>
-                        ⭐⭐⭐⭐⭐
-                    </div>
-                    <div style="color:white;font-size:x-small;">
-                        relleno
-                    </div>
-                    <form method="post">
-                        <button class="boton">Ver reseñas</button>
-                    </form>
-                </aside>
-            </div>
-        }
-    </div>
-}
-@{
-    int p = 1;
-    int[] sol = new int[] { 1, 1, 1 };
-    bool a = true;
-    string Cuadrado(int x) => p == x ? "active" : "pasive";
-}
-
-<header>
-    AIRCOM
-</header>
-
-<nav>
-    <h4>USUARIO</h4>
-</nav>
-<nav class="navegacion">
-    <form method="post">
-        <div>
-            <button class=@Cuadrado(1) type="submit"><h2>Mis naves</h2></button>
-            <p style="color:white;">____</p>
-            <button class=@Cuadrado(2) type="submit"><h2>Servicios Ofertados</h2></button>
-        </div>
-    </form>
-    @if (p == 2)
-    {
-        <aside><input type="text" placeholder="🔍buscar"></aside>
-    }
-</nav>
-@if (p == 1)
-{
-    @foreach (var solicitud in sol)
-    {
-        <section class="dataToShow">
-            <div style="display: flex;">
-                <div>Matricula: aaaaaaaa</div>
-                <div>Estado: asadasdsd</div>
-            </div>
-            <div class="tag">
-                <aside>
-                    <div><h4>Características:</h4></div>
-                    <div><strong>Modelo:</strong> aireasdsd</div>
-                    <div><strong>Capacidad de carga:</strong> 20 ton</div>
-                    <div><strong>Cantidad de tripulantes:</strong> 10</div>
-                    <div><strong>Cantidad de pasajeros:</strong> 50</div>
-                </aside>
-
-                <div>
-                    <div>Fecha de salida programada:</div>
-                    <div>1/12/2024</div>
-                    <form method="post">
-                        <button class="boton" type="submit">
-                            Ver historial
-                        </button>
-                        <button class="boton" type="submit">
-                            Ver reparaciones
-                        </button>
-                    </form>
-                </div>
-                @if (a)
-                {
-                    <center style="flex:2;align-items:center;display:flex;">
-                        <button class="boton">Incluirse</button>
-                    </center>
-                }
-                @if (!a)
-                {
-                    <form method="post">
-                        <select name="Rol" class="boton">
-                            @foreach (var x in sol)
-                            {
-                                <option value="VIP">Capitan</option>
-                            }
-                        </select>
                         <div>
-                            <button class="boton" style="background-color:rgb(75,200,75);" type="submit">✔️</button>
-                            <button class="boton" style="background-color:rgb(250,40,60)">✖️</button>
+                            Comida Rapida y Barata
                         </div>
-
-                    </form>
-                }
-            </div>
-
-        </section>
-    }
-}
-
-@if (p == 2)
-{
-    <div class="ofertas" style="text-align:left">
-        @for (int i = 0; i < 10; i++)
-        {
-            <div>
-                <div>
-                    <div>
-                        Comida Rapida y Barata
+                        <div>
+                            Aeropuerto: Jose Marti
+                        </div>
+                        <div>
+                            Instalacion #4
+                        </div>
+                    
                     </div>
-                    <div>
-                        Aeropuerto: Jose Marti
-                    </div>
-                    <div>
-                        Instalacion #4
-                    </div>
+
+                    <aside>
+                        <div>
+                            <h3>$5.99</h3>
+                        </div>
+                        <div>
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                        <div style="color:white;font-size:x-small;">
+                            relleno
+                        </div>
+                    </aside>
+                </div>
+                <div style="display:flex;justify-content:space-between">
                     <form method="post">
                         <button class="boton">Valorar</button>
                     </form>
-                </div>
-
-                <aside>
-                    <div>
-                        <h3>$5.99</h3>
-                    </div>
-                    <div>
-                        ⭐⭐⭐⭐⭐
-                    </div>
-                    <div style="color:white;font-size:x-small;">
-                        relleno
-                    </div>
+                    <form method="post">
+                        <button class="goodboton">Solicitar</button>
+                    </form>
                     <form method="post">
                         <button class="boton">Ver reseñas</button>
                     </form>
-                </aside>
+                </div>
             </div>
         }
     </div>
