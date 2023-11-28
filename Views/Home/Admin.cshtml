@@ -1,5 +1,5 @@
 @{
-    int p = 1;
+    int p = 0;
     int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     string Cuadrado(int x) => p == x ? "active" : "pasive";
     int a = 0;
@@ -10,16 +10,49 @@
     AIRCOM ADMIN
 </header>
 
-@* Barra de navegacion *@
-<nav class="navegacion">
-    <form method="post" name="navegacion">
-        <div>
-            <button name="pagina" value="1" class=@Cuadrado(1) type="submit"><h2>Administrar</h2></button>
-            <p style="color:white;">____</p>
-            <button name="pagina" value="2" class=@Cuadrado(2) type="submit"><h2>Ver estadísticas</h2></button>
-        </div>
-    </form>
-</nav>
+
+@if (p == 0)
+{
+    <main>
+        <center>
+            <h1 style="margin:5%; color:darkred;text-decoration:underline ">Bienvenido a la administración de AIRCOM</h1>
+            <h3> Por favor inicie sesión</h3>
+
+            <div>
+                <form method="post" name="login">
+                    <div>
+                        <div>Introduzca Contraseña:</div>
+                        <div>
+                            <input type="password" name="contraseña" placeholder="introduzca contraseña">
+                            <button class="badboton" type="submit">Entrar</button>
+                        </div>
+                    </div>
+                    @if (a == 1)
+                    {
+                        <aside class="error">
+                            @error
+                        </aside>
+                    }
+                </form>
+            </div>
+
+        </center>
+    </main>
+}
+
+@if (p == 1 || p == 2)
+{
+    @* Barra de navegacion *@
+    <nav class="navegacion">
+        <form method="post" name="navegacion">
+            <div>
+                <button name="pagina" value="1" class=@Cuadrado(1) type="submit"><h2>Administrar</h2></button>
+                <p style="color:white;">____</p>
+                <button name="pagina" value="2" class=@Cuadrado(2) type="submit"><h2>Ver estadísticas</h2></button>
+            </div>
+        </form>
+    </nav>
+}
 
 
 @* Pagina 1 Administrar *@
