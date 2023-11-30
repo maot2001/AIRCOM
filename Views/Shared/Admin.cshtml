@@ -1,0 +1,334 @@
+﻿@{
+    int p = 0;
+    int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    string Cuadrado(int x) => p == x ? "active" : "pasive";
+}
+
+<header style="background:darkred;">
+    AIRCOM ADMIN
+</header>
+
+
+@*Login del admin*@
+@if (ViewBag.p == 0)
+{
+    <main>
+        <center>
+            <h1 style="margin:5%; color:darkred;text-decoration:underline ">Bienvenido a la administración de AIRCOM</h1>
+            <h3> Por favor inicie sesión</h3>
+
+            <div>
+                <form asp-action="Init">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div>
+                        <div>Introduzca Contraseña:</div>
+                        <div>
+                            <input type="password" name="pwd" placeholder="introduzca contraseña">
+                            <button class="badboton" type="submit">Entrar</button>
+                        </div>
+                    </div>
+                    @if (ViewBag.a == 1)
+                    {
+                        <aside class="error">
+                            @ViewBag.error
+                        </aside>
+                    }
+                </form>
+            </div>
+
+        </center>
+    </main>
+}
+
+
+
+@* Barra de navegacion *@
+@if (ViewBag.p != 0)
+{
+    <nav class="navegacion">
+        <form asp-action="Index">
+            <div>
+                <button name="p" value="1" class=@Cuadrado(1) type="submit"><h2>Administrar</h2></button>
+                <p style="color:white;">____</p>
+                <button name="p" value="2" class=@Cuadrado(2) type="submit"><h2>Ver estadísticas</h2></button>
+            </div>
+        </form>
+    </nav>
+}
+
+
+@* Pagina 1 Administrar *@
+@if (ViewBag.p == 1)
+{
+    <section>
+        @*Primer formulario: Añadir Aeropuerto*@
+        <details>
+            <summary>Añadir Aeropuerto</summary>
+            <center>
+                <form asp-controller="Airport" asp-action="Create" class="formulario">
+
+                    @*Aqui son los datos del aeropuerto, este no debe figurar en la base de datos*@
+                    <table>
+
+                        <tr class="form-group">
+                            <td>Nombre: </td>
+                            <td>
+                                <input name="Name" class="form-control" placeholder="introduzca nombre" required/>
+                        </tr>
+
+                        <tr class="form-group">
+                            <td>Coordenadas geográficas: </td>
+                            <td>
+                                <input name="Coordinates" class="form-control" placeholder="introduzca coordenadas" required/>
+                        </tr>
+
+                        <tr class="form-group">
+                            <td>Dirección: </td>
+                            <td>
+                                <input name="Direction" class="form-control" placeholder="introduzca dirección" required/>
+                        </tr>
+
+                    </table>
+
+                    @*Aqui van los datos del guardia de seguridad, este no debe figurar en la base de datos*@
+                    <h3>Empleado de Seguridad</h3>
+                    <table>
+
+                        <div class="form-group">
+                            <input name="Security.Type" class="form-control" type="hidden" value="Seguridad" />
+                        </div>
+
+                        <div class="form-group">
+                            <input name="Security.Nationality" class="form-control" type="hidden" value="Cuba" />
+                        </div>
+
+                        <tr class="form-group">
+                            <td>Nombre: </td>
+                            <td>
+                                <input name="Security.Name" class="form-control" placeholder="introduzca nombre" required/>
+                            </td>
+                        </tr>
+
+                        <tr class="form-group">
+                            <td>Carnet de identidad: </td>
+                            <td>
+                                <input name="Security.CI" class="form-control" placeholder="Introduzca ID" pattern="[0-9]{1,}" title="Debe ser numero" required/>
+                            </td>
+                        </tr>
+
+                        <tr class="form-group">
+                            <td>Correo electrónico: </td>
+                            <td>
+                                <input type="email" name="Security.Email" class="form-control" placeholder="introduzca su correo" required/>
+                            </td>
+                        </tr>
+
+                        <tr class="form-group">
+                            <td>Contraseña: </td>
+                            <td>
+                                <input name="Security.Pwd" type="password" class="form-control" placeholder="Introduzca contraseña" required/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
+                    @if (ViewBag.a == 2)
+                    {
+                        <aside class="error">
+                            @ViewBag.error
+                        </aside>
+                    }
+
+                    <div class="form-group">
+                        <input type="submit" value="Enviar" class="boton" />
+                    </div>
+
+                </form>
+            </center>
+        </details>
+
+        @*Segundo formulario: Crear/Editar tipo de reparación*@
+        <details>
+            <summary>Crear/Editar tipo de reparación</summary>
+            <center>
+                <form asp-controller="Repair" asp-action="Create" class="formulario">
+                    <div><input name="name" placeholder="Introducir nombre" required /></div>
+                    <div><input name="description" placeholder="Introducir descripcion" required /></div>
+                    @*Si el nombre existe, se edita la descripcion, sino se crea la reparacion*@
+                    <div><button class="boton" type="submit">Enviar</button></div>
+                </form>
+            </center>
+        </details>
+
+        @*Tercer formulario: Añadir Dependencia de reparación*@
+        <details>
+            <summary>Añadir Dependencia de reparación</summary>
+            <center>
+                <form class="formulario" name="dependencia" method="post">
+                    <table>
+                        <tr>
+                            <td>Dependiente: </td>
+                            <td>
+                                <select name="dependiente">
+                                    @foreach (var item in sol)
+                                    {
+                                        <option value="a">Reparacion capital</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            @*Estos son los unicos posibles estados de una nave*@
+                            <td>Estado necesario: </td>
+                            <td>
+                                <select name="estado">
+                                    <option value="Óptimo">Óptimo</option>
+                                    <option value="Bien">Bien</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Mal">Mal</option>
+                                    <option value="Pésimo">Pésimo</option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Dependencia: </td>
+                            <td>
+                                <select name="Dependencia">
+                                    @foreach (var item in sol)
+                                    {
+                                        <option value="a">Cambiar turbinas</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
+                    @if (ViewBag.a == 3)
+                    {
+                        <aside class="error">
+                            @ViewBag.error
+                        </aside>
+                    }
+                    <button class="boton" type="submit">Enviar</button>
+                </form>
+            </center>
+        </details>
+
+        <center><h1>Region peligrosa, proceda con cuidado</h1></center>
+
+        @*Cuarto Formulario: Eliminar Aeropuerto*@
+        <details class="dangerousZone">
+            <summary>Eliminar aeropuerto</summary>
+            <center>
+                <form asp-controller="Airport" asp-action="Delete" class="formulario">
+                    Nombre del aeorpuerto
+                    <input type="text" name="Name" placeholder="Introduzca nombre" required>
+                    <div class="error">
+                        Nota*: Al desactivar un aeropuerto se mantiene su informacion asociada como el historial en la base de datos
+                        Al eliminar se elimina tambien todo rastro de este en la base de datos
+                    </div>
+                    @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
+                    @if (ViewBag.a == 4)
+                    {
+                        <aside class="error">
+                            @ViewBag.error
+                        </aside>
+                    }
+                    <div>
+                        <button class="boton" name="Cascada" value="false" type="submit">Desactivar</button>
+                        <button class="badboton" name="Cascada" value="true" type="submit">Eliminar</button>
+                    </div>
+                </form>
+            </center>
+        </details>
+
+        @*Quinto Formulario: Eliminar Reparacion*@
+        <details class="dangerousZone">
+            <summary>Eliminar Reparación</summary>
+            <center>
+                <form asp-controller="Repair" asp-action="Delete" class="formulario">
+                    Nombre
+                    <input type="text" name="Name" placeholder="Introduzca nombre" required>
+                    <div class="error">
+                        Nota*: Al desactivar un aeropuerto se mantiene su informacion asociada como el historial en la base de datos
+                        Al eliminar se elimina tambien todo rastro de este en la base de datos
+                    </div>
+                    @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
+                    @if (ViewBag.a == 5)
+                    {
+                        <aside class="error">
+                            @ViewBag.error
+                        </aside>
+                    }
+                    <div>
+                        <button class="boton" name="Cascada" value="false" type="submit">Desactivar</button>
+                        <button class="badboton" name="Cascada" value="false" type="submit">Eliminar</button>
+                    </div>
+                </form>
+            </center>
+        </details>
+
+
+        @*Sexto formulario: Eliminar Dependencia de reparación*@
+        <details class="dangerousZone">
+            <summary>Eliminar Dependencia de reparación</summary>
+            <center>
+                <form class="formulario" name="dependencia" method="post">
+                    <table>
+                        <tr>
+                            <td>Dependiente: </td>
+                            <td>
+                                <select name="dependiente">
+                                    @foreach (var item in sol)
+                                    {
+                                        <option value="a">Reparacion capital</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            @*Estos son los unicos posibles estados de una nave*@
+                            <td>Estado necesario: </td>
+                            <td>
+                                <select name="estado">
+                                    <option value="Óptimo">Óptimo</option>
+                                    <option value="Bien">Bien</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Mal">Mal</option>
+                                    <option value="Pésimo">Pésimo</option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Dependencia: </td>
+                            <td>
+                                <select name="Dependencia">
+                                    @foreach (var item in sol)
+                                    {
+                                        <option value="a">Cambiar turbinas</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
+                    @if (ViewBag.a == 6)
+                    {
+                        <aside class="error">
+                            @ViewBag.error
+                        </aside>
+                    }
+                    <button class="badboton" type="submit">Eliminar</button>
+                </form>
+            </center>
+        </details>
+    </section>
+}
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
