@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace AIRCOM.Controllers
 {
     //[Authorize]
-    [ApiController]
-    [Route("[controller]")]
     public class On_siteController : Controller
     {
         private readonly On_siteService _service;

@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace AIRCOM.Controllers
 {
     //[Authorize]
-    [ApiController]
-    [Route("[controller]")]
     public class ServiceInstallationController : Controller
     {
         private readonly ServiceInstallationService _service;

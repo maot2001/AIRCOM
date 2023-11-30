@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 namespace AIRCOM.Controllers
 {
     //[Authorize]
-    [ApiController]
-    [Route("[controller]")]
     public class ShipsController : Controller
     {
         private readonly ShipsService _service;

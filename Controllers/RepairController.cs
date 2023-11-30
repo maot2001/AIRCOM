@@ -7,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 namespace AIRCOM.Controllers
 {
     //[Authorize]
-    [ApiController]
-    [Route("[controller]")]
     public class RepairController : Controller
     {
         private readonly RepairService _service;
@@ -20,7 +18,6 @@ namespace AIRCOM.Controllers
         // Admin -----------------------------------------------------
         // GET: Repair
         //[Authorize(Policy = "Admin")]
-        [HttpGet]
         public async Task<IActionResult> Get()
         {
             var repairs = await _service.Get();
@@ -30,23 +27,23 @@ namespace AIRCOM.Controllers
         // POST: Repair
         //[Authorize(Policy = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RepairDTO repair)
+        public async Task<IActionResult> Create(RepairDTO repair)
         {
+            ViewData["p"] = 1;
             try
             {
                 await _service.Create(repair);
-                return RedirectToAction(nameof(Get));
+                ViewData["a"] = 0;
+                return View("Admin");
             }
-            catch (DbUpdateException e)
+            catch (Exception e)
             {
-                return BadRequest("Error al insertar valores repetidos");
-            }
-            catch
-            {
-                return NotFound();
+                ViewData["a"] = 2;
+                ViewData["error"] = e.Message;
+                return View("Admin");
             }
         }
-
+        /*
         // PUT: Repair
         //[Authorize(Policy = "Admin")]
         [HttpPut]
@@ -65,21 +62,25 @@ namespace AIRCOM.Controllers
             {
                 return NotFound(e.Message);
             }
-        }
+        }*/
 
         // DELETE: Repair/5
         //[Authorize(Policy = "Admin")]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(string name, bool cascada)
         {
+            ViewData["p"] = 1;
             try
             {
-                await _service.Delete(id);
-                return RedirectToAction(nameof(Get));
+                await _service.Delete(name, cascada);
+                ViewData["a"] = 0;
+                return View("Admin");
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                ViewData["a"] = 5;
+                ViewData["error"] = e.Message;
+                return View("Admin");
             }
         }
         // ---------------------------------------------------------------------

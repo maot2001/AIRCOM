@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace AIRCOM.Controllers
 {
     //[Authorize]
-    [ApiController]
-    [Route("[controller]")]
     public class HistoryController : Controller
     {
         private readonly HistoryService _service;

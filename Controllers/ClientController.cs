@@ -31,13 +31,13 @@ namespace AIRCOM.Controllers
 
         //[Authorize(Policy = "Client")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientDTO client)
         {
             try
             {
                 await _service.Create(client, "1");
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             catch (DbUpdateException e)
             {

@@ -32,8 +32,22 @@ namespace AIRCOM.Controllers
         {
             try
             {
-                string jwtToken = await _service.Login(client);
-                return RedirectToAction("Index", "Client");
+                var Token = await _service.Login(client);
+                ViewData["JwtToken"] = Token.Item1;
+                switch (Token.Item2)
+                {
+                    /*case 0:
+                        return RedirectToAction(nameof(ShipsController.ClientShips), "Ships");*/
+                    case 1:
+                        return RedirectToAction(nameof(SecurityController.Index), "Security");
+                    /*case 2:
+                        return RedirectToAction(nameof(RepairShipController.GetRequest), "RepairShip");
+                    case 3:
+                        return RedirectToAction(nameof(InstallationController.Get), "Installation");*/
+                    default:
+                        return RedirectToAction(nameof(AirportController.Index), "Airport");
+
+                }
             }
             catch
             {

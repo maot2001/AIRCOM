@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace AIRCOM.Controllers
 {
     //[Authorize]
-    //[ApiController]
-    //[Route("[controller]")]
     public class AirportController : Controller
     {
         private readonly AirportService _service;
-        public AirportController(AirportService service)
+        private readonly ClientService _aux;
+        public AirportController(AirportService service, ClientService aux)
         {
             _service = service;
+            _aux = aux;
         }
 
         // Admin -----------------------------------------------------
@@ -37,18 +37,26 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AirportDTO airport)
         {
+            ViewData["p"] = 1;
             try
             {
-                await _service.Create(airport);
-                return RedirectToAction(nameof(Index));
+                int airp = await _service.Create(airport);
+                airport.Security.AirportID = airp;
+                await _aux.Create(airport.Security, "");
+                ViewData["a"] = 0;
+                return View("Admin");
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores repetidos");
+                ViewData["a"] = 2;
+                ViewData["error"] = "Error al insertar valores repetidos";
+                return View("Admin");
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                ViewData["a"] = 2;
+                ViewData["error"] = e.Message;
+                return View("Admin");
             }
         }
         
@@ -70,23 +78,27 @@ namespace AIRCOM.Controllers
             {
                 return NotFound(e.Message);
             }
-        }
+        }*/
 
         // DELETE: Airport/5
         //[Authorize(Policy = "Admin")]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(string name, bool cascada)
         {
+            ViewData["p"] = 1;
             try
             {
-                await _service.Delete(id);
-                return RedirectToAction(nameof(Get));
+                await _service.Delete(name, cascada);
+                ViewData["a"] = 0;
+                return View("Admin");
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                ViewData["a"] = 4;
+                ViewData["error"] = e.Message;
+                return View("Admin");
             }
-        }*/
+        }
         // ---------------------------------------------------------------------
 
     }

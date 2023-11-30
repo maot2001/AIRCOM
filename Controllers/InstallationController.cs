@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace AIRCOM.Controllers
 {
     //[Authorize]
-    [ApiController]
-    [Route("[controller]")]
     public class InstallationController : Controller
     {
         private readonly InstallationService _service;
