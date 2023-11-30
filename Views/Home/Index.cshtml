@@ -14,15 +14,19 @@
 
                 <div class="form-group">
                     <div>Correo:</div>
-                    <input type='email' name='email' class="form-control" placeholder="introduzca su correo" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <div>
+                        <input type='email' name='email' class="form-control" placeholder="introduzca su correo" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <div>Contraseña:</div>
                     <div class="ignorar">___</div>
-                    <input type="password" name="Pwd" class="form-control" placeholder="introduzca contraseña" />
-                    <span asp-validation-for="Pwd" class="text-danger"></span>
+                    <div>
+                        <input type="password" name="Pwd" class="form-control" placeholder="introduzca contraseña" />
+                        <span asp-validation-for="Pwd" class="text-danger"></span>
+                    </div>
                 </div>
 
                 @if (ViewBag.check)
@@ -63,9 +67,9 @@
 
                         </div>
                     </section>
-                    <div class="form-group">
-                        <input type="submit" value="Enviar" class="btn btn-primary" />
-                    </div>
+                    <center>
+                        <input type="submit" value="Enviar" class="boton" />
+                    </center>
 
                     <div class="ignorar">_</div>
                 </div>
