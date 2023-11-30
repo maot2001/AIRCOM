@@ -21,15 +21,18 @@ namespace AIRCOM.Services
             return _mapper.Map<List<AirportDTO>>(airports);
         }
 
-        public async Task Create(AirportDTO airport)
+        public async Task<int> Create(AirportDTO airport)
         {
             var airportDB = _mapper.Map<Airport>(airport);
 
             _context.Airports.Add(airportDB);
             await _context.SaveChangesAsync();
+
+            var airp = await _context.Airports.FirstOrDefaultAsync(a => a.Name == airport.Name);
+            return airp.AirportID;
         }
 
-        public async Task Edit(AirportDTO airport)
+        /*public async Task Edit(AirportDTO airport)
         {
             var airportDB = await GetAirportById(airport.AirportID);
 
@@ -38,11 +41,17 @@ namespace AIRCOM.Services
             airportDB.Direction = airport.Direction;
 
             await _context.SaveChangesAsync();
-        }
+        }*/
 
-        public async Task Delete(int airportId)
+        public async Task Delete(string name, bool all)
         {
-            var airportDB = await GetAirportById(airportId);
+            var airportDB = await GetAirportByName(name);
+            if (!all)
+                airportDB.Active = false;
+            /*else
+            {
+
+            }*/
 
             _context.Airports.Remove(airportDB);
             await _context.SaveChangesAsync();
@@ -50,9 +59,9 @@ namespace AIRCOM.Services
 
         // --------------------------------------------------------------
 
-        private async Task<Airport> GetAirportById(int? airportId)
+        private async Task<Airport> GetAirportByName(string name)
         {
-            var airportDB = await _context.Airports.FindAsync(airportId);
+            var airportDB = await _context.Airports.SingleOrDefaultAsync(a => a.Name == name && a.Active == true);
 
             if (airportDB is null)
                 throw new Exception("El aeropuerto no existe");

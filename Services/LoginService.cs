@@ -14,7 +14,8 @@ namespace AIRCOM.Services
         private IConfiguration _config;
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        private readonly string[] types = new string[] { "Seguridad", "Administrador", "Mecánico", "Dirección" };
+        private readonly Dictionary<string, int> types = new () { 
+            { "Seguridad", 1 },  { "Mecánico", 2 }, { "Dirección", 3 }, { "Administrador", 4 } };
         public LoginService(DBContext context, IMapper mapper, IConfiguration config)
         {
             _context = context;
@@ -22,12 +23,14 @@ namespace AIRCOM.Services
             _config = config;
         }
 
-        public async Task<string> Login(Register register)
+        public async Task<(string, int)> Login(Register register)
         {
             string jwtToken;
+            int val = 0;
 
-            if (types.Contains(register.Rol))
+            if (types.ContainsKey(register.Rol))
             {
+                val = types[register.Rol];
                 var worker = await _context.Workers.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
                 if (worker is null)
                     throw new Exception();
@@ -41,7 +44,7 @@ namespace AIRCOM.Services
                 jwtToken = GenerateToken("0", client.ClientID.ToString(), "Client");
             }
 
-            return jwtToken;
+            return (jwtToken, val);
         }
 
         //------------------------------------------------------------------

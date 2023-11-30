@@ -23,13 +23,18 @@ namespace AIRCOM.Services
 
         public async Task Create(RepairDTO repair)
         {
-            var repairDB = _mapper.Map<Repair>(repair);
-
-            _context.Repairs.Add(repairDB);
+            var exist = await _context.Repairs.SingleOrDefaultAsync(r => r.Name == repair.Name);
+            if (exist is not null)
+                exist.Description = repair.Description;
+            else
+            {
+                var repairDB = _mapper.Map<Repair>(repair);
+                _context.Repairs.Add(repairDB);
+            }
             await _context.SaveChangesAsync();
         }
 
-        public async Task Edit(RepairDTO repair)
+        /*public async Task Edit(RepairDTO repair)
         {
             var repairDB = await GetRepairById(repair.RepairID);
 
@@ -37,11 +42,11 @@ namespace AIRCOM.Services
             repairDB.Description = repair.Description;
 
             await _context.SaveChangesAsync();
-        }
+        }*/
 
-        public async Task Delete(int repairId)
+        public async Task Delete(string name, bool all)
         {
-            var repairDB = await GetRepairById(repairId);
+            var repairDB = await GetRepairByName(name);
 
             _context.Repairs.Remove(repairDB);
             await _context.SaveChangesAsync();
@@ -49,9 +54,9 @@ namespace AIRCOM.Services
 
         // --------------------------------------------------------------
 
-        private async Task<Repair> GetRepairById(int? repairId)
+        private async Task<Repair> GetRepairByName(string name)
         {
-            var repairDB = await _context.Repairs.FindAsync(repairId);
+            var repairDB = await _context.Repairs.SingleOrDefaultAsync(r => r.Name == name);
 
             if (repairDB is null)
                 throw new Exception("La reparación no existe");

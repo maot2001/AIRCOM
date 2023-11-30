@@ -35,7 +35,8 @@ namespace AIRCOM.Services
             if (types.Contains(client.Type))
             {
                 var worker = _mapper.Map<Worker>(client);
-                worker.AirportID = int.Parse(userId);
+                if (worker.AirportID == 0)
+                    worker.AirportID = int.Parse(userId);
                 var airport = await _context.Airports.SingleOrDefaultAsync(a => a.AirportID == worker.AirportID);
                 worker.Airport = airport;
                 _context.Workers.Add(worker);
