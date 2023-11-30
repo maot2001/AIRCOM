@@ -1,5 +1,5 @@
 ﻿@{
-    int p = 1;
+    int p = 0;
     int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     string Cuadrado(int x) => p == x ? "active" : "pasive";
     int a = 0;
@@ -10,16 +10,53 @@
     AIRCOM ADMIN
 </header>
 
+
+@*Login del admin*@
+@if (p == 0)
+{
+    <main>
+        <center>
+            <h1 style="margin:5%; color:darkred;text-decoration:underline ">Bienvenido a la administración de AIRCOM</h1>
+            <h3> Por favor inicie sesión</h3>
+
+            <div>
+                <form method="post" name="login">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div>
+                        <div>Introduzca Contraseña:</div>
+                        <div>
+                            <input type="password" name="contraseña" placeholder="introduzca contraseña">
+                            <button class="badboton" type="submit">Entrar</button>
+                        </div>
+                    </div>
+                    @if (a == 1)
+                    {
+                        <aside class="error">
+                            @error
+                        </aside>
+                    }
+                </form>
+            </div>
+
+        </center>
+    </main>
+}
+
+
+
 @* Barra de navegacion *@
-<nav class="navegacion">
-    <form method="post" name="navegacion">
-        <div>
-            <button name="pagina" value="1" class=@Cuadrado(1) type="submit"><h2>Administrar</h2></button>
-            <p style="color:white;">____</p>
-            <button name="pagina" value="2" class=@Cuadrado(2) type="submit"><h2>Ver estadísticas</h2></button>
-        </div>
-    </form>
-</nav>
+@if (p != 0)
+{
+    <nav class="navegacion">
+        <form method="post" name="navegacion">
+            <div>
+                <button name="pagina" value="1" class=@Cuadrado(1) type="submit"><h2>Administrar</h2></button>
+                <p style="color:white;">____</p>
+                <button name="pagina" value="2" class=@Cuadrado(2) type="submit"><h2>Ver estadísticas</h2></button>
+            </div>
+        </form>
+    </nav>
+}
 
 
 @* Pagina 1 Administrar *@
@@ -31,39 +68,42 @@
             <summary>Añadir Aeropuerto</summary>
             <center>
                 @model AirportDTO
-                <form asp-controller="Airport" asp-action="Create" class="formulario" >
+                <form asp-controller="Airport" asp-action="Create" class="formulario">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    
+
                     @*Aqui son los datos del aeropuerto, este no debe figurar en la base de datos*@
                     <table>
 
                         <tr class="form-group">
                             <td>Nombre: </td>
-                            <td><input asp-for="Name" class="form-control" placeholder="introduzca nombre" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <td>
+                                <input asp-for="Name" class="form-control" placeholder="introduzca nombre" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
                         </tr>
 
                         <tr class="form-group">
                             <td>Coordenadas geográficas: </td>
-                            <td><input asp-for="Coordinates" class="form-control" placeholder="introduzca coordenadas" />
-                            <span asp-validation-for="Coordinates" class="text-danger"></span>
+                            <td>
+                                <input asp-for="Coordinates" class="form-control" placeholder="introduzca coordenadas" />
+                                <span asp-validation-for="Coordinates" class="text-danger"></span>
                         </tr>
 
                         <tr class="form-group">
                             <td>Dirección: </td>
-                            <td><input asp-for="Direction" class="form-control" placeholder="introduzca dirección" />
-                            <span asp-validation-for="Direction" class="text-danger"></span>
+                            <td>
+                                <input asp-for="Direction" class="form-control" placeholder="introduzca dirección" />
+                                <span asp-validation-for="Direction" class="text-danger"></span>
                         </tr>
 
                     </table>
-                    
+
                     @*Aqui van los datos del guardia de seguridad, este no debe figurar en la base de datos*@
                     <h3>Empleado de Seguridad</h3>
                     <table>
 
                         <div class="form-group">
                             <input asp-for="Security.Type" class="form-control" type="hidden" value="Seguridad" />
-                        </div>>
+                        </div>
 
                         <div class="form-group">
                             <input asp-for="Security.Nationality" class="form-control" type="hidden" value="Cuba" />
@@ -71,29 +111,37 @@
 
                         <tr class="form-group">
                             <td>Nombre: </td>
-                            <td><input asp-for="Security.Name" class="form-control" placeholder="introduzca nombre" />
-                            <span asp-validation-for="Security.Name" class="text-danger"></span>
+                            <td>
+                                <input asp-for="Security.Name" class="form-control" placeholder="introduzca nombre" />
+                                <span asp-validation-for="Security.Name" class="text-danger"></span>
+                            </td>
                         </tr>
 
                         <tr class="form-group">
                             <td>Carnet de identidad: </td>
-                            <td><input asp-for="Security.CI" class="form-control" placeholder="Introduzca ID" pattern="[0-9]{1,}" title="Debe ser numero" />
-                            <span asp-validation-for="Security.CI" class="text-danger"></span>
+                            <td>
+                                <input asp-for="Security.CI" class="form-control" placeholder="Introduzca ID" pattern="[0-9]{1,}" title="Debe ser numero" />
+                                <span asp-validation-for="Security.CI" class="text-danger"></span>
+                            </td>
                         </tr>
 
                         <tr class="form-group">
                             <td>Correo electrónico: </td>
-                            <td><input asp-for="Security.Email" class="form-control" placeholder="introduzca su correo" />
-                            <span asp-validation-for="Security.Email" class="text-danger"></span>
+                            <td>
+                                <input asp-for="Security.Email" class="form-control" placeholder="introduzca su correo" />
+                                <span asp-validation-for="Security.Email" class="text-danger"></span>
+                            </td>
                         </tr>
 
                         <tr class="form-group">
                             <td>Contraseña: </td>
-                            <td><input asp-for="Security.Pwd" type="password" placeholder="Introduzca contraseña" />
-                            <span asp-validation-for="Security.Pwd" class="text-danger"></span>
+                            <td>
+                                <input asp-for="Security.Pwd" type="password" class="form-control" placeholder="Introduzca contraseña" />
+                                <span asp-validation-for="Security.Pwd" class="text-danger"></span>
+                            </td>
                         </tr>
                     </table>
-                    
+
                     @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
                     @if (a == 1)
                     {
@@ -103,7 +151,7 @@
                     }
 
                     <div class="form-group">
-                        <input type="submit" value="Enviar" class="btn btn-primary" />
+                        <input type="submit" value="Enviar" class="boton" />
                     </div>
 
                 </form>
