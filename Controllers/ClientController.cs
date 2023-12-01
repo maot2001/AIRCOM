@@ -20,8 +20,8 @@ namespace AIRCOM.Controllers
         //[Authorize(Policy = "Client")]
         public async Task<IActionResult> Index()
         {
-            ViewData["p"] = 3;
-            ViewData["a"] = 0;
+            ViewData["page"] = 3;
+            ViewData["lugar_del_error"] = 0;
             ViewData["clients"] = await _service.Get("1");
             return View("Security");
         }
@@ -39,24 +39,21 @@ namespace AIRCOM.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientDTO client)
         {
-            ViewData["p"] = 4;
             try
             {
-                ViewData["a"] = 0;
                 await _service.Create(client, "1");
-                return View("Security");
+                return RedirectToAction(nameof(SecurityController.Index), "Security");
             }
             catch (DbUpdateException e)
             {
-                ViewData["a"] = 4;
-                ViewData["error"] = "Error al insertar valores repetidos";
-                return View("Security");
+                int lugar_del_error = 4;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
-                ViewData["a"] = 4;
-                ViewData["error"] = e.Message;
-                return View("Security");
+                int lugar_del_error = 4;
+                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 

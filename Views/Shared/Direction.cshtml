@@ -80,36 +80,35 @@
                         <button class="boton" type="submit">Crear</button>
                     </div>
                 </form>
-                @if (d)
+                @if (ViewBag.lugar_del_error == 1)
                 {
                     <aside class="error">
-                        Necesita especificar un tipo
+                        ViewBag.error
                     </aside>
                 }
             </div>
         </center>
-
     }
     <div class="ofertas">
-        @for (int i = 1; i < 10; i++)
+        @foreach (InstallationDTO inst in ViewBag.installations)
         {
             @if (!a)
             {
                 <div>
                     <div>
                         <div>
-                            <strong>Instalación #@i</strong>
+                            <strong>Instalación #@Html.DisplayFor(m=>inst.InstallationID)</strong>
                         </div>
                         <div>
-                            <strong>Ubicación:</strong> Norte
+                            <strong>Ubicación:</strong> @Html.DisplayFor(m=>inst.Ubication)
                         </div>
                         @if (b)
                         {
                             <div>
-                                <strong>Nombre:</strong> No tiene
+                                <strong>Nombre:</strong> @Html.DisplayFor(m=>inst.Name)
                             </div>
                             <div>
-                                <strong>Tipo:</strong> Oficina
+                                <strong>Tipo:</strong> @Html.DisplayFor(m=>inst.Type)
                             </div>
                             <center>
                                 <button class="boton" style="background-color:rgb(20,150,20)">Editar</button>
@@ -168,37 +167,34 @@
                     <h4>Agregar nuevo servicio</h4>
                     <button class="no">✖️</button>
                 </div>
-                <form method="post">
+                <form asp-controller="ServiceInstallation" asp-action="Create">
                     <div>
                         <div>
                             <div>
                                 <h5>Instalación:</h5>
                             </div>
 
-                            <select>
-                                @foreach (var x in sol)
-                                {
-                                    <option>Instalacion #@x</option>
-                                }
-                            </select>
+                            <div>
+                                <select name="InstallationID" asp-items="ViewBag.installations"></select>
+                            </div>
                         </div>
                         <div>
                             <div>
                                 <h5>Nombre:</h5>
                             </div>
-                            <input type="text">
+                            <input type="text" name="name">
                         </div>
                     </div>
                     <div style="justify-content:center;">
                         <h5>Precio: $</h5>
-                        <input type="number">
+                        <input type="number" name="price">
                         <button class="boton" type="submit">Crear</button>
                     </div>
                 </form>
-                @if (d)
+                @if (ViewBag.lugar_del_error == 2)
                 {
                     <aside class="error">
-                        Necesita especificar un nombre
+                        @ViewBag.error
                     </aside>
                 }
             </div>
@@ -206,7 +202,7 @@
 
     }
     <div class="ofertas">
-        @for (int i = 0; i < 10; i++)
+        @foreach (ServiceInstallationDTO service in ViewBag.services)
         {
             @if (a)
             {
@@ -214,15 +210,15 @@
                     <div style="display:flex;">
                         <div>
                             <div>
-                                Comida Rapida y Barata
+                                @Html.DisplayFor(m=>service.Name)
                             </div>
                             <div>
-                                Instalacion #4
+                                Instalacion #@Html.DisplayFor(m=>service.InstallationID)
                             </div>
                         </div>
                         <aside>
                             <div>
-                                <h3>$5.99</h3>
+                                <h3>$@Html.DisplayFor(m=>service.Price)/h</h3>
                             </div>
                             <div>
                                 ⭐⭐⭐⭐⭐
@@ -282,42 +278,36 @@
                     <h4>Agregar nueva reparación</h4>
                     <button class="no">✖️</button>
                 </div>
-                <form method="post">
+                <form asp-controller="RepairInstallation" asp-action="Create">
                     <div>
                         <div>
                             <div>
                                 <h5>Instalación:</h5>
                             </div>
 
-                            <select>
-                                @foreach (var x in sol)
-                                {
-                                    <option>Instalacion #@x</option>
-                                }
-                            </select>
+                            <div>
+                                <select name="InstallationID" asp-items="ViewBag.installations"></select>
+                            </div>
                         </div>
                         <div>
                             <div>
                                 <h5>Reparación:</h5>
                             </div>
-                            <select>
-                                @foreach (var x in sol)
-                                {
-                                    <option>Reparacion capital de madera</option>
-                                }
-                            </select>
+                            <div>
+                                <select name="RepairID" asp-items="ViewBag.rep"></select>
+                            </div>
                         </div>
                     </div>
                     <div style="justify-content:center;">
                         <h5>Precio: $</h5>
-                        <input type="number">
+                        <input type="number" name="price">
                         <button class="boton" type="submit">Crear</button>
                     </div>
                 </form>
-                @if (d)
+                @if (ViewBag.lugar_del_error == 3)
                 {
                     <aside class="error">
-                        Necesita especificar un tipo
+                        @ViewBag.error
                     </aside>
                 }
             </div>
@@ -326,7 +316,7 @@
     }
     <div class="ofertas">
 
-        @for (int i = 0; i < 10; i++)
+        @foreach (RepairInstallationDTO repair in ViewBag.repairs)
         {
             @if (a)
             {
@@ -334,15 +324,15 @@
                     <div style="display:flex;justify-content:space-between;">
                         <div>
                             <div>
-                                Reparacion capital
+                                @Html.DisplayFor(m=>repair.Name)
                             </div>
                             <div>
-                                Instalacion #4
+                                Instalacion #@Html.DisplayFor(m=>repair.InstallationID)
                             </div>
                         </div>
                         <aside>
                             <div>
-                                <h3>$5.99/h</h3>
+                                <h3>$@Html.DisplayFor(m=>repair.Price)/h</h3>
                             </div>
                             <div>
                                 ⭐⭐⭐⭐⭐

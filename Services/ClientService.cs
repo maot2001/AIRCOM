@@ -22,9 +22,18 @@ namespace AIRCOM.Services
             var workers = await _context.Workers.Where(w => w.AirportID == int.Parse(userId)).ToListAsync();
             List<ClientDTO> result = new();
             foreach (var client in clients)
-                result.Add(_mapper.Map<ClientDTO>(client));
+            {
+                var dto = _mapper.Map<ClientDTO>(client);
+                dto.Rol = "Cliente";
+                result.Add(dto);
+            }
+
             foreach (var worker in workers)
-                result.Add(_mapper.Map<ClientDTO>(worker));
+            {
+                var dto = _mapper.Map<ClientDTO>(worker);
+                dto.Rol = "Trabajador";
+                result.Add(dto);
+            }
             return result;
         }
 
@@ -119,8 +128,9 @@ namespace AIRCOM.Services
         private async Task Errors(ClientDTO client)
         {
             var errors = await _context.Clients.SingleOrDefaultAsync(c => c.CI == client.CI && c.Nationality == client.Nationality);
+            var errors2 = await _context.Workers.SingleOrDefaultAsync(c => c.CI == client.CI && c.Nationality == client.Nationality);
 
-            if (errors is not null)
+            if (errors is not null || errors2 is not null)
                 throw new Exception("Credenciales existentes");
         }
     }

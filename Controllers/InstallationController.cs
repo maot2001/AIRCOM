@@ -31,11 +31,12 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(InstallationDTO installation)
         {
+            int page = 1;
             try
             {
                 //var userId = HttpContext.User.FindFirst("Airport")?.Value;
                 await _service.Create(installation, "1");
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(DirectionController.Index), "Direction", new { page = page });
             }
             catch (Exception e)
             {

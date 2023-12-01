@@ -16,21 +16,27 @@ namespace AIRCOM.Controllers
 
         public IActionResult Index()
         { 
-            ViewData["p"] = 0;
-            ViewData["a"] = 0;
+            ViewData["page"] = 0;
+            ViewData["lugar_del_error"] = 0;
+            return View("Admin");
+        }
+        
+        public IActionResult Init(int page = 1, int lugar_del_error = 0, string error = "")
+        {
+            ViewData["page"] = page;
+            ViewData["lugar_del_error"] = lugar_del_error;
+            ViewData["error"] = error;
             return View("Admin");
         }
 
-        public IActionResult Init(string pwd)
+        public IActionResult Comprobe(string pwd)
         {
             if (pwd == "1234")
             {
-                ViewData["p"] = 1;
-                ViewData["a"] = 0;
-                return View("Admin");
+                return RedirectToAction(nameof(Init));
             }
-            ViewData["p"] = 0;
-            ViewData["a"] = 1;
+            ViewData["page"] = 0;
+            ViewData["lugar_del_error"] = 1;
             ViewData["error"] = "Contraseña inválida";
             return View("Admin");
         }

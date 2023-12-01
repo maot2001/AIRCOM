@@ -12,6 +12,7 @@ namespace AIRCOM.Models.DTO
         public string Nationality { get; set; }
         public string Email { get; set; }
         public string? Pwd { get; set; }
+        public string? Rol { get; set; }
 
     }
 }

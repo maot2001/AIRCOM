@@ -29,19 +29,8 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RepairDTO repair)
         {
-            ViewData["p"] = 1;
-            try
-            {
-                await _service.Create(repair);
-                ViewData["a"] = 0;
-                return View("Admin");
-            }
-            catch (Exception e)
-            {
-                ViewData["a"] = 2;
-                ViewData["error"] = e.Message;
-                return View("Admin");
-            }
+            await _service.Create(repair);
+            return RedirectToAction(nameof(AdminController.Init), "Admin");
         }
         /*
         // PUT: Repair
@@ -69,18 +58,15 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string name, bool cascada)
         {
-            ViewData["p"] = 1;
             try
             {
                 await _service.Delete(name, cascada);
-                ViewData["a"] = 0;
-                return View("Admin");
+                return RedirectToAction(nameof(AdminController.Init), "Admin");
             }
             catch (Exception e)
             {
-                ViewData["a"] = 5;
-                ViewData["error"] = e.Message;
-                return View("Admin");
+                int lugar_del_error = 5;
+                return RedirectToAction(nameof(AdminController.Init), "Admin", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
         // ---------------------------------------------------------------------

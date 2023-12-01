@@ -116,7 +116,7 @@ namespace AIRCOM.Services
                 throw new Exception();
 
             var exist = _context.RepairShips.SingleOrDefaultAsync(rs =>
-            rs.InstallationID == repair.InstallationID && rs.RepairID == repair.RepairID && rs.Plate == shipId);
+            rs.InstallationID == repair.InstallationID && rs.RepairID == repair.RepairID && rs.Plate == shipId && rs.Init == null);
             if (exist is not null)
                 throw new Exception();
         }

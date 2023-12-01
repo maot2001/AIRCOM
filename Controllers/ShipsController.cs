@@ -19,13 +19,11 @@ namespace AIRCOM.Controllers
         // Security --------------------------------------------------
         // GET: Ships
         //[Authorize(Policy = "Security")]
-        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ViewData["p"] = 2;
-            ViewData["a"] = 0;
-            ViewData["ships"] = await _service.Get();
-            return View("Security");
+            int page = 2;
+            var ships = await _service.Get();
+            return RedirectToAction(nameof(SecurityController.Index), "Security", new { ships = ships.ToList(), page = page });
         }
 
         // POST: Ships
@@ -33,24 +31,21 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ShipsDTO ship)
         {
-            ViewData["p"] = 4;
             try
             {
-                ViewData["a"] = 0;
                 await _service.Create(ship);
-                return View("Security");
+                return RedirectToAction(nameof(SecurityController.Index), "Security");
             }
             catch (DbUpdateException e)
             {
-                ViewData["a"] = 6;
-                ViewData["error"] = "Error al insertar valores repetidos";
-                return View("Security");
+                int lugar_del_error = 6;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
-                ViewData["a"] = 6;
-                ViewData["error"] = e.Message;
-                return View("Security");
+                int lugar_del_error = 6;
+                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 

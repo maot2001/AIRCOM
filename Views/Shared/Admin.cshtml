@@ -9,7 +9,7 @@
 
 
 @*Login del admin*@
-@if (ViewBag.p == 0)
+@if (ViewBag.page == 0)
 {
     <main>
         <center>
@@ -17,7 +17,7 @@
             <h3> Por favor inicie sesión</h3>
 
             <div>
-                <form asp-action="Init">
+                <form asp-action="Comprobe">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div>
                         <div>Introduzca Contraseña:</div>
@@ -26,7 +26,7 @@
                             <button class="badboton" type="submit">Entrar</button>
                         </div>
                     </div>
-                    @if (ViewBag.a == 1)
+                    @if (ViewBag.lugar_del_error == 1)
                     {
                         <aside class="error">
                             @ViewBag.error
@@ -42,7 +42,7 @@
 
 
 @* Barra de navegacion *@
-@if (ViewBag.p != 0)
+@if (ViewBag.page != 0)
 {
     <nav class="navegacion">
         <form asp-action="Index">
@@ -55,9 +55,8 @@
     </nav>
 }
 
-
 @* Pagina 1 Administrar *@
-@if (ViewBag.p == 1)
+@if (ViewBag.page == 1)
 {
     <section>
         @*Primer formulario: Añadir Aeropuerto*@
@@ -131,7 +130,7 @@
                     </table>
 
                     @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
-                    @if (ViewBag.a == 2)
+                    @if (ViewBag.lugar_del_error == 2)
                     {
                         <aside class="error">
                             @ViewBag.error
@@ -203,7 +202,7 @@
                         </tr>
                     </table>
                     @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
-                    @if (ViewBag.a == 3)
+                    @if (ViewBag.lugar_del_error == 3)
                     {
                         <aside class="error">
                             @ViewBag.error
@@ -228,7 +227,7 @@
                         Al eliminar se elimina tambien todo rastro de este en la base de datos
                     </div>
                     @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
-                    @if (ViewBag.a == 4)
+                    @if (ViewBag.lugar_del_error == 4)
                     {
                         <aside class="error">
                             @ViewBag.error
@@ -254,7 +253,7 @@
                         Al eliminar se elimina tambien todo rastro de este en la base de datos
                     </div>
                     @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
-                    @if (ViewBag.a == 5)
+                    @if (ViewBag.lugar_del_error == 5)
                     {
                         <aside class="error">
                             @ViewBag.error
@@ -313,7 +312,7 @@
                         </tr>
                     </table>
                     @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
-                    @if (ViewBag.a == 6)
+                    @if (ViewBag.lugar_del_error == 6)
                     {
                         <aside class="error">
                             @ViewBag.error
