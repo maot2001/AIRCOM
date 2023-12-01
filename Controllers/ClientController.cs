@@ -19,7 +19,12 @@ namespace AIRCOM.Controllers
 
         //[Authorize(Policy = "Client")]
         public async Task<IActionResult> Index()
-            => View(await _service.Get("1"));
+        {
+            ViewData["p"] = 3;
+            ViewData["a"] = 0;
+            ViewData["clients"] = await _service.Get("1");
+            return View("Security");
+        }
         /*{
             var clients = await _service.Get("1");
             return View(_mapper.Map<List<ClientDTO>>(clients));
@@ -34,22 +39,28 @@ namespace AIRCOM.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientDTO client)
         {
+            ViewData["p"] = 4;
             try
             {
+                ViewData["a"] = 0;
                 await _service.Create(client, "1");
-                return RedirectToAction(nameof(Create));
+                return View("Security");
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores repetidos");
+                ViewData["a"] = 4;
+                ViewData["error"] = "Error al insertar valores repetidos";
+                return View("Security");
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                ViewData["a"] = 4;
+                ViewData["error"] = e.Message;
+                return View("Security");
             }
         }
 
-        public IActionResult Edit(int id)
+        /*public IActionResult Edit(int id)
             => View(new ClientDTO { ClientID = id});
 
         [HttpPost]
@@ -82,6 +93,6 @@ namespace AIRCOM.Controllers
             {
                 return NotFound(e.Message);
             }
-        }
+        }*/
     }
 }

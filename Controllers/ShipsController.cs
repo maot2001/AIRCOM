@@ -20,35 +20,43 @@ namespace AIRCOM.Controllers
         // GET: Ships
         //[Authorize(Policy = "Security")]
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Index()
         {
-            var ships = await _service.Get();
-            return View(ships);
+            ViewData["p"] = 2;
+            ViewData["a"] = 0;
+            ViewData["ships"] = await _service.Get();
+            return View("Security");
         }
 
         // POST: Ships
         //[Authorize(Policy = "Security")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ShipsDTO ship)
+        public async Task<IActionResult> Create(ShipsDTO ship)
         {
+            ViewData["p"] = 4;
             try
             {
+                ViewData["a"] = 0;
                 await _service.Create(ship);
-                return RedirectToAction(nameof(Get));
+                return View("Security");
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores repetidos");
+                ViewData["a"] = 6;
+                ViewData["error"] = "Error al insertar valores repetidos";
+                return View("Security");
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                ViewData["a"] = 6;
+                ViewData["error"] = e.Message;
+                return View("Security");
             }
         }
 
         // PUT: Ships/5
         //[Authorize(Policy = "Security")]
-        [HttpPut]
+        /*[HttpPut]
         public async Task<IActionResult> Edit([FromBody] ShipsDTO ship)
         {
             try
@@ -94,6 +102,6 @@ namespace AIRCOM.Controllers
             return View((ships, token));
         }
         // -----------------------------------------------------------   
-
+        */
     }
 }
