@@ -1,7 +1,6 @@
 ﻿@{
-    int p = 0;
     int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-    string Cuadrado(int x) => p == x ? "active" : "pasive";
+    string Cuadrado(int x) => ViewBag.p == x ? "active" : "pasive";
 }
 
 <header style="background:darkred;">
@@ -153,7 +152,7 @@
             <center>
                 <form asp-controller="Repair" asp-action="Create" class="formulario">
                     <div><input name="name" placeholder="Introducir nombre" required /></div>
-                    <div><input name="description" placeholder="Introducir descripcion" required /></div>
+                    <div><textarea name="description" placeholder="Introducir descripcion" required></textarea></div>
                     @*Si el nombre existe, se edita la descripcion, sino se crea la reparacion*@
                     <div><button class="boton" type="submit">Enviar</button></div>
                 </form>

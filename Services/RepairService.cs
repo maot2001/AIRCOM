@@ -1,6 +1,7 @@
 ﻿using AIRCOM.Models;
 using AIRCOM.Models.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Services
@@ -19,6 +20,12 @@ namespace AIRCOM.Services
         {
             var repairs = await _context.Repairs.ToListAsync();
             return _mapper.Map<List<RepairDTO>>(repairs);
+        }
+
+        public async Task<SelectList> Select()
+        {
+            var repairs = await Get();
+            return new SelectList(repairs, "RepairID", "Name");
         }
 
         public async Task Create(RepairDTO repair)

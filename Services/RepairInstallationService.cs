@@ -36,7 +36,7 @@ namespace AIRCOM.Services
             await Errors(repair, userId);
 
             var repairDB = await GetRepairInstallation(repair);
-            repairDB.Price = repair.Price;
+            //epairDB.Price = repair.Price;
 
             await _context.SaveChangesAsync();
         }

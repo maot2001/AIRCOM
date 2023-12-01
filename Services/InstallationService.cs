@@ -1,6 +1,7 @@
 ﻿using AIRCOM.Models;
 using AIRCOM.Models.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Services
@@ -19,6 +20,12 @@ namespace AIRCOM.Services
         {
             var installation = await _context.Installations.Where(i => i.AirportID == int.Parse(userId)).ToListAsync();
             return _mapper.Map<List<InstallationDTO>>(installation);
+        }
+
+        public async Task<SelectList> Select(string userId)
+        {
+            var installations = await Get(userId);
+            return new SelectList(installations, "ID", "Name");
         }
 
         public async Task Create(InstallationDTO installation, string userId)
@@ -40,7 +47,6 @@ namespace AIRCOM.Services
             var installationDB = await GetInstallationById(installation.ID);
 
             installationDB.Name = installation.Name;
-            installationDB.Direction = installation.Direction;
             installationDB.Ubication = installation.Ubication;
             installationDB.InstallationID = installation.InstallationID;
 

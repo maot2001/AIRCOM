@@ -1,0 +1,394 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    int[] sol = new int[] { 1, 2, 3, 4 };
+    bool a = true;
+    bool b = true;
+    bool c = true;
+    bool d = true;
+    string Cuadrado(int x) => ViewBag.page == x ? "active" : "pasive";
+}
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEREOPUERTO > USUARIO</h4>
+</nav>
+<nav class="navegacion">
+    <form method="post">
+        <div>
+            <button class=@Cuadrado(1) type="submit" name="page" value="1"><h2>Instalaciones</h2></button>
+            <p style="color:white;">____</p>
+            <button class=@Cuadrado(2) type="submit" name="page" value="2"><h2>Servicios</h2></button>
+            <p style="color:white;">____</p>
+            <button class=@Cuadrado(3) type="submit" name="page" value="3"><h2>Reparaciones</h2></button>
+        </div>
+    </form>
+    <aside>
+        <button class="no">➕</button>
+        <input type="text" placeholder="🔍buscar">
+    </aside>
+</nav>
+@if (ViewBag.page == 1)
+{
+
+    @if (c)
+    {
+        <center class="add">
+            <div>
+                <div>
+                    <h4>Agregar nueva instalación</h4>
+                    <button class="no">✖️</button>
+                </div>
+                <form asp-controller="Installation" asp-action="Create">
+                    <div>
+                        <div>
+                            <div>
+                                <div>
+                                    <h5>Id:</h5>
+                                    <input type="number" name="installationid" />
+                                </div>
+                            </div>
+
+                            <div>
+                                <h5>Ubicación:</h5>
+                            </div>
+
+                            <select name="ubication">
+                                @foreach (var x in new string[] { "Norte", "Sur", "Este", "Oeste", "Centro", "Noreste", "Noroeste", "Sureste", "Suroeste" })
+                                {
+                                    <option>Instalacion #@x</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <div>
+                                <h5>Nombre (Opcional):</h5>
+                            </div>
+                            <input type="text" name="name">
+                        </div>
+                    </div>
+                    <div style="justify-content:center;">
+                        <h5>Tipo:</h5>
+                        <input type="text" name="type">
+                    </div>
+                    <div>
+                        <button class="boton" type="submit">Crear</button>
+                    </div>
+                </form>
+                @if (d)
+                {
+                    <aside class="error">
+                        Necesita especificar un tipo
+                    </aside>
+                }
+            </div>
+        </center>
+
+    }
+    <div class="ofertas">
+        @for (int i = 1; i < 10; i++)
+        {
+            @if (!a)
+            {
+                <div>
+                    <div>
+                        <div>
+                            <strong>Instalación #@i</strong>
+                        </div>
+                        <div>
+                            <strong>Ubicación:</strong> Norte
+                        </div>
+                        @if (b)
+                        {
+                            <div>
+                                <strong>Nombre:</strong> No tiene
+                            </div>
+                            <div>
+                                <strong>Tipo:</strong> Oficina
+                            </div>
+                            <center>
+                                <button class="boton" style="background-color:rgb(20,150,20)">Editar</button>
+                            </center>
+                        }
+                        @if (!b)
+                        {
+                            <form method="post">
+                                <div>
+                                    <strong>Nombre:</strong> <input name="newName" value="no tiene">
+                                </div>
+                                <div>
+                                    <strong>Tipo:</strong> <input name="newType" value="Oficina">
+                                </div>
+                                <center>
+                                    <button class="boton" type="submit" style="background-color:rgb(20,150,20)">Enviar</button>
+                                    <button class="boton" style="background-color:rgb(175,10,10)">Volver</button>
+
+                                    <button class="boton" style="background-color:rgb(165,5,5)">Eliminar</button>
+                                </center>
+                            </form>
+                        }
+                        <center>
+                            <button class="boton">Servicios</button>
+                            <button class="boton">Reparaciones</button>
+                        </center>
+                    </div>
+                </div>
+            }
+            @if (a)
+            {
+                <div style="display:block;">
+                    <div>
+                        <h3>¿Desea eliminarlo?</h3>
+                    </div>
+                    <form method="post">
+                        <center>
+                            <button type="submit" class="boton" style="background-color:rgb(20,150,20)">SI</button>
+                            <button class="boton" style="background-color:rgb(175,10,10)">NO</button>
+                        </center>
+                    </form>
+                </div>
+            }
+        }
+    </div>
+
+}
+
+@if (ViewBag.page == 2)
+{
+    @if (a && b)
+    {
+        <center class="add">
+            <div>
+                <div>
+                    <h4>Agregar nuevo servicio</h4>
+                    <button class="no">✖️</button>
+                </div>
+                <form method="post">
+                    <div>
+                        <div>
+                            <div>
+                                <h5>Instalación:</h5>
+                            </div>
+
+                            <select>
+                                @foreach (var x in sol)
+                                {
+                                    <option>Instalacion #@x</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <div>
+                                <h5>Nombre:</h5>
+                            </div>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div style="justify-content:center;">
+                        <h5>Precio: $</h5>
+                        <input type="number">
+                        <button class="boton" type="submit">Crear</button>
+                    </div>
+                </form>
+                @if (d)
+                {
+                    <aside class="error">
+                        Necesita especificar un nombre
+                    </aside>
+                }
+            </div>
+        </center>
+
+    }
+    <div class="ofertas">
+        @for (int i = 0; i < 10; i++)
+        {
+            @if (a)
+            {
+                <div style="display:block">
+                    <div style="display:flex;">
+                        <div>
+                            <div>
+                                Comida Rapida y Barata
+                            </div>
+                            <div>
+                                Instalacion #4
+                            </div>
+                        </div>
+                        <aside>
+                            <div>
+                                <h3>$5.99</h3>
+                            </div>
+                            <div>
+                                ⭐⭐⭐⭐⭐
+                            </div>
+                        </aside>
+                    </div>
+                    <div style="margin-top:2%;">
+                        <button class="boton">Cambiar precio</button>
+                        <button class="boton" style="background-color:rgb(175,10,10)">Eliminar</button>
+                        <button class="boton">Ver reseñas</button>
+                    </div>
+                </div>
+            }
+            @if (!a && b)
+            {
+                <div style="display:block;">
+                    <div>
+                        <h3>Nuevo precio del servicio:</h3>
+                    </div>
+                    <form method="post">
+                        <center>
+                            $
+                            <input type="number" name="newPrice">
+                        </center>
+                        <center>
+                            <button type="submit" class="boton" style="background-color:rgb(20,150,20)">Cambiar</button>
+                            <button class="boton" style="background-color:rgb(175,10,10)">Volver</button>
+                        </center>
+                    </form>
+                </div>
+            }
+            @if (!a && !b)
+            {
+                <div style="display:block;">
+                    <div>
+                        <h3>¿Desea eliminarlo?</h3>
+                    </div>
+                    <form method="post">
+                        <center>
+                            <button type="submit" class="boton" style="background-color:rgb(20,150,20)">SI</button>
+                            <button class="boton" style="background-color:rgb(175,10,10)">NO</button>
+                        </center>
+                    </form>
+                </div>
+            }
+        }
+    </div>
+}
+
+@if (ViewBag.page == 3)
+{
+    @if (a && b)
+    {
+        <center class="add">
+            <div>
+                <div>
+                    <h4>Agregar nueva reparación</h4>
+                    <button class="no">✖️</button>
+                </div>
+                <form method="post">
+                    <div>
+                        <div>
+                            <div>
+                                <h5>Instalación:</h5>
+                            </div>
+
+                            <select>
+                                @foreach (var x in sol)
+                                {
+                                    <option>Instalacion #@x</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <div>
+                                <h5>Reparación:</h5>
+                            </div>
+                            <select>
+                                @foreach (var x in sol)
+                                {
+                                    <option>Reparacion capital de madera</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div style="justify-content:center;">
+                        <h5>Precio: $</h5>
+                        <input type="number">
+                        <button class="boton" type="submit">Crear</button>
+                    </div>
+                </form>
+                @if (d)
+                {
+                    <aside class="error">
+                        Necesita especificar un tipo
+                    </aside>
+                }
+            </div>
+        </center>
+
+    }
+    <div class="ofertas">
+
+        @for (int i = 0; i < 10; i++)
+        {
+            @if (a)
+            {
+                <div style="display:block">
+                    <div style="display:flex;justify-content:space-between;">
+                        <div>
+                            <div>
+                                Reparacion capital
+                            </div>
+                            <div>
+                                Instalacion #4
+                            </div>
+                        </div>
+                        <aside>
+                            <div>
+                                <h3>$5.99/h</h3>
+                            </div>
+                            <div>
+                                ⭐⭐⭐⭐⭐
+                            </div>
+                        </aside>
+                    </div>
+                    <div style="margin-top:2%;">
+                        <button class="boton">Cambiar precio</button>
+                        <button class="boton" style="background-color:rgb(175,10,10)">Eliminar</button>
+                        <button class="boton">Ver reseñas</button>
+                    </div>
+                </div>
+            }
+            @if (!a && b)
+            {
+                <div style="display:block;">
+                    <div>
+                        <h3>Nuevo precio por hora:</h3>
+                    </div>
+                    <form method="post">
+                        <center>
+                            $
+                            <input type="number" name="newPrice">
+                            /h
+                        </center>
+                        <center>
+                            <button type="submit" class="boton" style="background-color:rgb(20,150,20)">Cambiar</button>
+                            <button class="boton" style="background-color:rgb(175,10,10)">Volver</button>
+                        </center>
+                    </form>
+                </div>
+            }
+            @if (!a && !b)
+            {
+                <div style="display:block;">
+                    <div>
+                        <h3>¿Desea eliminarlo?</h3>
+                    </div>
+                    <form method="post">
+                        <center>
+                            <button type="submit" class="boton" style="background-color:rgb(20,150,20)">SI</button>
+                            <button class="boton" style="background-color:rgb(175,10,10)">NO</button>
+                        </center>
+                    </form>
+                </div>
+            }
+        }
+    </div>
+}
