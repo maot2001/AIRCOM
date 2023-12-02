@@ -23,11 +23,12 @@ namespace AIRCOM.Controllers
             try
             {
                 await _service.RequestRepair(plate, repair);
-                return RedirectToAction(nameof(GetRepairs));
+                return RedirectToAction(nameof(SecurityController.Index), "Security");
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                int lugar_del_error = 7;
+                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
         // ---------------------------------------------------------------------
@@ -76,23 +77,23 @@ namespace AIRCOM.Controllers
 
         // PUT: RepairShip/ProcessRepair
         //[Authorize(Policy = "Mechanic")]
-        [HttpPut("ProcessRepair")]
-        public async Task<IActionResult> ProcessRepair([FromBody] RepairShipDTO repair)
+        [HttpPost]
+        public async Task<IActionResult> ProcessRepair(RepairShipDTO repair)
         {
             try
             {
                 await _service.ProcessRepair(repair);
-                return RedirectToAction(nameof(GetRequest));
+                return RedirectToAction(nameof(MechanicController.Index), "Mechanic");
             }
             catch
             {
-                return NotFound();
+                return RedirectToAction(nameof(MechanicController.Index), "Mechanic");
             }
         }
 
         // PUT: RepairShip/FinishRepair
         //[Authorize(Policy = "Mechanic")]
-        [HttpPut("FinishRepair")]
+        [HttpPost]
         public async Task<IActionResult> FinishRepair([FromBody] RepairShipDTO repair)
         {
             try
