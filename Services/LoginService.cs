@@ -1,4 +1,4 @@
-﻿using AIRCOM.Models;
+using AIRCOM.Models;
 using AIRCOM.Models.DTO;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -27,23 +27,18 @@ namespace AIRCOM.Services
         {
             string jwtToken;
             int val = 0;
+            var client = await _context.Clients.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
 
-            if (types.ContainsKey(register.Rol))
+            if (client is null)
             {
-                val = types[register.Rol];
                 var worker = await _context.Workers.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
                 if (worker is null)
                     throw new Exception();
                 jwtToken = GenerateToken(worker.AirportID.ToString(), worker.WorkerID.ToString(), worker.Type);
+                val = types[worker.Type];
             }
             else
-            {
-                var client = await _context.Clients.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
-                if (client is null)
-                    throw new Exception();
                 jwtToken = GenerateToken("0", client.ClientID.ToString(), "Client");
-            }
-
             return (jwtToken, val);
         }
 
