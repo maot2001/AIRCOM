@@ -57,16 +57,20 @@ namespace AIRCOM.Services
             switch (type)
             {
                 case 0:
-                    repairs = await _context.RepairShips.Where(SR => SR.Init == null && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                    repairs = await _context.RepairShips
+                        .Where(SR => SR.Init == null && SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 1:
-                    repairs = await _context.RepairShips.Where(SR => SR.Finish == null && SR.Init != null && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                    repairs = await _context.RepairShips
+                        .Where(SR => SR.Finish == null && SR.Init != null && SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 2:
-                    repairs = await _context.RepairShips.Where(SR => SR.Finish != null && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                    repairs = await _context.RepairShips
+                        .Where(SR => SR.Finish != null && SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 3:
-                    repairs = await _context.RepairShips.Where(SR => SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                    repairs = await _context.RepairShips
+                        .Where(SR => SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 default:
                     repairs = await _context.RepairShips.Where(SR => SR.Ships.ClientID == id).ToListAsync();
@@ -99,7 +103,7 @@ namespace AIRCOM.Services
                 repair.newTime = DateTime.Now;
 
             var shipRepair = await _context.RepairShips.SingleOrDefaultAsync(r =>
-            r.InstallationID == repair.InstallationID && r.RepairID == repair.RepairID &&
+            r.RepairInstallation.InstallationID == repair.InstallationID && r.RepairInstallation.RepairID == repair.RepairID &&
             r.Plate == repair.Plate && r.Init == repair.Init);
 
             if (shipRepair is null)
@@ -116,11 +120,12 @@ namespace AIRCOM.Services
                 throw new Exception();
 
             var exist = await _context.RepairShips.SingleOrDefaultAsync(rs =>
-            rs.InstallationID == repair.InstallationID && rs.RepairID == repair.RepairID && rs.Plate == shipId && rs.Init == null);
+            rs.RepairInstallation.InstallationID == repair.InstallationID && rs.RepairInstallation.RepairID == repair.RepairID &&
+            rs.Plate == shipId && rs.Init == null);
             if (exist is not null)
                 throw new Exception();
 
-            repair.AirportID = repairDB.AirportID;
+            repair.AirportID = repairDB.Installation.AirportID;
             repair.Name = repairDB.Name;
             repair.Price = repairDB.Price;
         }

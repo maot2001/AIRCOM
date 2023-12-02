@@ -121,7 +121,7 @@ namespace AIRCOM.Controllers
 
         // PUT: Valorar Reparacion
         //[Authorize(Policy = "Client")]
-        [HttpPut("Valorate")]
+        /*[HttpPut("Valorate")]
         public async Task<IActionResult> Valorate([FromBody] RepairShipDTO repair)
         {
             try
@@ -133,7 +133,7 @@ namespace AIRCOM.Controllers
             {
                 return NotFound();
             }
-        }
+        }*/
         // ---------------------------------------------------------------------
     }
 }

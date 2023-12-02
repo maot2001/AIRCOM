@@ -57,10 +57,27 @@ namespace AIRCOM.Services
         {
             var installationDB = await GetInstallationById(id);
 
-            if (installationDB.RepairShip.Count == 0 && installationDB.on_sites.Count == 0)
-                await Waterfall(installationDB, true);
-            else
-                await Waterfall(installationDB, false);
+            bool money = false;
+            foreach (var service in installationDB.ServicesInstallations)
+            {
+                if (money) break;
+                foreach (var i in service.On_Sites)
+                {
+                    if (money) break;
+                    money = true;
+                }
+            }
+            foreach (var repair in installationDB.RepairInstallations)
+            {
+                if (money) break;
+                foreach (var i in repair.RepairShips)
+                {
+                    if (money) break;
+                    money = true;
+                }
+            }
+
+            await Waterfall(installationDB, !money);
             await _context.SaveChangesAsync();
         }
 
@@ -68,10 +85,8 @@ namespace AIRCOM.Services
         public async Task<Installation> GetInstallationById(int? id)
         {
             var installationDB = await _context.Installations
-                .Include(i => i.RepairInstallations)
-                .Include(i => i.RepairShip)
-                .Include(i => i.ServicesInstallations)
-                .Include(i => i.on_sites)
+                .Include(i => i.RepairInstallations).ThenInclude(ri => ri.RepairShips)
+                .Include(i => i.ServicesInstallations).ThenInclude(si => si.On_Sites)
                 .SingleOrDefaultAsync(i => i.ID == id);
 
             if (installationDB is null)
@@ -80,18 +95,18 @@ namespace AIRCOM.Services
             return installationDB;
         }
 
-        private async Task Waterfall(Installation installation, bool delete)
+        public async Task Waterfall(Installation installation, bool delete)
         {
             foreach (var ri in installation.RepairInstallations)
             {
-                if (delete)
+                if (delete || ri.RepairShips.Count == 0)
                     _context.RepairInstallations.Remove(ri);
                 else
                     ri.Active = false;
             }
             foreach (var si in installation.ServicesInstallations)
             {
-                if (delete)
+                if (delete || si.On_Sites.Count == 0)
                     _context.ServicesInstallations.Remove(si);
                 else
                     si.Active = false;

@@ -19,36 +19,39 @@ namespace AIRCOM.Controllers
         // Security --------------------------------------------------
         // GET: Ships
         //[Authorize(Policy = "Security")]
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Index()
         {
+            int page = 2;
             var ships = await _service.Get();
-            return View(ships);
+            return RedirectToAction(nameof(SecurityController.Index), "Security", new { ships = ships.ToList(), page = page });
         }
 
         // POST: Ships
         //[Authorize(Policy = "Security")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ShipsDTO ship)
+        public async Task<IActionResult> Create(ShipsDTO ship)
         {
             try
             {
                 await _service.Create(ship);
-                return RedirectToAction(nameof(Get));
+                return RedirectToAction(nameof(SecurityController.Index), "Security");
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores repetidos");
+                int lugar_del_error = 6;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                int lugar_del_error = 6;
+                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
         // PUT: Ships/5
         //[Authorize(Policy = "Security")]
-        [HttpPut]
+        /*[HttpPut]
         public async Task<IActionResult> Edit([FromBody] ShipsDTO ship)
         {
             try
@@ -94,6 +97,6 @@ namespace AIRCOM.Controllers
             return View((ships, token));
         }
         // -----------------------------------------------------------   
-
+        */
     }
 }

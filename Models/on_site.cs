@@ -15,15 +15,15 @@ namespace AIRCOM.Models
         public float Price { get; set; }
         public int? Stars { get; set; } = 0;
         public string? Comment { get; set; }
-        public int InstallationID { get; set; }
+        /*public int InstallationID { get; set; }
         [ForeignKey(nameof(InstallationID))]
         public virtual Installation Installation { get; set; }
         public int? AirportID { get; set; }
-        /*[ForeignKey(nameof(AirportID))]
+        [ForeignKey(nameof(AirportID))]
         public virtual Airport? Airport { get; set; }*/
         public int Code { get; set; }
         [ForeignKey(nameof(Code))]
-        public virtual CustomerService CustomerService { get; set; }
+        public virtual ServicesInstallation ServiceInstallation { get; set; }
         public int ClientID { get; set; }
         [ForeignKey(nameof(ClientID))]
         public virtual Client Client { get; set; }

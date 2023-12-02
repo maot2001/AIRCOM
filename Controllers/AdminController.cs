@@ -41,10 +41,12 @@ namespace AIRCOM.Controllers
             ViewData["error"] = "Contraseña inválida";
             return View("Admin");
         }
+
         public IActionResult ChangePage(string page)
         {
             return View("Estadisticas");
         }
+
         private async Task<string> ObtenerContenidoDeLaSolicitud(HttpRequest request)
         {
             using (var reader = new StreamReader(request.Body))

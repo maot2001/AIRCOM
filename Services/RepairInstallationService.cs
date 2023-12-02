@@ -19,7 +19,9 @@ namespace AIRCOM.Services
 
         public async Task<IEnumerable<RepairInstallationDTO>> Get(string userId)
         {
-            var repairsDB = await _context.RepairInstallations.Where(ri => ri.Installation.AirportID == int.Parse(userId)).ToListAsync();
+            var repairsDB = await _context.RepairInstallations
+                .Include(ri => ri.Installation)
+                .Where(ri => ri.Installation.AirportID == int.Parse(userId)).ToListAsync();
             var repairs = _mapper.Map<List<RepairInstallationDTO>>(repairsDB);
             foreach (var repair in repairs)
             {
@@ -67,8 +69,9 @@ namespace AIRCOM.Services
             var installationDB = await _aux.GetInstallationById(repair.InstallationID);
             
             var repairDB = await _context.RepairInstallations
+                .Include(ri => ri.Installation)
                 .Include(ri => ri.RepairShips)
-                .SingleOrDefaultAsync(ri => ri.InstallationID == installationDB.ID && ri.AirportID == installationDB.AirportID && ri.RepairID == repair.RepairID);
+                .SingleOrDefaultAsync(ri => ri.InstallationID == installationDB.ID && ri.Installation.AirportID == installationDB.AirportID && ri.RepairID == repair.RepairID);
 
             if (repairDB is null)
                 throw new Exception("En esta instalación no se realiza esta reparación");
@@ -84,8 +87,10 @@ namespace AIRCOM.Services
             if (repairDB is null)
                 throw new Exception("La reparación no existe");
 
-            var exist = await _context.RepairInstallations.SingleOrDefaultAsync(ri =>
-            ri.InstallationID == installationDB.ID && ri.AirportID == installationDB.AirportID && ri.RepairID == repair.RepairID);
+            var exist = await _context.RepairInstallations
+                .Include(ri => ri.Installation)
+                .SingleOrDefaultAsync(ri =>ri.InstallationID == installationDB.ID && ri.Installation.AirportID == installationDB.AirportID && 
+                                      ri.RepairID == repair.RepairID);
             if (exist is not null)
                 throw new Exception("En esta instalación ya se realiza esta reparación");
 

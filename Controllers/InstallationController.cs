@@ -18,24 +18,25 @@ namespace AIRCOM.Controllers
         // Direction -----------------------------------------------------------
         // GET: Installation
         //[Authorize(Policy = "Direction")]
-        [HttpGet]
-        public async Task<IActionResult> Get(string? token = null)
+        public async Task<IActionResult> Index(string? token = null)
         {
-            var userId = HttpContext.User.FindFirst("Airport")?.Value;
-            var installations = await _service.Get(userId);
-            return View((installations, token));
+            ViewData["page"] = 1;
+            //var userId = HttpContext.User.FindFirst("Airport")?.Value;
+            var installations = await _service.Get("1");
+            return View("Direction");
         }
 
         // POST: Installation
         //[Authorize(Policy = "Direction")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] InstallationDTO installation)
+        public async Task<IActionResult> Create(InstallationDTO installation)
         {
+            int page = 1;
             try
             {
-                var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Create(installation, userId);
-                return RedirectToAction(nameof(Get));
+                //var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(installation, "1");
+                return RedirectToAction(nameof(DirectionController.Index), "Direction", new { page = page });
             }
             catch (Exception e)
             {

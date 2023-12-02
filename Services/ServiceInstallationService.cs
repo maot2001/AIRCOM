@@ -40,8 +40,6 @@ namespace AIRCOM.Services
             serviceDB.InstallationID = service.InstallationID;
             serviceDB.Name = service.Name;
             serviceDB.Price = service.Price;
-            serviceDB.Code = service.Code;
-            serviceDB.CustomerService = await _context.CustomerServices.FindAsync(service.Code);
             await _context.SaveChangesAsync();
         }
 
@@ -73,12 +71,11 @@ namespace AIRCOM.Services
         {
             var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
             i.InstallationID == service.InstallationID);
-            var serviceDB = await _context.Repairs.SingleOrDefaultAsync(r => r.RepairID == service.Code);
-            if (serviceDB is null || installationDB is null)
+            if (installationDB is null)
                 throw new Exception();
 
-            var exist = _context.RepairInstallations.SingleOrDefaultAsync(si =>
-            si.InstallationID == service.InstallationID && si.Installation.AirportID == int.Parse(userId) && si.RepairID == service.Code);
+            var exist = _context.ServicesInstallations.SingleOrDefaultAsync(si =>
+            si.InstallationID == service.InstallationID && si.Installation.AirportID == int.Parse(userId) && si.Name == service.Name);
             if (exist is not null)
                 throw new Exception();
         }

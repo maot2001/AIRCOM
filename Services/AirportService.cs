@@ -9,10 +9,12 @@ namespace AIRCOM.Services
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        public AirportService(DBContext context, IMapper mapper)
+        private readonly InstallationService _aux;
+        public AirportService(DBContext context, IMapper mapper, InstallationService aux)
         {
             _context = context;
             _mapper = mapper;
+            _aux = aux;
         }
 
         public async Task<IEnumerable<AirportDTO>> Get()
@@ -24,7 +26,6 @@ namespace AIRCOM.Services
         public async Task<int> Create(AirportDTO airport)
         {
             var airportDB = _mapper.Map<Airport>(airport);
-            var airports=await _context.Airports.ToListAsync();
 
             _context.Airports.Add(airportDB);
             await _context.SaveChangesAsync();
@@ -48,11 +49,31 @@ namespace AIRCOM.Services
         {
             var airportDB = await GetAirportByName(name);
 
-            if (airportDB.On_Sites.Count == 0 && airportDB.RepairShip.Count == 0)
-                await Waterfall(airportDB, true);
-            else
-                await Waterfall(airportDB, false);
+            bool money = false;
+            foreach (var inst in airportDB.Installations)
+            {
+                if (money) break;
+                foreach (var service in inst.ServicesInstallations)
+                {
+                    if (money) break;
+                    foreach (var i in service.On_Sites)
+                    {
+                        if (money) break;
+                        money = true;
+                    }
+                }
+                foreach (var repair in inst.RepairInstallations)
+                {
+                    if (money) break;
+                    foreach (var i in repair.RepairShips)
+                    {
+                        if (money) break;
+                        money = true;
+                    }
+                }
+            }
 
+            await Waterfall(airportDB, !money);
             await _context.SaveChangesAsync();
         }
 
@@ -60,26 +81,9 @@ namespace AIRCOM.Services
 
         private async Task Waterfall(Airport airport, bool delete)
         {
-            foreach(var ri in airport.RepairInstallation)
+            foreach(var i in airport.Installations)
             {
-                if(delete)
-                    _context.RepairInstallations.Remove(ri);
-                else
-                    ri.Active = false;
-            }
-            foreach (var si in airport.ServicesInstallations)
-            {
-                if (delete)
-                    _context.ServicesInstallations.Remove(si);
-                else
-                    si.Active = false;
-            }
-            foreach (var i in airport.Installations)
-            {
-                if (delete)
-                    _context.Installations.Remove(i);
-                else
-                    i.Active = false;
+                await _aux.Waterfall(i, delete);
             }
             foreach (var w in airport.Workers)
             {
@@ -97,11 +101,8 @@ namespace AIRCOM.Services
         private async Task<Airport> GetAirportByName(string name)
         {
             var airportDB = await _context.Airports
-                .Include(a => a.Installations)
-                .Include(a => a.ServicesInstallations)
-                .Include(a => a.On_Sites)
-                .Include(a => a.RepairInstallation)
-                .Include(a => a.RepairShip)
+                .Include(a => a.Installations).ThenInclude(i => i.RepairInstallations).ThenInclude(ri => ri.RepairShips)
+                .Include(a => a.Installations).ThenInclude(i => i.ServicesInstallations).ThenInclude(si => si.On_Sites)
                 .Include(a => a.Workers)
                 .SingleOrDefaultAsync(a => a.Name == name && a.Active == true);
 

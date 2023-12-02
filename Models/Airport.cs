@@ -17,10 +17,10 @@ namespace AIRCOM.Models
         public string Direction { get; set; }
         public bool Active { get; set; } = true;
         public virtual ICollection<Installation>? Installations { get; set; }
-        public virtual ICollection<ServicesInstallation>? ServicesInstallations { get; set; }
+        /*public virtual ICollection<ServicesInstallation>? ServicesInstallations { get; set; }
         public virtual ICollection<on_site>? On_Sites { get; set; }
         public virtual ICollection<RepairShip>? RepairShip { get; set; }
-        public virtual ICollection<RepairInstallation>? RepairInstallation { get; set; }
+        public virtual ICollection<RepairInstallation>? RepairInstallation { get; set; }*/
         public virtual ICollection<Worker> Workers { get; set; }
         /*public virtual ICollection<History> Arrival { get; set; }
         public virtual ICollection<History> Exit { get; set; }*/

@@ -239,7 +239,7 @@
                         <h3>Nuevo precio del servicio:</h3>
                     </div>
                     <form asp-controller="ServiceInstallation" asp-action="Edit">
-                        <input name="id" value="@Html.DisplayFor(m=>service.ID) hidden">
+                        <input name="id" value="@Html.DisplayFor(m=>service.Code) hidden">
                         <center>
                             $
                             <input type="number" name="price">
@@ -259,7 +259,7 @@
                     </div>
                     <form asp-controller="ServiceInstallation" asp-action="Delete">
                         <center>
-                            <input name="id" value="@Html.DisplayFor(m=>service.ID) hidden">
+                            <input name="id" value="@Html.DisplayFor(m=>service.Code) hidden">
                             <button type="submit" class="boton" style="background-color:rgb(20,150,20)">SI</button>
                             <button class="boton" style="background-color:rgb(175,10,10)">NO</button>
                         </center>

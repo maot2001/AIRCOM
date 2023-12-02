@@ -1,0 +1,188 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    int p = 4;
+    bool a = true;
+    bool b = true;
+    bool check = true;
+    bool[] sol = new bool[] { true, true, true };
+    string Calificacion(bool i)
+    //ponerlo en funcion de la calificacion
+    {
+        return "⭐⭐🌗🌑🌑";
+    }
+}
+
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    @if (a)
+    {
+        <h4>USUARIO</h4>
+    }
+
+    @if (!a)
+    {
+        <h4>AEROPUERTO > USUARIO</h4>
+    }
+    <div><button class="boton" style="background-color:crimson">← Volver</button></div>
+</nav>
+
+@if (p == 1)
+{
+    <div class="calificar">
+        <form method="post">
+            <center><h1>Comentar</h1></center>
+            <div>
+                <div>
+                    <strong>Fecha del servicio:</strong>
+                    <input type="date" name="Fecha" />
+                </div>
+
+                @if (check)
+                {
+                    <aside class="error">
+                        No se le oferto el servicio en esta fecha
+                    </aside>
+                }
+                <div>
+                    <strong>Calificación:</strong>
+                    <input type="number" max="10" min="0" style="width:75px" />
+                </div>
+            </div>
+            <section>
+                <div>
+                    <textarea placeholder="Introduzca aqui su comentario"></textarea>
+                </div>
+            </section>
+            <center><button type="submit" class="boton"><h4>Enviar Comentario</h4></button></center>
+        </form>
+    </div>
+
+}
+
+@if (p == 2)
+{
+    <center>
+        <h3>Servicio: Comida Rapida</h3>
+    </center>
+    <div style="display:flex;justify-content:space-around;">
+        <div>Aeropuerto: Jose Marti</div>
+        <div>Instalacion #4</div>
+        <div>Precio: $4.99</div>
+        <div>Calificación: @Calificacion(a)</div>
+    </div>
+
+    @foreach (var solicitud in sol)
+    {
+        <section class="dataToShow" style="font-size:x-large">
+            <div>
+                <div>Fecha: 10/10/2020</div>
+                <div>Usuario: Alan Brito Rojo</div>
+            </div>
+            <div>
+                <div style="flex:none;">@Calificacion(solicitud)</div>
+                <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
+                    <details>
+                        <summary><strong>Leer Comentario: </strong></summary>
+                        Poner aqui el comentario correspondiente si existe
+                    </details>
+                </div>
+            </div>
+
+        </section>
+    }
+}
+
+@if (p == 3)
+{
+    <center>
+        <h3>Historial de reparaciones: Reparación Capital</h3>
+    </center>
+    <div style="display:flex;justify-content:space-around;">
+        <div>Aeropuerto: Jose Marti</div>
+        <div>Instalacion #4</div>
+        <div>Precio: $4.99/h</div>
+        <div>Calificación: @Calificacion(a)</div>
+    </div>
+
+    @foreach (var solicitud in sol)
+    {
+        <section class="dataToShow" style="font-size:x-large">
+            <div style="display: flex;">
+                <div>Matricula: aaaaaaaa</div>
+                <div>Estado: asadasdsd</div>
+                <div>tipo: sssdddqqw</div>
+            </div>
+            <div>
+                <div>Inicio: 10/10/2020</div>
+                <div>Terminación: 10/10/2020</div>
+                <div>Costo: $400</div>
+            </div>
+            @if (b)
+            {
+                <div>
+                    <div style="flex:none;">@Calificacion(solicitud)</div>
+                    <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
+                        <details>
+                            <summary><strong>Leer Comentario: </strong></summary>
+                            Poner aqui el comentario correspondiente si existe
+                        </details>
+                    </div>
+                </div>
+            }
+            @if (!b)
+            {
+                <center>
+                    <h3>No hay comentario</h3>
+                </center>
+            }
+
+        </section>
+    }
+}
+
+@if (p == 4)
+{
+    <center>
+        <h3>Historial de reparaciones: Matricula 121312</h3>
+    </center>
+
+    @foreach (var solicitud in sol)
+    {
+        <section class="dataToShow" style="font-size:x-large">
+            <div style="display: flex;">
+                <div>Aeropuerto: Jose Marti</div>
+                <div>Estado: asadasdsd</div>
+                <div>tipo: sssdddqqw</div>
+            </div>
+            <div>
+                <div>Inicio: 10/10/2020</div>
+                <div>Terminación: 10/10/2020</div>
+                <div>Costo: $400</div>
+            </div>
+            @if (b)
+            {
+                <div>
+                    <div style="flex:none;">@Calificacion(solicitud)</div>
+                    <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
+                        <details>
+                            <summary><strong>Leer Comentario: </strong></summary>
+                            Poner aqui el comentario correspondiente si existe
+                        </details>
+                    </div>
+                    <button class="boton" style="align-self:center;">Editar</button>
+                </div>
+            }
+            @if (!b)
+            {
+                <center style="display:flex;justify-content:space-around;">
+                    <h3>No hay comentario</h3>
+                    <button class="boton">Comentar</button>
+                </center>
+            }
+        </section>
+    }
+}

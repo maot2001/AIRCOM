@@ -55,11 +55,18 @@ namespace AIRCOM.Services
         {
             var repairDB = await GetRepairByName(name);
 
-            if (repairDB.RepairShip.Count == 0)
-                await Waterfall(repairDB, true);
-            else
-                await Waterfall(repairDB, false);
+            bool money = false;
+            foreach (var repair in repairDB.RepairInstallations)
+            {
+                if (money) break;
+                foreach (var rs in repair.RepairShips)
+                {
+                    if (money) break;
+                    money = true;
+                }
+            }
 
+            await Waterfall(repairDB, !money);
             await _context.SaveChangesAsync();
         }
 
@@ -83,8 +90,7 @@ namespace AIRCOM.Services
         private async Task<Repair> GetRepairByName(string name)
         {
             var repairDB = await _context.Repairs
-                .Include(r => r.RepairInstallations)
-                .Include(r => r.RepairShip)
+                .Include(r => r.RepairInstallations).ThenInclude(ri => ri.RepairShips)
                 .SingleOrDefaultAsync(r => r.Name == name);
 
             if (repairDB is null)

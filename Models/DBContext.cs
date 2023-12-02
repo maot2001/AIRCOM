@@ -12,7 +12,6 @@ namespace AIRCOM.Models
 
         public virtual DbSet<Client>? Clients { get; set; }
         public virtual DbSet<Airport>? Airports { get; set; }
-        public virtual DbSet<CustomerService>? CustomerServices { get; set; }
         public virtual DbSet<Ships>? Shipss { get; set; }
         public virtual DbSet<Repair>? Repairs { get; set; }
         public virtual DbSet<Worker>? Workers { get; set; }

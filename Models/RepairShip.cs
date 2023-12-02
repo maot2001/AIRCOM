@@ -18,15 +18,18 @@ namespace AIRCOM.Models
         public float Price { get; set; }
         public int? Stars { get; set; } = 0;
         public string? Comment { get; set; }
-        public int InstallationID { get; set; }
+        /*public int InstallationID { get; set; }
         [ForeignKey(nameof(InstallationID))]
         public virtual Installation Installation { get; set; }
         public int AirportID { get; set; }
-        /*[ForeignKey(nameof(AirportID))]
-        public virtual Airport? Airport { get; set; }*/
+        [ForeignKey(nameof(AirportID))]
+        public virtual Airport? Airport { get; set; }
         public int RepairID { get; set; }
         [ForeignKey(nameof(RepairID))]
-        public virtual Repair Repair { get; set; }
+        public virtual Repair Repair { get; set; }*/
+        public int RepairInstallationID { get; set; }
+        [ForeignKey(nameof(RepairInstallationID))]
+        public virtual RepairInstallation RepairInstallation { get; set; }
         public string Plate { get; set; }
         [ForeignKey(nameof(Plate))]
         public virtual Ships Ships { get; set; }

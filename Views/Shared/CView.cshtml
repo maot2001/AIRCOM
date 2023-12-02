@@ -1,0 +1,124 @@
+@{
+    int[] sol = new int[] { 1, 1, 1 };
+    bool a = true;
+    string Cuadrado(int x) => ViewBag.page == x ? "active" : "pasive";
+}
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>USUARIO</h4>
+</nav>
+<nav class="navegacion">
+    <form asp-controller="CView" asp-action="Index">
+        <div>
+            <button class=@Cuadrado(1) type="submit" name="page" value="1"><h2>Mis naves</h2></button>
+            <p style="color:white;">____</p>
+            <button class=@Cuadrado(2) type="submit" name="page" value="2"><h2>Servicios Ofertados</h2></button>
+        </div>
+    </form>
+    @if (ViewBag.page == 2)
+    {
+        <aside><input type="text" placeholder="🔍buscar"></aside>
+    }
+</nav>
+
+@if (ViewBag.page == 1)
+{
+    @foreach (ShipsDTO ship in ViewBag.ships)
+    {
+        <section class="dataToShow">
+            <div style="display: flex;">
+                <div>Matricula: @Html.DisplayFor(m=>ship.Plate)</div>
+                <div>Estado: @Html.DisplayFor(m=>ship.State)</div>
+            </div>
+            <div class="tag">
+                <aside>
+                    <div><h4>Características:</h4></div>
+                    <div><strong>Modelo:</strong> @Html.DisplayFor(m=>ship.Model)</div>
+                    <div><strong>Capacidad de carga:</strong> @Html.DisplayFor(m=>ship.Capacity) ton</div>
+                    <div><strong>Cantidad de tripulantes:</strong> @Html.DisplayFor(m=>ship.Crew)</div>
+                    <div><strong>Cantidad de pasajeros:</strong> @Html.DisplayFor(m=>ship.Pass)</div>
+                </aside>
+
+                <div>
+                    <div>Fecha de salida programada:</div>
+                    <div>1/12/2024</div>
+                    <form method="post">
+                        <button class="boton" type="submit">
+                            Ver historial
+                        </button>
+                        <button class="boton" type="submit">
+                            Ver reparaciones
+                        </button>
+                    </form>
+                </div>
+                @if (a)
+                {
+                    <center style="flex:2;align-items:center;display:flex;">
+                        <button class="boton">Incluirse</button>
+                    </center>
+                }
+                @if (!a)
+                {
+                    <form method="post">
+                        <select name="Rol" class="boton">
+                            @foreach (var x in sol)
+                            {
+                                <option value="VIP">Capitan</option>
+                            }
+                        </select>
+                        <div>
+                            <button class="boton" style="background-color:rgb(75,200,75);" type="submit">✔️</button>
+                            <button class="boton" style="background-color:rgb(250,40,60)">✖️</button>
+                        </div>
+
+                    </form>
+                }
+            </div>
+
+        </section>
+    }
+}
+
+@if (ViewBag.page == 2)
+{
+    <div class="ofertas" style="text-align:left">
+        @foreach (ServiceInstallationDTO service in ViewBag.services)
+        {
+            <div>
+                <div>
+                    <div>
+                        @Html.DisplayFor(m=>service.Name)
+                    </div>
+                    <div>
+                        Aeropuerto: @Html.DisplayFor(m=>service.AirportID)
+                    </div>
+                    <div>
+                        Instalacion #@Html.DisplayFor(m=>service.InstallationID)
+                    </div>
+                    <form method="post">
+                        <button class="boton">Valorar</button>
+                    </form>
+                </div>
+
+                <aside>
+                    <div>
+                        <h3>$@Html.DisplayFor(m=>service.Price)</h3>
+                    </div>
+                    <div>
+                        ⭐⭐⭐⭐⭐
+                    </div>
+                    <div style="color:white;font-size:x-small;">
+                        relleno
+                    </div>
+                    <form method="post">
+                        <button class="boton">Ver reseñas</button>
+                    </form>
+                </aside>
+            </div>
+        }
+    </div>
+}
