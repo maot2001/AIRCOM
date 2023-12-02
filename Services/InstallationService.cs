@@ -57,19 +57,49 @@ namespace AIRCOM.Services
         {
             var installationDB = await GetInstallationById(id);
 
-            _context.Installations.Remove(installationDB);
+            if (installationDB.RepairShip.Count == 0 && installationDB.on_sites.Count == 0)
+                await Waterfall(installationDB, true);
+            else
+                await Waterfall(installationDB, false);
             await _context.SaveChangesAsync();
         }
 
         //--------------------------------------------------------------------
         public async Task<Installation> GetInstallationById(int? id)
         {
-            var installationDB = await _context.Installations.SingleOrDefaultAsync(i => i.ID == id);
+            var installationDB = await _context.Installations
+                .Include(i => i.RepairInstallations)
+                .Include(i => i.RepairShip)
+                .Include(i => i.ServicesInstallations)
+                .Include(i => i.on_sites)
+                .SingleOrDefaultAsync(i => i.ID == id);
 
             if (installationDB is null)
                 throw new ArgumentNullException("La instalación no existe");
 
             return installationDB;
+        }
+
+        private async Task Waterfall(Installation installation, bool delete)
+        {
+            foreach (var ri in installation.RepairInstallations)
+            {
+                if (delete)
+                    _context.RepairInstallations.Remove(ri);
+                else
+                    ri.Active = false;
+            }
+            foreach (var si in installation.ServicesInstallations)
+            {
+                if (delete)
+                    _context.ServicesInstallations.Remove(si);
+                else
+                    si.Active = false;
+            }
+            if (delete)
+                _context.Installations.Remove(installation);
+            else
+                installation.Active = false;
         }
 
         private async Task Errors(InstallationDTO installation, string userId)

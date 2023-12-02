@@ -17,9 +17,10 @@ namespace AIRCOM.Models
         public int AirportID { get; set; }
         [ForeignKey(nameof(AirportID))]
         public virtual Airport Airport { get; set; }
+        public bool Active { get; set; } = true;
         public virtual ICollection<ServicesInstallation>? ServicesInstallations { get; set; }
-        //public virtual ICollection<on_site> on_sites { get; set; }
+        public virtual ICollection<on_site> on_sites { get; set; }
         public virtual ICollection<RepairInstallation>? RepairInstallations { get; set; }
-        //public virtual ICollection<RepairShip> RepairShip { get; set; }
+        public virtual ICollection<RepairShip> RepairShip { get; set; }
     }
 }

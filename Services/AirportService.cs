@@ -46,22 +46,63 @@ namespace AIRCOM.Services
         public async Task Delete(string name, bool all)
         {
             var airportDB = await GetAirportByName(name);
-            if (!all)
-                airportDB.Active = false;
-            /*else
-            {
 
-            }*/
+            if (airportDB.On_Sites.Count == 0 && airportDB.RepairShip.Count == 0)
+                await Waterfall(airportDB, true);
+            else
+                await Waterfall(airportDB, false);
 
-            _context.Airports.Remove(airportDB);
             await _context.SaveChangesAsync();
         }
 
         // --------------------------------------------------------------
 
+        private async Task Waterfall(Airport airport, bool delete)
+        {
+            foreach(var ri in airport.RepairInstallation)
+            {
+                if(delete)
+                    _context.RepairInstallations.Remove(ri);
+                else
+                    ri.Active = false;
+            }
+            foreach (var si in airport.ServicesInstallations)
+            {
+                if (delete)
+                    _context.ServicesInstallations.Remove(si);
+                else
+                    si.Active = false;
+            }
+            foreach (var i in airport.Installations)
+            {
+                if (delete)
+                    _context.Installations.Remove(i);
+                else
+                    i.Active = false;
+            }
+            foreach (var w in airport.Workers)
+            {
+                if (delete)
+                    _context.Workers.Remove(w);
+                else
+                    w.Active = false;
+            }
+             if(delete)
+                _context.Airports.Remove(airport);
+             else
+                airport.Active = false;
+        }
+
         private async Task<Airport> GetAirportByName(string name)
         {
-            var airportDB = await _context.Airports.SingleOrDefaultAsync(a => a.Name == name && a.Active == true);
+            var airportDB = await _context.Airports
+                .Include(a => a.Installations)
+                .Include(a => a.ServicesInstallations)
+                .Include(a => a.On_Sites)
+                .Include(a => a.RepairInstallation)
+                .Include(a => a.RepairShip)
+                .Include(a => a.Workers)
+                .SingleOrDefaultAsync(a => a.Name == name && a.Active == true);
 
             if (airportDB is null)
                 throw new Exception("El aeropuerto no existe");

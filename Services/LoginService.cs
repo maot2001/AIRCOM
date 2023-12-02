@@ -1,4 +1,4 @@
-﻿using AIRCOM.Models;
+using AIRCOM.Models;
 using AIRCOM.Models.DTO;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;

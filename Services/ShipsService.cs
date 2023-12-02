@@ -59,14 +59,23 @@ namespace AIRCOM.Services
         {
             var ship = await GetShipById(id);
 
-            _context.Shipss.Remove(ship);
+            if (ship.Reports.Count == 0)
+                _context.Shipss.Remove(ship);
+            else
+            {
+                ship.Active = false;
+                ship.ClientID = 0;
+            }
+
             await _context.SaveChangesAsync();
         }
 
         // -----------------------------------------------------------
         private async Task<Ships> GetShipById(string id)
         {
-            var ship = await _context.Shipss.FindAsync(id);
+            var ship = await _context.Shipss
+                .Include(s => s.Reports)
+                .SingleOrDefaultAsync(s => s.Plate == id);
 
             if (ship is null)
                 throw new Exception("El avión no existe");

@@ -17,7 +17,8 @@ namespace AIRCOM.Models
         public string Nationality { get; set; }
         public string Email { get; set; }
         public string Pwd { get; set; }
-        /*public virtual ICollection<on_site>? On_Sites { get; set; }
-        public virtual ICollection<Ships>? Shipss { get; set; }*/
+        public bool Active { get; set; } = true;
+        public virtual ICollection<on_site>? On_Sites { get; set; }
+        public virtual ICollection<Ships>? Shipss { get; set; }
     }
 }

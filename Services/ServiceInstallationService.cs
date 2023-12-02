@@ -48,15 +48,22 @@ namespace AIRCOM.Services
         public async Task Delete(ServiceInstallationDTO service)
         {
             var serviceDB = await GetServiceInstallation(service);
-            _context.ServicesInstallations.Remove(serviceDB);
+
+            if (serviceDB.On_Sites.Count == 0)
+                _context.ServicesInstallations.Remove(serviceDB);
+            else
+                serviceDB.Active = false;
+
             await _context.SaveChangesAsync();
         }
 
         //-------------------------------------------------------------------------
         public async Task<ServicesInstallation> GetServiceInstallation(ServiceInstallationDTO service)
         {
-            var serviceDB = await _context.ServicesInstallations.SingleOrDefaultAsync(si =>
-            si.InstallationID == service.InstallationID && si.Code == service.Code);
+            var serviceDB = await _context.ServicesInstallations
+                .Include(si => si.On_Sites)
+                .SingleOrDefaultAsync(si => si.InstallationID == service.InstallationID && si.Code == service.Code);
+
             if (serviceDB is null)
                 throw new Exception();
             return serviceDB;

@@ -55,15 +55,37 @@ namespace AIRCOM.Services
         {
             var repairDB = await GetRepairByName(name);
 
-            _context.Repairs.Remove(repairDB);
+            if (repairDB.RepairShip.Count == 0)
+                await Waterfall(repairDB, true);
+            else
+                await Waterfall(repairDB, false);
+
             await _context.SaveChangesAsync();
         }
 
         // --------------------------------------------------------------
+        private async Task Waterfall(Repair repair, bool delete)
+        {
+            foreach (var ri in repair.RepairInstallations)
+            {
+                if (delete)
+                    _context.RepairInstallations.Remove(ri);
+                else
+                    ri.Active = false;
+            }
+
+            if (delete)
+                _context.Repairs.Remove(repair);
+            else
+                repair.Active = false;
+        }
 
         private async Task<Repair> GetRepairByName(string name)
         {
-            var repairDB = await _context.Repairs.SingleOrDefaultAsync(r => r.Name == name);
+            var repairDB = await _context.Repairs
+                .Include(r => r.RepairInstallations)
+                .Include(r => r.RepairShip)
+                .SingleOrDefaultAsync(r => r.Name == name);
 
             if (repairDB is null)
                 throw new Exception("La reparación no existe");

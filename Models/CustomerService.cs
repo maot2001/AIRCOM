@@ -13,6 +13,7 @@ namespace AIRCOM.Models
         public int Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool Active { get; set; } = true;
         public virtual ICollection<ServicesInstallation>? ServicesInstallations { get; set; }
         public virtual ICollection<on_site>? On_Sites { get; set; }
     } 

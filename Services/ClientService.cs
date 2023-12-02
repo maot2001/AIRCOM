@@ -66,7 +66,7 @@ namespace AIRCOM.Services
 
             if (types.Contains(client.Type))
             {
-                var worker = await GetWorkerById(client.ClientID);
+                var worker = await GetWorkerById(client.Email);
                 worker.Name = client.Name;
                 worker.CI = client.CI;
                 worker.Email = client.Email;
@@ -76,7 +76,7 @@ namespace AIRCOM.Services
 
             else
             {
-                var clientDB = await GetClientById(client.ClientID);
+                var clientDB = await GetClientById(client.Email);
                 clientDB.Name = client.Name;
                 clientDB.CI = client.CI;
                 clientDB.Email = client.Email;
@@ -87,27 +87,56 @@ namespace AIRCOM.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(ClientDTO client)
+        public async Task Delete(string email)
         {
-            if (types.Contains(client.Type))
+            try
             {
-                var worker = await GetWorkerById(client.ClientID);
+                var worker = await GetWorkerById(email);
                 _context.Workers.Remove(worker);
             }
-
-            else
+            catch
             {
-                var clientDB = await GetClientById(client.ClientID);
-                _context.Clients.Remove(clientDB);
+                var clientDB = await GetClientById(email);
+                if (clientDB.On_Sites.Count == 0)
+                    await Waterfall(clientDB, true);
+                else
+                    await Waterfall(clientDB, false);
             }
-
             await _context.SaveChangesAsync();
         }
 
         //---------------------------------------------------------
-        private async Task<Client> GetClientById(int? id)
+
+        private async Task Waterfall(Client client, bool delete)
         {
-            var client = await _context.Clients.FindAsync(id);
+            foreach (var ship in client.Shipss)
+            {
+                if (delete)
+                {
+                    if(ship.Reports.Count == 0)
+                        _context.Shipss.Remove(ship);
+                    else
+                    {
+                        ship.Active = false;
+                        ship.ClientID = 0;
+                    }
+                }
+                else
+                    ship.Active = false;
+            }
+
+            if(delete)
+                _context.Clients.Remove(client);
+            else
+                client.Active = false;
+        }
+
+        private async Task<Client> GetClientById(string? email)
+        {
+            var client = await _context.Clients
+                .Include(c => c.On_Sites)
+                .Include(c => c.Shipss).ThenInclude(s => s.Reports)
+                .SingleOrDefaultAsync(c => c.Email == email);
 
             if (client is null)
                 throw new Exception("El cliente no existe");
@@ -115,9 +144,9 @@ namespace AIRCOM.Services
             return client;
         }
 
-        private async Task<Worker> GetWorkerById(int? id)
+        private async Task<Worker> GetWorkerById(string? email)
         {
-            var worker = await _context.Workers.FindAsync(id);
+            var worker = await _context.Workers.SingleOrDefaultAsync(w => w.Email == email);
 
             if (worker is null)
                 throw new Exception("El trabajador no existe");
@@ -127,8 +156,8 @@ namespace AIRCOM.Services
 
         private async Task Errors(ClientDTO client)
         {
-            var errors = await _context.Clients.SingleOrDefaultAsync(c => c.CI == client.CI && c.Nationality == client.Nationality);
-            var errors2 = await _context.Workers.SingleOrDefaultAsync(c => c.CI == client.CI && c.Nationality == client.Nationality);
+            var errors = await _context.Clients.SingleOrDefaultAsync(c => (c.CI == client.CI && c.Nationality == client.Nationality) || c.Email == client.Email);
+            var errors2 = await _context.Workers.SingleOrDefaultAsync(w => (w.CI == client.CI && w.Nationality == client.Nationality) || w.Email == client.Email);
 
             if (errors is not null || errors2 is not null)
                 throw new Exception("Credenciales existentes");
