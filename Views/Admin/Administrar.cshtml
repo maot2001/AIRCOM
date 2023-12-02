@@ -1,5 +1,10 @@
 ﻿@{
     int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    string[] open = new string[5];
+    @if (ViewBag.lugar_del_error >= 2 && ViewBag.lugar_del_error <= 6)
+    {
+        open[ViewBag.lugar_del_error - 2] = "open";
+    }
 }
 
 <header style="background:darkred;">
@@ -22,7 +27,7 @@
 @* Pagina 1 Administrar *@
 <section>
     @*Primer formulario: Añadir Aeropuerto*@
-    <details>
+    <details @open[0]>
         <summary>Añadir Aeropuerto</summary>
         <center>
             <form asp-controller="Airport" asp-action="Create" class="formulario">
@@ -121,7 +126,7 @@
     </details>
 
     @*Tercer formulario: Añadir Dependencia de reparación*@
-    <details>
+    <details @open[1]>
         <summary>Añadir Dependencia de reparación</summary>
         <center>
             <form class="formulario" name="dependencia" method="post">
@@ -178,7 +183,7 @@
     <center><h1>Region peligrosa, proceda con cuidado</h1></center>
 
     @*Cuarto Formulario: Eliminar Aeropuerto*@
-    <details class="dangerousZone">
+    <details class="dangerousZone" @open[2]>
         <summary>Eliminar aeropuerto</summary>
         <center>
             <form asp-controller="Airport" asp-action="Delete" class="formulario">
@@ -204,7 +209,7 @@
     </details>
 
     @*Quinto Formulario: Eliminar Reparacion*@
-    <details class="dangerousZone">
+    <details class="dangerousZone" @open[3]>
         <summary>Eliminar Reparación</summary>
         <center>
             <form asp-controller="Repair" asp-action="Delete" class="formulario">
@@ -231,7 +236,7 @@
 
 
     @*Sexto formulario: Eliminar Dependencia de reparación*@
-    <details class="dangerousZone">
+    <details class="dangerousZone" @open[4]>
         <summary>Eliminar Dependencia de reparación</summary>
         <center>
             <form class="formulario" name="dependencia" method="post">
