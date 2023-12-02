@@ -1,0 +1,33 @@
+﻿<header style="background:darkred;">
+    AIRCOM ADMIN
+</header>
+
+
+@*Login del admin*@
+
+<main>
+    <center>
+        <h1 style="margin:5%; color:darkred;text-decoration:underline ">Bienvenido a la administración de AIRCOM</h1>
+        <h3> Por favor inicie sesión</h3>
+
+        <div>
+            <form asp-action="Comprobe">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div>
+                    <div>Introduzca Contraseña:</div>
+                    <div>
+                        <input type="password" name="pwd" placeholder="introduzca contraseña">
+                        <button class="badboton" type="submit">Entrar</button>
+                    </div>
+                </div>
+                @if (ViewBag.lugar_del_error == 1)
+                {
+                    <aside class="error">
+                        @ViewBag.error
+                    </aside>
+                }
+            </form>
+        </div>
+
+    </center>
+</main>

@@ -1,0 +1,25 @@
+﻿@{
+    int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+}
+
+<header style="background:darkred;">
+    AIRCOM ADMIN
+</header>
+
+<nav class="navegacion">
+    <div>
+        <form asp-action="Init">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <button name="pagina" class="pasive" type="submit"><h2>Administrar</h2></button>
+        </form>
+        <p style="color:white;">____</p>
+        <button name="pagina" class="active" type="submit"><h2>Ver estadísticas</h2></button>
+    </div>
+</nav>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

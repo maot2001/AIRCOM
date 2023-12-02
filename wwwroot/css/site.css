@@ -1,16 +1,16 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -33,9 +33,9 @@ header {
     border: 1px solid rgb(200, 0, 0);
     color: rgb(200, 0, 0);
     padding: 0% 4%;
-    width:fit-content;
-    height:fit-content;
-    align-self:center;
+    width: fit-content;
+    height: fit-content;
+    align-self: center;
 }
 
 #LOGIN center {
@@ -46,18 +46,20 @@ header {
     background-color: rgb(200, 200, 200);
     border: solid 1px black;
     padding: 1% 3%;
-    margin:3%;
-    font-size:medium;
-}
-#LOGIN section > div{
-    display:flex;
+    margin: 3%;
+    font-size: medium;
 }
 
-#LOGIN section > div div{
-    display:block;
-    justify-content:start;
-    text-align:start;
-}
+    #LOGIN section > div {
+        display: flex;
+    }
+
+        #LOGIN section > div div {
+            display: block;
+            justify-content: start;
+            text-align: start;
+        }
+
 #LOGIN center > div {
     background-color: rgb(220, 220, 220);
     width: fit-content;
@@ -81,8 +83,25 @@ header {
     color: white;
     border: solid rgb(0, 0, 0) 2px;
     box-shadow: 2px 2px 5px grey;
-    align-self:center;
+    align-self: center;
 }
+
+.goodboton {
+    background-color: rgb(5, 160, 5);
+    color: white;
+    border: solid rgb(0, 0, 0) 2px;
+    box-shadow: 2px 2px 5px grey;
+    align-self: center;
+}
+
+.badboton {
+    background-color: rgb(175, 10, 10);
+    color: white;
+    border: solid rgb(0, 0, 0) 2px;
+    box-shadow: 2px 2px 5px grey;
+    align-self: center;
+}
+
 
 nav {
     color: grey;
@@ -91,79 +110,85 @@ nav {
     justify-content: space-between;
 }
 
-nav div {
-    display: flex;
-    padding: 0.5% 3%;
-}
+    nav div {
+        display: flex;
+        padding: 0.5% 3%;
+    }
 
 .yes {
-    background-color:rgb(80, 80, 80);
+    background-color: rgb(80, 80, 80);
 }
 
-.no{
-    background-color:white;
-    border:none;
+.no {
+    background-color: white;
+    border: none;
 }
 
-.dataToShow{
+.dataToShow {
     border: solid 4px grey;
-    padding:1%;
-    margin:2%;
+    padding: 1%;
+    margin: 2%;
     font-size: x-large;
 }
-.dataToShow form{
-    display:flex;
-}
-.dataToShow div {
-    margin: 1%;
-    display: flex;
-    flex: 1;
-}
-.tag > form{
-    display:block;
-    align-self:center;
+
+    .dataToShow form {
+        display: flex;
+    }
+
+    .dataToShow div {
+        margin: 1%;
+        display: flex;
+        flex: 1;
+    }
+
+.tag > form {
+    display: block;
+    align-self: center;
     flex: 2;
-    display:grid;
-    justify-content:center;
+    display: grid;
+    justify-content: center;
 }
 
-.tag > form > div{
-    display:flex;
-}
+    .tag > form > div {
+        display: flex;
+    }
 
-.tag aside{
-    flex:2;
+.tag aside {
+    flex: 2;
     border: solid 2px black;
-    font-size:70%;
+    font-size: 70%;
     padding: 0.5% 2%;
     margin: 0% 3% 0% 3%;
 }
-.tag aside strong{
-    text-decoration:underline 2px;
-}
-.tag div{
-    display:block;
+
+    .tag aside strong {
+        text-decoration: underline 2px;
+    }
+
+.tag div {
+    display: block;
     flex: 3;
 }
-.tag div button{
-    margin:1%;
-}
 
-th 
-{
+    .tag div button {
+        margin: 1%;
+    }
+
+th {
     border: solid 2px grey;
 }
-td{
-    border:solid 2px grey;
+
+td {
+    border: solid 2px grey;
 }
 
 section > details {
     font-size: xx-large;
-    margin:2%;
-    padding:1%;
-    border:solid grey 2px;
-    border-radius:2px;
-    box-shadow:2px 2px 5px grey;
+    margin: 2%;
+    padding: 1%;
+    border: solid grey 2px;
+    border-radius: 2px;
+    box-shadow: 2px 2px 5px grey;
 }
 
 .navegacion .active {
@@ -173,9 +198,9 @@ section > details {
 .navegacion button {
     background-color: white;
     border: none;
-    margin-bottom:0%;
-    padding-bottom:0%;
-    box-shadow:none;
+    margin-bottom: 0%;
+    padding-bottom: 0%;
+    box-shadow: none;
 }
 
 .navegacion div {
@@ -183,117 +208,133 @@ section > details {
     padding: 0%;
 }
 
-.ofertas{
+.ofertas {
     display: flex;
-    flex-wrap:wrap;
-    justify-content:flex-start;
-    font-size:large;
-    column-count:1;
-    text-align:center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    font-size: large;
+    column-count: 1;
+    text-align: center;
 }
 
-.ofertas form > div{
-    text-align:end;
+    .ofertas form > div {
+        text-align: end;
+    }
+
+    .ofertas > div {
+        display: flex;
+        align-content: center;
+        border: solid 2px grey;
+        padding: 1%;
+        margin: 1%;
+        justify-content: space-between;
+    }
+
+    .ofertas aside {
+        text-align: end;
+    }
+
+        .ofertas aside > div {
+            margin-bottom: 2%;
+        }
+
+    .ofertas > div > div div {
+        margin-bottom: 2%;
+    }
+
+    .ofertas center {
+        margin: 3% 0%;
+    }
+
+.ignorar {
+    color: transparent;
 }
 
-.ofertas > div{
-    display:flex;
-    align-content:center;
-    border: solid 2px grey;
-    padding:1%;
-    margin:1%;
-    justify-content:space-between;
+.calificar {
+    padding: 1%;
 }
 
-.ofertas aside{
-    text-align:end;
-}
-
-.ofertas aside > div {
-    margin-bottom: 2%;
-}
-
-.ofertas > div > div div {
-    margin-bottom: 2%;
-}
-
-.ofertas center{
-    margin:3% 0%;
-}
-
-.ignorar{
-    color:transparent;
-}
-
-.calificar{
-    padding:1%;
-}
-.calificar > form > div{
-    display:flex;
-    justify-content:space-between;
-}
+    .calificar > form > div {
+        display: flex;
+        justify-content: space-between;
+    }
 
 
-.calificar > form > div > div
-{
-    margin:1%;
-}
+        .calificar > form > div > div {
+            margin: 1%;
+        }
 
 
-.calificar section{
-    background-color:grey;
-    width:stretch;
-    margin-bottom:1%;   
+    .calificar section {
+        background-color: grey;
+        width: stretch;
+        margin-bottom: 1%;
+    }
+
+        .calificar section textarea {
+            margin: 1%;
+            width: 98%;
+        }
+
+.add {
+    padding: 0% 20%;
 }
 
-.calificar section textarea{
-    margin:1%;
-    width:98%;
+    .add > div {
+        border: solid grey 2px;
+        padding: 1% 4%;
+    }
+
+        .add > div > div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+    .add form > div {
+        display: flex;
+        text-align: center;
+    }
+
+        .add form > div > div {
+            flex: 1;
+            margin: 2% 2% 2% 0%;
+        }
+
+    .add select {
+        background: white;
+        border: solid grey;
+    }
+
+.formulario {
+    font-size: large;
 }
 
-.add{
-    padding:0% 20%;
+    .formulario td {
+        border: solid transparent 10px;
+    }
+
+    .formulario button {
+        margin: 1%;
+    }
+
+    .formulario div {
+        margin: 1%;
+    }
+
+select {
+    background-color: white;
 }
 
-.add > div{
-    border:solid grey 2px;
-    padding:1% 4%;
+.dangerousZone {
+    background-color: lightgray;
 }
 
-.add > div > div{
-    display:flex;
-    justify-content:space-between;
+.persons {
+    margin: 2%;
+    padding: 1%;
 }
 
-.add form > div{
-    display:flex;
-    text-align:center;
-}
-
-.add form > div > div {
-    flex: 1;
-    margin:2% 2% 2% 0%;
-}
-
-.add select
-{
-    background:white;
-    border:solid grey;
-}
-
-.formulario{
-    font-size:large;
-}
-.formulario td{
-    border:solid transparent 10px;
-}
-.formulario button{
-    margin: 1%;
-}
-.formulario div{
-    margin:1%;
-}
-
-select{
-    background-color:white;
-}
+    .persons summary {
+        font-size: xx-large;
+        text-align: center
+    }
