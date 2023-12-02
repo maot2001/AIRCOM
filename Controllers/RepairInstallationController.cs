@@ -44,8 +44,8 @@ namespace AIRCOM.Controllers
 
         // PUT: RepairInstallation
         //[Authorize(Policy = "Direction")]
-        [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] RepairInstallationDTO repair)
+        [HttpPost]
+        public async Task<IActionResult> Edit(RepairInstallationDTO repair)
         {
             try
             {
@@ -61,13 +61,13 @@ namespace AIRCOM.Controllers
 
         // DELETE: RepairInstallation
         //[Authorize(Policy = "Direction")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] RepairInstallationDTO repair)
+        [HttpPost]
+        public async Task<IActionResult> Delete(RepairInstallationDTO repair)
         {
             try
             {
                 await _service.Delete(repair);
-                return RedirectToAction(nameof(Get));
+                return RedirectToAction(nameof(DirectionController.Index), "Direction");
             }
             catch
             {

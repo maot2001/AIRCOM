@@ -45,13 +45,13 @@ namespace AIRCOM.Controllers
 
         // PUT: Installation
         //[Authorize(Policy = "Direction")]
-        [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] InstallationDTO installation)
+        [HttpPost]
+        public async Task<IActionResult> Edit(InstallationDTO installation)
         {
             try
             {
                 await _service.Edit(installation);
-                return RedirectToAction(nameof(Get));
+                return RedirectToAction(nameof(Index));
             }
             catch (ArgumentNullException e)
             {
@@ -65,13 +65,13 @@ namespace AIRCOM.Controllers
 
         // DELETE: Installation
         //[Authorize(Policy = "Direction")]
-        [HttpDelete("{id}")]
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 await _service.Delete(id);
-                return RedirectToAction(nameof(Get));
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
             {

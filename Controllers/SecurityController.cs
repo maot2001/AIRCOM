@@ -1,10 +1,12 @@
 ﻿using AIRCOM.Models.DTO;
 using AIRCOM.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AIRCOM.Controllers
 {
+    //[Authorize]
     public class SecurityController : Controller
     {
         private readonly InstallationService _aux;
@@ -20,11 +22,16 @@ namespace AIRCOM.Controllers
             _aux4 = aux4;
             _aux5 = aux5;
         }
-        public async Task<IActionResult> Index(int page = 4, int lugar_del_error = 0, string error = "")
+
+        public async Task<IActionResult> Index(int page = 4, int lugar_del_error = 0, string error = "", string token = "")
         {
             ViewData["page"] = page;
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
+            
+            if (token != "")
+                ViewData["token"] = token;
+
             if (page == 2)
                 ViewData["ships"] = await _aux3.Get();
 

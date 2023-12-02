@@ -22,10 +22,10 @@ namespace AIRCOM.Services
             await Errors(repair, shipId);
 
             var ship = await _context.Shipss.FindAsync(shipId);
+            var rep = await _context.Repairs.FindAsync(repair.RepairID);
             var RS = _mapper.Map<RepairShip>(repair);
-            RS.ID = 0;
+            RS.Plate = shipId;
             RS.State = ship.State;
-            RS.Name = repair.Name;
 
             _context.RepairShips.Add(RS);
             await _context.SaveChangesAsync();
@@ -57,13 +57,13 @@ namespace AIRCOM.Services
             switch (type)
             {
                 case 0:
-                    repairs = await _context.RepairShips.Where(SR => SR.Init == default(DateTime) && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                    repairs = await _context.RepairShips.Where(SR => SR.Init == null && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 1:
-                    repairs = await _context.RepairShips.Where(SR => SR.Finish == default(DateTime) && SR.Init != default(DateTime) && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                    repairs = await _context.RepairShips.Where(SR => SR.Finish == null && SR.Init != null && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 2:
-                    repairs = await _context.RepairShips.Where(SR => SR.Finish != default(DateTime) && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                    repairs = await _context.RepairShips.Where(SR => SR.Finish != null && SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 3:
                     repairs = await _context.RepairShips.Where(SR => SR.Installation.AirportID == int.Parse(userId)).ToListAsync();
@@ -115,10 +115,14 @@ namespace AIRCOM.Services
             if (ship is null)
                 throw new Exception();
 
-            var exist = _context.RepairShips.SingleOrDefaultAsync(rs =>
+            var exist = await _context.RepairShips.SingleOrDefaultAsync(rs =>
             rs.InstallationID == repair.InstallationID && rs.RepairID == repair.RepairID && rs.Plate == shipId && rs.Init == null);
             if (exist is not null)
                 throw new Exception();
+
+            repair.AirportID = repairDB.AirportID;
+            repair.Name = repairDB.Name;
+            repair.Price = repairDB.Price;
         }
     }
 }

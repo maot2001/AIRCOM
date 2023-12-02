@@ -22,7 +22,7 @@ namespace AIRCOM.Controllers
             return View("Admin");
         }
         
-        public IActionResult Init(int lugar_del_error = 0, string error = "")
+        public async Task<IActionResult> Init(int lugar_del_error = 0, string error = "")
         {
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;

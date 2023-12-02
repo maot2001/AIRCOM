@@ -75,8 +75,6 @@
                     <div style="justify-content:center;">
                         <h5>Tipo:</h5>
                         <input type="text" name="type">
-                    </div>
-                    <div>
                         <button class="boton" type="submit">Crear</button>
                     </div>
                 </form>
@@ -92,7 +90,7 @@
     <div class="ofertas">
         @foreach (InstallationDTO inst in ViewBag.installations)
         {
-            @if (!a)
+            @if (a)
             {
                 <div>
                     <div>
@@ -114,14 +112,15 @@
                                 <button class="boton" style="background-color:rgb(20,150,20)">Editar</button>
                             </center>
                         }
-                        @if (!b)
+                        @if (b)
                         {
-                            <form method="post">
+                            <form asp-controller="Installation" asp-action="Edit">
+                                    <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
                                 <div>
-                                    <strong>Nombre:</strong> <input name="newName" value="no tiene">
+                                    <strong>Nombre:</strong> <input name="name">
                                 </div>
                                 <div>
-                                    <strong>Tipo:</strong> <input name="newType" value="Oficina">
+                                    <strong>Tipo:</strong> <input name="type">
                                 </div>
                                 <center>
                                     <button class="boton" type="submit" style="background-color:rgb(20,150,20)">Enviar</button>
@@ -138,14 +137,15 @@
                     </div>
                 </div>
             }
-            @if (a)
+            @if (!a)
             {
                 <div style="display:block;">
                     <div>
                         <h3>¿Desea eliminarlo?</h3>
                     </div>
-                    <form method="post">
+                    <form asp-controller="Installation" asp-action="Delete">
                         <center>
+                            <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
                             <button type="submit" class="boton" style="background-color:rgb(20,150,20)">SI</button>
                             <button class="boton" style="background-color:rgb(175,10,10)">NO</button>
                         </center>
@@ -238,10 +238,11 @@
                     <div>
                         <h3>Nuevo precio del servicio:</h3>
                     </div>
-                    <form method="post">
+                    <form asp-controller="ServiceInstallation" asp-action="Edit">
+                        <input name="id" value="@Html.DisplayFor(m=>service.ID) hidden">
                         <center>
                             $
-                            <input type="number" name="newPrice">
+                            <input type="number" name="price">
                         </center>
                         <center>
                             <button type="submit" class="boton" style="background-color:rgb(20,150,20)">Cambiar</button>
@@ -256,8 +257,9 @@
                     <div>
                         <h3>¿Desea eliminarlo?</h3>
                     </div>
-                    <form method="post">
+                    <form asp-controller="ServiceInstallation" asp-action="Delete">
                         <center>
+                            <input name="id" value="@Html.DisplayFor(m=>service.ID) hidden">
                             <button type="submit" class="boton" style="background-color:rgb(20,150,20)">SI</button>
                             <button class="boton" style="background-color:rgb(175,10,10)">NO</button>
                         </center>
@@ -352,10 +354,11 @@
                     <div>
                         <h3>Nuevo precio por hora:</h3>
                     </div>
-                    <form method="post">
+                    <form asp-controller="RepairInstallation" asp-action="Edit">
+                        <input name="id" value="@Html.DisplayFor(m=>repair.ID)" hidden>
                         <center>
                             $
-                            <input type="number" name="newPrice">
+                            <input type="number" name="price">
                             /h
                         </center>
                         <center>
@@ -365,14 +368,17 @@
                     </form>
                 </div>
             }
-            @if (!a && !b)
+            @if (a && b)
             {
                 <div style="display:block;">
                     <div>
                         <h3>¿Desea eliminarlo?</h3>
                     </div>
-                    <form method="post">
+                    <form asp-controller="RepairInstallation" asp-action="Delete">
                         <center>
+                            <input name="installationid" value="@Html.DisplayFor(m=>repair.InstallationID)" hidden>
+                            <input name="airportid" value="@Html.DisplayFor(m=>repair.AirportID)" hidden>
+                            <input name="repairid" value="@Html.DisplayFor(m=>repair.RepairID)" hidden>
                             <button type="submit" class="boton" style="background-color:rgb(20,150,20)">SI</button>
                             <button class="boton" style="background-color:rgb(175,10,10)">NO</button>
                         </center>
@@ -383,19 +389,5 @@
     </div>
 }
 
-@section Scripts {
-    <script>
-        // Guardar un token en una cookie del navegador
-        function setCookie(cname, cvalue, exdays) {
-            var d = new Date();
-            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000)); // Calcula la fecha de expiración
-            var expires = "expires=" + d.toUTCString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
 
-        // Uso del ejemplo de guardar el token en una cookie
-        var jwtToken = @ViewBag.token; // Aquí debes colocar el token que deseas guardar
-        setCookie("jwtToken", jwtToken, 7); // Guarda el token en una cookie con una expiración de 7 días
-    </script>
-}
 
