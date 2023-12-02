@@ -53,7 +53,11 @@ namespace AIRCOM.Services
         {
             var repairDB = await GetRepairInstallation(repair);
 
-            _context.RepairInstallations.Remove(repairDB);
+            if (repairDB.RepairShips.Count == 0)
+                _context.RepairInstallations.Remove(repairDB);
+            else
+                repairDB.Active = false;
+
             await _context.SaveChangesAsync();
         }
 
@@ -62,8 +66,9 @@ namespace AIRCOM.Services
         {
             var installationDB = await _aux.GetInstallationById(repair.InstallationID);
             
-            var repairDB = await _context.RepairInstallations.SingleOrDefaultAsync(ri => 
-            ri.InstallationID == installationDB.InstallationID && ri.AirportID == installationDB.AirportID && ri.RepairID == repair.RepairID);
+            var repairDB = await _context.RepairInstallations
+                .Include(ri => ri.RepairShips)
+                .SingleOrDefaultAsync(ri => ri.InstallationID == installationDB.ID && ri.AirportID == installationDB.AirportID && ri.RepairID == repair.RepairID);
 
             if (repairDB is null)
                 throw new Exception("En esta instalación no se realiza esta reparación");

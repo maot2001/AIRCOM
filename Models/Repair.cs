@@ -13,7 +13,7 @@ namespace AIRCOM.Models
         public int RepairID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
         public virtual ICollection<RepairShip>? RepairShip { get; set; }
         public virtual ICollection<RepairInstallation>? RepairInstallations { get; set; }
     }

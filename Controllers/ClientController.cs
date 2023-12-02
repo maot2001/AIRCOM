@@ -30,13 +30,9 @@ namespace AIRCOM.Controllers
             return View(_mapper.Map<List<ClientDTO>>(clients));
         }*/
 
-        //[Authorize(Policy = "Client")]
-        public IActionResult Create()
-            => View();
 
         //[Authorize(Policy = "Client")]
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientDTO client)
         {
             try
@@ -48,48 +44,49 @@ namespace AIRCOM.Controllers
             {
                 int lugar_del_error = 4;
                 string error = "Error al insertar valores repetidos";
-                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = error });
+                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
                 int lugar_del_error = 4;
-                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
+                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
-        /*public IActionResult Edit(int id)
-            => View(new ClientDTO { ClientID = id});
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ClientDTO client)
         {
             try
             {
                 await _service.Edit(client);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(SecurityController.Index), "Security");
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores repetidos");
+                int lugar_del_error = 9;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                int lugar_del_error = 9;
+                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
-        public async Task<IActionResult> Delete(int id, string name)
+        [HttpPost]
+        public async Task<IActionResult> Delete(string email)
         {
             try
             {
-                await _service.Delete(new ClientDTO { ClientID = id, Type = name });
-                return RedirectToAction(nameof(Index));
+                await _service.Delete(email);
+                return RedirectToAction(nameof(SecurityController.Index), "Security");
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                int lugar_del_error = 9;
+                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
-        }*/
+        }
     }
 }

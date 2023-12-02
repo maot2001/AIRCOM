@@ -2,6 +2,7 @@
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AIRCOM.Controllers
 {
@@ -21,11 +22,13 @@ namespace AIRCOM.Controllers
             return View("Admin");
         }
         
-        public IActionResult Init(int page = 1, int lugar_del_error = 0, string error = "")
+        public async Task<IActionResult> Init(int page = 1, int lugar_del_error = 0, string error = "")
         {
             ViewData["page"] = page;
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
+            var repairs = await _aux.Get();
+            ViewData["repairs"] = new SelectList(repairs, "RepairID", "Name");
             return View("Admin");
         }
 

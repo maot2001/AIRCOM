@@ -167,12 +167,7 @@
                         <tr>
                             <td>Dependiente: </td>
                             <td>
-                                <select name="dependiente">
-                                    @foreach (var item in sol)
-                                    {
-                                        <option value="a">Reparacion capital</option>
-                                    }
-                                </select>
+                                <select name="RepairID" asp-items="ViewBag.repairs"></select>
                             </td>
                         </tr>
                         <tr>
@@ -192,12 +187,7 @@
                         <tr>
                             <td>Dependencia: </td>
                             <td>
-                                <select name="Dependencia">
-                                    @foreach (var item in sol)
-                                    {
-                                        <option value="a">Cambiar turbinas</option>
-                                    }
-                                </select>
+                                <select name="RepairID" asp-items="ViewBag.repairs"></select>
                             </td>
                         </tr>
                     </table>

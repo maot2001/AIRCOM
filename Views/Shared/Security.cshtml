@@ -410,16 +410,16 @@
         <details>
             <summary>Registrar Arribo</summary>
             <center>
-                <form class="formulario">
+                <form asp-controller="History" asp-action="Create" class="formulario">
                     <table>
                         <tr>
                             <td>Matricula: </td>
-                            <td><input type="text"></td>
+                            <td><input type="text"> name="plate</td>
                         </tr>
                         <tr>
                             <td>Rol del dueño:</td>
                             <td>
-                                <select>
+                                <select name="ownerRole">
                                     @foreach (var item in sol)
                                     {
                                         <option>Capitan</option>
@@ -430,7 +430,7 @@
                         <tr>
                             <td>Estado de la nave: </td>
                             <td>
-                                <select>
+                                <select name="state">
                                     @foreach (var item in sol)
                                     {
                                         <option>Reparacion capital</option>
@@ -440,7 +440,7 @@
                         </tr>
                         <tr>
                             <td>Proximo vuelo: </td>
-                            <td><input type="date"></td>
+                            <td><input type="date" name="exitDate"></td>
                         </tr>
                     </table>
                     @if (ViewBag.lugar_del_error == 8)
@@ -456,15 +456,15 @@
         <details style="background-color:lightgrey">
             <summary>Editar informacion de cliente o trabajador</summary>
             <center>
-                <form class="formulario">
+                <form method="post" class="formulario">
                     <table>
                         <tr>
-                            <td>Carnet de identidad: </td>
-                            <td><input type="text"></td>
+                            <td>Correo: </td>
+                            <td><input name="email"></td>
                         </tr>
                         <tr>
                             <td>Cambiar Contraseña: </td>
-                            <td><input type="password"></td>
+                            <td><input type="password" name="pwd"></td>
                         </tr>
                         <tr>
                             <td>Comprobar contraseña: </td>
@@ -477,8 +477,9 @@
                             @ViewBag.error
                         </aside>
                     }
-                    <button class="boton">Cambiar Contraseña</button>
-                    <button class="boton" style="background-color:rgb(165,5,5)">Eliminar usuario</button>
+                    <input asp-controller="Client" asp-action="Edit" type="submit" value="Cambiar Contraseña">
+
+                    <input asp-controller="Client" asp-action="Delete" type="submit" style="background-color:rgb(165,5,5)" value="Eliminar usuario">
                 </form>
             </center>
         </details>
