@@ -2,7 +2,6 @@
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
@@ -29,27 +28,20 @@ namespace AIRCOM.Controllers
         // POST: RepairInstallation
         //[Authorize(Policy = "Direction")]
         [HttpPost]
-        public async Task<IActionResult> Create(RepairInstallationDTO repair)
+        public async Task<IActionResult> Create([FromBody] RepairInstallationDTO repair)
         {
             try
             {
-                //var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Create(repair, "1");
-                return RedirectToAction(nameof(DirectionController.Index), "Direction");
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(repair, userId);
+                return RedirectToAction(nameof(Get));
             }
-            catch (DbUpdateException e)
+            catch
             {
-                int lugar_del_error = 3;
-                string error = "Error al insertar valores repetidos";
-                return RedirectToAction(nameof(DirectionController.Index), "Direction", new { lugar_del_error = lugar_del_error, error = error });
-            }
-            catch (Exception e)
-            {
-                int lugar_del_error = 3;
-                return RedirectToAction(nameof(DirectionController.Index), "Direction", new { lugar_del_error = lugar_del_error, error = e.Message });
+                return NotFound();
             }
         }
-        /*
+
         // PUT: RepairInstallation
         //[Authorize(Policy = "Direction")]
         [HttpPut]
@@ -81,7 +73,7 @@ namespace AIRCOM.Controllers
             {
                 return NotFound();
             }
-        }*/
+        }
         // ---------------------------------------------------------------------
     }
 }

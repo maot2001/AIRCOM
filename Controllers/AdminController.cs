@@ -26,8 +26,8 @@ namespace AIRCOM.Controllers
         {
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
-            var repairs = await _aux.Get();
-            ViewData["repairs"] = new SelectList(repairs, "RepairID", "Name");
+            //var repairs = await _aux.Get();
+            //ViewData["repairs"] = new SelectList(repairs, "RepairID", "Name");
             return View("Administrar");
         }
 

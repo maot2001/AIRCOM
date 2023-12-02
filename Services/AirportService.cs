@@ -24,6 +24,7 @@ namespace AIRCOM.Services
         public async Task<int> Create(AirportDTO airport)
         {
             var airportDB = _mapper.Map<Airport>(airport);
+            var airports=await _context.Airports.ToListAsync();
 
             _context.Airports.Add(airportDB);
             await _context.SaveChangesAsync();

@@ -17,12 +17,12 @@ namespace AIRCOM.Controllers
         // Security ------------------------------------------------------------
         // POST: RepairShip/5
         //[Authorize(Policy = "Security")]
-        [HttpPost]
-        public async Task<IActionResult> RequestRepair(string plate, RepairInstallationDTO repair)
+        [HttpPost("{shipId}")]
+        public async Task<IActionResult> RequestRepair(string shipId, [FromBody] RepairInstallationDTO repair)
         {
             try
             {
-                await _service.RequestRepair(plate, repair);
+                await _service.RequestRepair(shipId, repair);
                 return RedirectToAction(nameof(GetRepairs));
             }
             catch
@@ -120,7 +120,7 @@ namespace AIRCOM.Controllers
 
         // PUT: Valorar Reparacion
         //[Authorize(Policy = "Client")]
-        /*[HttpPut("Valorate")]
+        [HttpPut("Valorate")]
         public async Task<IActionResult> Valorate([FromBody] RepairShipDTO repair)
         {
             try
@@ -132,7 +132,7 @@ namespace AIRCOM.Controllers
             {
                 return NotFound();
             }
-        }*/
+        }
         // ---------------------------------------------------------------------
     }
 }

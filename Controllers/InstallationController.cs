@@ -18,25 +18,24 @@ namespace AIRCOM.Controllers
         // Direction -----------------------------------------------------------
         // GET: Installation
         //[Authorize(Policy = "Direction")]
-        public async Task<IActionResult> Index(string? token = null)
+        [HttpGet]
+        public async Task<IActionResult> Get(string? token = null)
         {
-            ViewData["page"] = 1;
-            //var userId = HttpContext.User.FindFirst("Airport")?.Value;
-            var installations = await _service.Get("1");
-            return View("Direction");
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
+            var installations = await _service.Get(userId);
+            return View((installations, token));
         }
 
         // POST: Installation
         //[Authorize(Policy = "Direction")]
         [HttpPost]
-        public async Task<IActionResult> Create(InstallationDTO installation)
+        public async Task<IActionResult> Create([FromBody] InstallationDTO installation)
         {
-            int page = 1;
             try
             {
-                //var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Create(installation, "1");
-                return RedirectToAction(nameof(DirectionController.Index), "Direction", new { page = page });
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(installation, userId);
+                return RedirectToAction(nameof(Get));
             }
             catch (Exception e)
             {
@@ -46,7 +45,7 @@ namespace AIRCOM.Controllers
 
         // PUT: Installation
         //[Authorize(Policy = "Direction")]
-        /*[HttpPut]
+        [HttpPut]
         public async Task<IActionResult> Edit([FromBody] InstallationDTO installation)
         {
             try
@@ -78,7 +77,7 @@ namespace AIRCOM.Controllers
             {
                 return NotFound(e.Message);
             }
-        }*/
+        }
         // ---------------------------------------------------------------------
     }
 }
