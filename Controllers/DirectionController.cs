@@ -23,29 +23,25 @@ namespace AIRCOM.Controllers
             ViewData["page"] = page;
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
+            var installations = await _aux.Get("1");
 
-            if (page == 1)
+            switch (page)
             {
-                var installations = await _aux.Get("1");
-                ViewData["installations"] = installations;
-            }
-
-            if (page == 2)
-            {
-                var installations = await _aux.Get("1");
-                ViewData["installations"] = new SelectList(installations, "ID", "Name");
-                var services = await _aux3.Get("1");
-                ViewData["services"] = new SelectList(services, "Code", "Name");
-            }
-
-            if (page == 3)
-            {
-                var installations = await _aux.Get("1");
-                ViewData["installations"] = new SelectList(installations, "ID", "Name");
-                var repairs = await _aux2.Get();
-                ViewData["rep"] = new SelectList(repairs, "RepairID", "Name");
-                var ri = await _aux4.Get("1");
-                ViewData["repairs"] = ri;
+                case 1:
+                    ViewData["installations"] = installations;
+                    break;
+                case 2:
+                    ViewData["installations"] = new SelectList(installations, "ID", "Name");
+                    var services = await _aux3.Get("1");
+                    ViewData["services"] = new SelectList(services, "Code", "Name");
+                    break;
+                default:
+                    ViewData["installations"] = new SelectList(installations, "ID", "Name");
+                    var repairs = await _aux2.Get();
+                    ViewData["rep"] = new SelectList(repairs, "RepairID", "Name");
+                    var ri = await _aux4.Get("1");
+                    ViewData["repairs"] = ri;
+                    break;
             }
 
             return View("Direction");

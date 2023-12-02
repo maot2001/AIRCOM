@@ -35,17 +35,14 @@ namespace AIRCOM.Controllers
                 var Token = await _service.Login(client);
                 switch (Token.Item2)
                 {
-                    /*case 0:
-                        return RedirectToAction(nameof(ShipsController.ClientShips), "Ships");*/
+                    case 0:
+                        return RedirectToAction(nameof(CViewController.Index), "CView");
                     case 1:
                         return RedirectToAction(nameof(SecurityController.Index), "Security", new { token = Token.Item1 });
-                    /*case 2:
-                        return RedirectToAction(nameof(RepairShipController.GetRequest), "RepairShip");
-                    case 3:
-                        return RedirectToAction(nameof(InstallationController.Get), "Installation");*/
+                    case 2:
+                        return RedirectToAction(nameof(MechanicController.Index), "Mechanic");
                     default:
-                        return RedirectToAction(nameof(AirportController.Index), "Airport");
-
+                        return RedirectToAction(nameof(DirectionController.Index), "Direction");
                 }
             }
             catch

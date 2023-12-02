@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AIRCOM.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class SecurityController : Controller
     {
         private readonly InstallationService _aux;
@@ -30,20 +30,22 @@ namespace AIRCOM.Controllers
             ViewData["error"] = error;
             
             if (token != "")
-                ViewData["token"] = token;
+                ViewData["jwtToken"] = token;
 
-            if (page == 2)
-                ViewData["ships"] = await _aux3.Get();
-
-            if (page == 3)
-                ViewData["clients"] = await _aux4.Get("1");
-
-            if (page == 4)
+            switch (page)
             {
-                var installations = await _aux.Get("1");
-                ViewData["installations"] = new SelectList(installations, "ID", "Name");
-                var repairs = await _aux2.Get();
-                ViewData["repairs"] = new SelectList(repairs, "RepairID", "Name");
+                case 2:
+                    ViewData["ships"] = await _aux3.Get();
+                    break;
+                case 3:
+                    ViewData["clients"] = await _aux4.Get("1");
+                    break;
+                default:
+                    var installations = await _aux.Get("1");
+                    ViewData["installations"] = new SelectList(installations, "ID", "Name");
+                    var repairs = await _aux2.Get();
+                    ViewData["repairs"] = new SelectList(repairs, "RepairID", "Name");
+                    break;
             }
 
             return View("Security");

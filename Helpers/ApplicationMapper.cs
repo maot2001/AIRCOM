@@ -29,8 +29,6 @@ namespace AIRCOM.Helpers
             CreateMap<Airport, AirportDTO>().ReverseMap();
             CreateMap<Repair, RepairDTO>();
             CreateMap<Repair, RepairDTO>().ReverseMap();
-            CreateMap<CustomerService, ServiceDTO>();
-            CreateMap<CustomerService, ServiceDTO>().ReverseMap();
             CreateMap<History, HistoryDTO>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Ships.State));
             CreateMap<HistoryDTO, History>()

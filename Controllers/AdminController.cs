@@ -46,7 +46,6 @@ namespace AIRCOM.Controllers
         {
             return View("Estadisticas");
         }
-
         private async Task<string> ObtenerContenidoDeLaSolicitud(HttpRequest request)
         {
             using (var reader = new StreamReader(request.Body))

@@ -20,6 +20,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = false,
             ValidateAudience = false
         };
+    })
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "jwtToken";
+        options.Cookie.SameSite = SameSiteMode.None;
+        // Otras opciones de cookie, como SameSite, Secure, etc.
     });
 
 builder.Services.AddAuthorization(options =>
@@ -48,7 +54,6 @@ builder.Services.AddScoped<RepairInstallationService>();
 builder.Services.AddScoped<RepairService>();
 builder.Services.AddScoped<RepairShipService>();
 builder.Services.AddScoped<ServiceInstallationService>();
-builder.Services.AddScoped<ServicesService>();
 builder.Services.AddScoped<ShipsService>();
 
 // AutoMapper
