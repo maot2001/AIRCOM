@@ -30,7 +30,7 @@ namespace AIRCOM.Controllers
         public async Task<IActionResult> Create(RepairDTO repair)
         {
             await _service.Create(repair);
-            return RedirectToAction(nameof(AdminController.Init), "Admin");
+            return RedirectToAction(nameof(AdminController.Init), "Admin", new { sucess = "Los cambios han sido aplicados correctamente" });
         }
         /*
         // PUT: Repair
@@ -61,7 +61,7 @@ namespace AIRCOM.Controllers
             try
             {
                 await _service.Delete(name, cascada);
-                return RedirectToAction(nameof(AdminController.Init), "Admin");
+                return RedirectToAction(nameof(AdminController.Init), "Admin", new { sucess = "Los cambios han sido aplicados correctamente" });
             }
             catch (Exception e)
             {

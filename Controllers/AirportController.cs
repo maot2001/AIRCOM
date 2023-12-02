@@ -39,7 +39,7 @@ namespace AIRCOM.Controllers
                 int airp = await _service.Create(airport);
                 airport.Security.AirportID = airp;
                 await _aux.Create(airport.Security, "");
-                return RedirectToAction(nameof(AdminController.Init), "Admin");
+                return RedirectToAction(nameof(AdminController.Init), "Admin", new { sucess="Los cambios han sido aplicados correctamente"});
             }
             catch (DbUpdateException e)
             {
@@ -82,7 +82,7 @@ namespace AIRCOM.Controllers
             try
             {
                 await _service.Delete(name, cascada);
-                return RedirectToAction(nameof(AdminController.Init), "Admin");
+                return RedirectToAction(nameof(AdminController.Init), "Admin", new { sucess = "Los cambios han sido aplicados correctamente" });
             }
             catch (Exception e)
             {
