@@ -1,0 +1,50 @@
+@{
+    string Calificacion(bool i)
+    //ponerlo en funcion de la calificacion
+    {
+        return "⭐⭐🌗🌑🌑";
+    }
+}
+
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEROPUERTO > USUARIO</h4>
+    <form asp-controller="Mechanic" asp-action="Index">
+        <div>
+            <div><button class="no" type="submit" name="page" value="1">❗</button></div>
+            <div><button class="no" type="submit" name="page" value="2">🛠️</button></div>
+            <div><button class="yes" type="submit" name="page" value="3">✉️</button></div>
+        </div>
+    </form>
+</nav>
+
+<h1>Reparaciones Realizadas:</h1>
+@foreach (RepairShipDTO repair in ViewBag.repairs)
+{
+    <section class="dataToShow" style="font-size:x-large">
+        <div style="display: flex;">
+            <div>Matricula: @Html.DisplayFor(m=>repair.Plate)</div>
+            <div>Estado: @Html.DisplayFor(m=>repair.State)</div>
+            <div>tipo: @Html.DisplayFor(m=>repair.Name)</div>
+        </div>
+        <div>
+            <div>Inicio: @Html.DisplayFor(m=>repair.Init)</div>
+            <div>Terminación: @Html.DisplayFor(m=>repair.Finish)</div>
+            <div>Costo: $@Html.DisplayFor(m=>repair.Price)</div>
+        </div>
+        <div>
+            <div style="flex:none;">@Calificacion(true)</div>
+            <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
+                <details>
+                    <summary><strong>Leer Comentario: </strong></summary>
+                    Poner aqui el comentario correspondiente si existe
+                </details>
+            </div>
+        </div>
+
+    </section>
+}

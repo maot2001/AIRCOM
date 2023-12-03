@@ -1,0 +1,46 @@
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEROPUERTO > USUARIO</h4>
+    <form asp-controller="Mechanic" asp-action="Index">
+        <div>
+            <div><button class="yes" type="submit" name="page" value="1">❗</button></div>
+            <div><button class="no" type="submit" name="page" value="2">🛠️</button></div>
+            <div><button class="no" type="submit" name="page" value="3">✉️</button></div>
+        </div>
+    </form>
+</nav>
+
+<h1>Solicitudes de reparación:</h1>
+@foreach (RepairShipDTO repair in ViewBag.repairs)
+{
+    <section class="dataToShow">
+        <div style="display: flex;">
+            <div>Matricula: @Html.DisplayFor(m=>repair.Plate)</div>
+            <div>Estado: @Html.DisplayFor(m=>repair.State)</div>
+            <div>tipo: @Html.DisplayFor(m=>repair.Name)</div>
+
+        </div>
+        @if (!ViewBag.a)
+        {
+            <div>
+                <form asp-controller="RepairShip" asp-action="ProcessRepair">
+                    <input name="rsid" value="@Html.DisplayFor(m=>repair.RSID)" hidden>
+                    <div>
+                        Cantidad de horas:
+                        <input type="number" min="0" style="width:20%;">
+                    </div>
+                    <div>
+                        Terminación:
+                        <input type="date" style="width:100%;" min="@DateTime.Today.Date.ToString().Split().First()">
+                    </div>
+                    <div style="flex:1;">
+                        <button type="submit" style="align-self:end;" class="boton">Reparar</button>
+                    </div>
+                </form>
+            </div>
+        }
+    </section>
+}

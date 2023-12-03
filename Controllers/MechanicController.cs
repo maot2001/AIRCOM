@@ -14,20 +14,27 @@ namespace AIRCOM.Controllers
         }
         public async Task<IActionResult> Index(int page = 1)
         {
-            ViewData["page"] = page;
             ViewData["a"] = false;
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
 
-            if (page == 1)
-                ViewData["repairs"] = await _aux.Get(0, userId);
-
-            if (page == 2)
-                ViewData["repairs"] = await _aux.Get(1, userId);
-
-            if(page == 3)
-                ViewData["repairs"] = await _aux.Get(2, userId);
-
-            return View("Mechanic");
+            switch(page)
+            {
+                case 2:
+                {
+                    ViewData["repairs"] = await _aux.Get(1, userId);
+                    return View("Reparaciones");
+                }
+                case 3:
+                {
+                    ViewData["repairs"] = await _aux.Get(2, userId);
+                    return View("Reparaciones");
+                }
+                default:
+                {
+                    ViewData["repairs"] = await _aux.Get(0, userId);
+                    return View("Solicitudes");
+                }
+            }
         }
     }
 }
