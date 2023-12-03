@@ -26,11 +26,8 @@ namespace AIRCOM.Services
         public async Task Create(ServiceInstallationDTO service, string userId)
         {
             var serviceDB = _mapper.Map<on_site>(service);
-            serviceDB.Name = service.Name;
             serviceDB.ClientID = int.Parse(userId);
-            serviceDB.Client = await _context.Clients.FindAsync(int.Parse(userId));
-            if (serviceDB.Fecha == default(DateTime))
-                serviceDB.Fecha = DateTime.Now;
+            serviceDB.Fecha = DateTime.Now;
             _context.On_Site.Add(serviceDB);
             await _context.SaveChangesAsync();
         }

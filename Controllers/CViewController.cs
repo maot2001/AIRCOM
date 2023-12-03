@@ -18,14 +18,15 @@ namespace AIRCOM.Controllers
         public async Task<IActionResult> Index(int page = 1)
         {
             ViewData["page"] = page;
+            var userId = HttpContext.User.FindFirst("Id")?.Value;
 
             switch (page)
             {
                 case 1:
-                    ViewData["ships"] = await _aux.Get("4");
+                    ViewData["ships"] = await _aux.Get(userId);
                     break;
                 default:
-                    ViewData["services"] = await _aux2.Get("1");
+                    ViewData["services"] = await _aux2.Get();
                     break;
             }
 

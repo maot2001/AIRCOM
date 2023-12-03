@@ -45,9 +45,9 @@
 
                 <div>
                     <div>Fecha de salida programada:</div>
-                    <div>1/12/2024</div>
+                    <div>@Html.DisplayFor(m=>ship.NextFly)</div>
                     <form method="post">
-                        <button class="boton" type="submit">
+                        <button asp-controller="History" asp-action="" class="boton" type="submit">
                             Ver historial
                         </button>
                         <button class="boton" type="submit">

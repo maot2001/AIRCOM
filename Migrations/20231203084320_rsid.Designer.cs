@@ -4,6 +4,7 @@ using AIRCOM.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIRCOM.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20231203084320_rsid")]
+    partial class rsid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,8 +291,7 @@ namespace AIRCOM.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int?>("RepairInstallationID")
-                        .IsRequired()
+                    b.Property<int>("RepairInstallationID")
                         .HasColumnType("int");
 
                     b.Property<int?>("Stars")
@@ -371,9 +373,6 @@ namespace AIRCOM.Migrations
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("NextFly")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Pass")
                         .HasColumnType("int");

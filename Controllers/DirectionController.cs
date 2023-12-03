@@ -25,7 +25,8 @@ namespace AIRCOM.Controllers
             ViewData["page"] = page;
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
-            var installations = await _aux.Get("1");
+            var userId = HttpContext.User.FindFirst("Airport")?.Value;
+            var installations = await _aux.Get(userId);
 
             switch (page)
             {
@@ -34,14 +35,14 @@ namespace AIRCOM.Controllers
                     break;
                 case 2:
                     ViewData["installations"] = new SelectList(installations, "ID", "Name");
-                    var services = await _aux3.Get("1");
-                    ViewData["services"] = new SelectList(services, "Code", "Name");
+                    var services = await _aux3.Get(userId);
+                    ViewData["services"] = services;
                     break;
                 default:
                     ViewData["installations"] = new SelectList(installations, "ID", "Name");
                     var repairs = await _aux2.Get();
                     ViewData["rep"] = new SelectList(repairs, "RepairID", "Name");
-                    var ri = await _aux4.Get("1");
+                    var ri = await _aux4.Get(userId);
                     ViewData["repairs"] = ri;
                     break;
             }

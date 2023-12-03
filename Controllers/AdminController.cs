@@ -27,7 +27,6 @@ namespace AIRCOM.Controllers
             ViewData["lugar_del_error"] = 0;
             return View("Admin");
         }
-
         public IActionResult Comprobe(string pwd)
         {
             if (pwd == "1234")

@@ -16,41 +16,6 @@ namespace AIRCOM.Services
             _mapper = mapper;
             _aux = aux;
         }
-
-        public async Task RequestRepair(string shipId, RepairInstallationDTO repair)
-        {
-            await Errors(repair, shipId);
-
-            var ship = await _context.Shipss.FindAsync(shipId);
-            var rep = await _context.Repairs.FindAsync(repair.RepairID);
-            var RS = _mapper.Map<RepairShip>(repair);
-            RS.Plate = shipId;
-            RS.State = ship.State;
-
-            _context.RepairShips.Add(RS);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task ProcessRepair(RepairShipDTO repair)
-        {
-            var shipRepair = await RepairAux(repair);
-            shipRepair.Init = (DateTime)repair.newTime;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task FinishRepair(RepairShipDTO repair)
-        {
-            var shipRepair = await RepairAux(repair);
-            
-            TimeSpan? time = (DateTime) repair.newTime - shipRepair.Init;
-            int cost = shipRepair.Time - (int) time?.TotalHours;
-            if (cost > 0)
-                shipRepair.Price *= (1 + cost / 100);
-
-            shipRepair.Finish = (DateTime)repair.newTime;
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<IEnumerable<RepairShipDTO>> Get(int type, string? userId = null, int id = 0)
         {
             List<RepairShip> repairs;
@@ -80,9 +45,56 @@ namespace AIRCOM.Services
             return _mapper.Map<List<RepairShipDTO>>(repairs);
         }
 
+        public async Task RequestRepair(string shipId, RepairInstallationDTO repair)
+        {
+            await Errors(repair, shipId);
+
+            var ship = await _context.Shipss.FindAsync(shipId);
+            var RS = _mapper.Map<RepairShip>(repair);
+            RS.RepairInstallationID = repair.ID;
+            RS.Plate = shipId;
+            RS.State = ship.State;
+
+            _context.RepairShips.Add(RS);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ProcessRepair(RepairShipDTO repair)
+        {
+            var shipRepair = await _context.RepairShips.FindAsync(repair.RSID);
+            shipRepair.Init = DateTime.Now;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task FinishRepair(RepairShipDTO repair)
+        {
+            var shipRepair = await _context.RepairShips
+                .Include(rs => rs.Ships).ThenInclude(s => s.Reports)
+                .SingleOrDefaultAsync(rs => rs.RSID == repair.RSID);
+            shipRepair.Finish = DateTime.Now;
+            
+            TimeSpan? time = shipRepair.Finish - shipRepair.Init;
+            float cost = shipRepair.Price * (float) time?.TotalHours;
+
+            float val = 1;
+            if (shipRepair.Ships.Reports.Count == 1)
+                val += 0.01f * (float)time?.TotalHours;
+            if (shipRepair.Ships.NextFly > shipRepair.Init && shipRepair.Ships.NextFly < shipRepair.Finish)
+            {
+                TimeSpan? time2 = shipRepair.Finish - shipRepair.Ships.NextFly;
+                val -= 0.01f * (float)(time2?.TotalHours);
+            }
+            else if (shipRepair.Ships.NextFly < shipRepair.Init)
+                shipRepair.Ships.NextFly = null;
+
+            shipRepair.Price = cost * val;
+            await _context.SaveChangesAsync();
+        }
+
+
         public async Task Valorate(RepairShipDTO repair)
         {
-            var repairShipDB = await RepairAux(repair);
+            var repairShipDB = await _context.RepairShips.FindAsync(repair.RSID);
             repairShipDB.Stars = repair.Stars;
             repairShipDB.Comment = repair.Comment;
 
@@ -97,18 +109,6 @@ namespace AIRCOM.Services
         }
 
         // ---------------------------------------------------------------------
-        private async Task<RepairShip> RepairAux(RepairShipDTO repair)
-        {
-            if (repair.newTime == default(DateTime))
-                repair.newTime = DateTime.Now;
-
-            var shipRepair = await _context.RepairShips.SingleOrDefaultAsync(r =>
-            r.RepairInstallation.ID == repair.RepairInstallationID && r.Plate == repair.Plate);
-            if (shipRepair is null)
-                throw new Exception();
-            return shipRepair;
-        }
-
         private async Task Errors(RepairInstallationDTO repair, string shipId)
         {
             var repairDB = await _aux.GetRepairInstallation(repair);
@@ -117,12 +117,12 @@ namespace AIRCOM.Services
             if (ship is null)
                 throw new Exception();
 
-            var exist = await _context.RepairShips.SingleOrDefaultAsync(rs =>
-            rs.RepairInstallation.InstallationID == repair.InstallationID && rs.RepairInstallation.RepairID == repair.RepairID &&
-            rs.Plate == shipId && rs.Init == null);
+            var exist = await _context.RepairShips.SingleOrDefaultAsync(rs => 
+            rs.RepairInstallationID == repair.ID && rs.Plate == shipId && rs.Init == null);
             if (exist is not null)
                 throw new Exception();
 
+            repair.ID = repairDB.ID;
             repair.Name = repairDB.Name;
             repair.Price = repairDB.Price;
         }

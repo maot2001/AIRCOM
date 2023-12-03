@@ -38,7 +38,7 @@ namespace AIRCOM.Services
                 val = types[worker.Type];
             }
             else
-                jwtToken = GenerateToken("0", client.ClientID.ToString(), "Client");
+                jwtToken = GenerateToken("0", client.ClientID.ToString(), "Cliente");
             return (jwtToken, val);
         }
 
