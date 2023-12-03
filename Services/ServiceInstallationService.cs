@@ -74,7 +74,7 @@ namespace AIRCOM.Services
             if (installationDB is null)
                 throw new Exception();
 
-            var exist = await _context.ServicesInstallations.SingleOrDefaultAsync(si =>
+            var exist = _context.ServicesInstallations.SingleOrDefaultAsync(si =>
             si.InstallationID == service.InstallationID && si.Name == service.Name);
             if (exist is not null)
                 throw new Exception();

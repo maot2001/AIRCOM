@@ -1,28 +1,28 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace AIRCOM.Migrations
 {
     /// <inheritdoc />
-    public partial class err1 : Migration
+    public partial class Pokemon : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "NextFly",
+            migrationBuilder.AddColumn<int>(
+                name: "Pass",
                 table: "Shipss",
-                type: "datetime2",
-                nullable: true);
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "NextFly",
+                name: "Pass",
                 table: "Shipss");
         }
     }

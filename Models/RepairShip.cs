@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AIRCOM.Models
 {
-    [Index(nameof(RSID), IsUnique = true)]
+    [Index(nameof(ID), IsUnique = true)]
     public class RepairShip
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RSID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public DateTime? Init { get; set; }
         public DateTime? Finish { get; set; }
@@ -27,7 +27,7 @@ namespace AIRCOM.Models
         public int RepairID { get; set; }
         [ForeignKey(nameof(RepairID))]
         public virtual Repair Repair { get; set; }*/
-        public int? RepairInstallationID { get; set; }
+        public int RepairInstallationID { get; set; }
         [ForeignKey(nameof(RepairInstallationID))]
         public virtual RepairInstallation RepairInstallation { get; set; }
         public string Plate { get; set; }

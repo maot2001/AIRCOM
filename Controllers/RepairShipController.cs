@@ -2,7 +2,6 @@
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
@@ -25,12 +24,6 @@ namespace AIRCOM.Controllers
             {
                 await _service.RequestRepair(plate, repair);
                 return RedirectToAction("Index", "Security");
-            }
-            catch (DbUpdateException e)
-            {
-                int lugar_del_error = 7;
-                string error = "Esta solicitud ya está siendo procesada";
-                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
@@ -87,15 +80,14 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> ProcessRepair(RepairShipDTO repair)
         {
-            int page = 2;
             try
             {
                 await _service.ProcessRepair(repair);
-                return RedirectToAction("Index", "Mechanic", new { page = page });
+                return RedirectToAction("Index", "Mechanic");
             }
             catch
             {
-                return RedirectToAction("Index", "Mechanic", new { page = page });
+                return RedirectToAction("Index", "Mechanic");
             }
         }
 
@@ -104,15 +96,14 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> FinishRepair(RepairShipDTO repair)
         {
-            int page = 3;
             try
             {
                 await _service.FinishRepair(repair);
-                return RedirectToAction("Index", "Mechanic", new { page = page });
+                return RedirectToAction("Index", "Mechanic");
             }
             catch
             {
-                return RedirectToAction("Index", "Mechanic", new { page = page });
+                return RedirectToAction("Index", "Mechanic");
             }
         }
         // ---------------------------------------------------------------------
@@ -131,7 +122,7 @@ namespace AIRCOM.Controllers
         // PUT: Valorar Reparacion
         //[Authorize(Policy = "Client")]
         /*[HttpPut("Valorate")]
-        public async Task<IActionResult> Valorate(RepairShipDTO repair)
+        public async Task<IActionResult> Valorate([FromBody] RepairShipDTO repair)
         {
             try
             {

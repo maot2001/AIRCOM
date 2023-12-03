@@ -86,7 +86,7 @@ namespace AIRCOM.Controllers
         // PUT: History/Include
         //[Authorize(Policy = "Client")]
         /*[HttpPut("Include")]
-        public async Task<IActionResult> Include(HistoryDTO history)
+        public async Task<IActionResult> Include([FromBody] HistoryDTO history)
         {
             try
             {

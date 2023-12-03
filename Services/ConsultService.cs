@@ -29,12 +29,12 @@ namespace AIRCOM.Services
         {
             var airports = await _context.Airports.ToListAsync();
             List<Airport> exit = new List<Airport>();
-
+            /*
             foreach (var airport in airports)
             {
                 if (airport.RepairInstallation.Count() != 0) exit.Add(airport);
             }
-
+            */
             return _mapper.Map<List<AirportDTO>>(exit);
         }
         //2
@@ -46,11 +46,12 @@ namespace AIRCOM.Services
             foreach (var airport in airports)
             {
                 int CapitalReparationsCounter = 0;
-
+                /*
                 foreach (var item in airport.RepairShip)
                 {
                     if (item.Name == "Reparación Capital") CapitalReparationsCounter++;
                 }
+                */
                 exit.Add((airport, CapitalReparationsCounter));
             }
 

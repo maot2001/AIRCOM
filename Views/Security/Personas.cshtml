@@ -1,0 +1,81 @@
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEROPUERTO > USUARIO</h4>
+        <<form asp-controller="Security" asp-action="Index">
+        <div>
+            <div><button class="no" type="submit" name="page" value="1">🕑</button></div>
+            <div><button class="no" type="submit" name="page" value="2">✈️</button></div>
+            <div><button class="yes" type="submit" name="page" value="3">👨‍💼</button></div>
+            <div><button class="no" type="submit" name="page" value="4">➕</button></div>
+        </div>
+    </form>
+</nav>
+
+<center>
+    <h1>Personas</h1>
+    <table>
+        <tr>
+            <th>
+                <center>
+                    Rol
+                    <button class="no">🔽</button>
+                </center>
+            </th>
+            <th>
+                <center>
+                    Carnet de Identidad
+                    <button class="no">🔽</button>
+                </center>
+            </th>
+            <th>
+                <center>
+                    Nombre
+                    <button class="no">🔽</button>
+                </center>
+            </th>
+            <th>
+                <center>
+                    Nacionalidad
+                    <button class="no">🔽</button>
+                </center>
+            </th>
+            <th>
+                <center>
+                    Tipo
+                    <button class="no">🔽</button>
+                </center>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" placeholder="🔍filtrar">
+            </td>
+            <td>
+                <input type="text" placeholder="🔍filtrar">
+            </td>
+            <td>
+                <input type="text" placeholder="🔍filtrar">
+            </td>
+            <td>
+                <input type="text" placeholder="🔍filtrar">
+            </td>
+            <td>
+                <input type="text" placeholder="🔍filtrar">
+            </td>
+        </tr>
+        @foreach (ClientDTO client in ViewBag.clients)
+        {
+            <tr>
+                <td>@Html.DisplayFor(m=>client.Rol)</td>
+                <td>@Html.DisplayFor(m=>client.CI)</td>
+                <td>@Html.DisplayFor(m=>client.Name)</td>
+                <td>@Html.DisplayFor(m=>client.Nationality)</td>
+                <td>@Html.DisplayFor(m=>client.Type)</td>
+            </tr>
+        }
+    </table>
+
+</center>

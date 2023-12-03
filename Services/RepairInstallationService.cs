@@ -44,7 +44,7 @@ namespace AIRCOM.Services
             await Errors(repair);
 
             var repairDB = await GetRepairInstallation(repair);
-            repairDB.Price = repair.Price;
+            //epairDB.Price = repair.Price;
 
             await _context.SaveChangesAsync();
         }
@@ -87,7 +87,7 @@ namespace AIRCOM.Services
 
             var exist = await _context.RepairInstallations
                 .Include(ri => ri.Installation)
-                .SingleOrDefaultAsync(ri => ri.InstallationID == installationDB.ID && (ri.RepairID == repair.RepairID || ri.Name == repair.Name));
+                .SingleOrDefaultAsync(ri => ri.InstallationID == installationDB.ID && ri.RepairID == repair.RepairID);
             if (exist is not null)
                 throw new Exception("En esta instalación ya se realiza esta reparación");
 

@@ -1,0 +1,57 @@
+@*Segunda pagina, aviones en el aeropuerto*@
+
+@*CAMBIAR AEROPUERTO>USUARIO*@
+@*CAMBIAR FECHA DE SALIDA*@
+
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEROPUERTO > USUARIO</h4>
+        <<form asp-controller="Security" asp-action="Index">
+        <div>
+            <div><button class="no" type="submit" name="page" value="1">🕑</button></div>
+            <div><button class="yes" type="submit" name="page" value="2">✈️</button></div>
+            <div><button class="no" type="submit" name="page" value="3">👨‍💼</button></div>
+            <div><button class="no" type="submit" name="page" value="4">➕</button></div>
+        </div>
+    </form>
+</nav>
+
+<div style="display:flex;justify-content:space-between; margin:0% 2%; align-items:center;">
+    <div><h1>Naves en el aeropuerto</h1></div>
+    <div><input type="text" placeholder="🔍buscar"></div>
+</div>
+@foreach (ShipsDTO ship in ViewBag.ships)
+{
+    <section class="dataToShow">
+        <div style="display: flex;">
+            <div>Matricula: @Html.DisplayFor(m=>ship.Plate)</div>
+            <div>Estado: @Html.DisplayFor(m=>ship.State)</div>
+            <div>ID Propietario: @Html.DisplayFor(m=>ship.ClientID)</div>
+
+        </div>
+
+        <div class="tag">
+            <aside>
+                <div><h4>Características:</h4></div>
+                <div><strong>Modelo:</strong> @Html.DisplayFor(m=>ship.Model)</div>
+                <div><strong>Capacidad de carga:</strong> @Html.DisplayFor(m=>ship.Crew)</div>
+                <div><strong>Cantidad de tripulantes:</strong> @Html.DisplayFor(m=>ship.Capacity)</div>
+                <div><strong>Cantidad de pasajeros:</strong> @Html.DisplayFor(m=>ship.Pass)</div>
+            </aside>
+            <div>
+                <div>Fecha de salida programada:</div>
+                <div>1/12/2024</div>
+                <form>
+                    <input type="text" name="plate" value="@Html.DisplayFor(m=>ship.Plate)" hidden>
+                    <input type="text" name="page" value="1" hidden>
+                    <input asp-controller="Security" asp-action="Index" class="boton" type="submit" value="Ver historial">
+                    <input class="boton" type="submit" value="Solicitar reparación">
+                </form>
+            </div>
+        </div>
+    </section>
+}

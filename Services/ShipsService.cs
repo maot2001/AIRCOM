@@ -20,31 +20,10 @@ namespace AIRCOM.Services
             List<Ships> ships;
 
             if (userId is null)
-                ships = await _context.Shipss
-                    .Include(s => s.Reports)
-                    .Include(s => s.Histories)
-                    .ToListAsync();
+                ships = await _context.Shipss.ToListAsync();
 
             else
-                ships = await _context.Shipss
-                    .Include(s => s.Reports)
-                    .Include(s => s.Histories)
-                    .Where(s => s.ClientID == int.Parse(userId)).ToListAsync();
-            
-            foreach (var ship in ships)
-            {
-                if (ship.NextFly < DateTime.Now)
-                {
-                    bool repair = false;
-                    foreach (var report in ship.Reports)
-                    {
-                        if (report.Init is not null && report.Finish is null)
-                            repair = true;
-                    }
-                    if (!repair)
-                        ship.NextFly = GetMinimumDateTime(ship.Histories);
-                }
-            }
+                ships = await _context.Shipss.Where(s => s.ClientID == int.Parse(userId)).ToListAsync();
 
             return _mapper.Map<List<ShipsDTO>>(ships);
         }
@@ -110,21 +89,6 @@ namespace AIRCOM.Services
 
             if (client is null)
                 throw new Exception("El cliente no existe");
-        }
-
-        private DateTime? GetMinimumDateTime (IEnumerable<History>? histories)
-        {
-            IEnumerable<History> dates = histories.Where(h => h.ExitDate > DateTime.Now);
-            DateTime? minimumDateTime = DateTime.MaxValue;
-
-            foreach (History date in dates)
-            {
-                if (date.ExitDate < minimumDateTime)
-                {
-                    minimumDateTime = date.ExitDate;
-                }
-            }
-            return minimumDateTime;
         }
     }
 }
