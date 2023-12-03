@@ -1,6 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    int p = 4;
+    On_siteDTO service = new();
+    if (ViewBag.service != null)
+    {
+       service  = ViewBag.service;
+    }
+    List<On_siteDTO> serviceInst = new();
+    if (ViewBag.serviceInst != null)
+    {
+       serviceInst  = ViewBag.serviceInst;
+    }
+    List<RepairShipDTO> repairInst = new();
+    if (ViewBag.repairInst != null)
+    {
+       repairInst  = ViewBag.repairInst;
+    }
+    ShipsDTO ship = new();
+    if (ViewBag.ship != null)
+    {
+       ship  = ViewBag.ship;
+    }
     bool a = true;
     bool b = true;
     bool check = true;
@@ -30,10 +49,11 @@
     <div><button class="boton" style="background-color:crimson">← Volver</button></div>
 </nav>
 
-@if (p == 1)
+@if (ViewBag.page == 1)
 {
     <div class="calificar">
-        <form method="post">
+        <form asp-controller="On_site" asp-action="Valorate">
+            <input name="id" value="@Html.DisplayFor(m=>service.ID)">
             <center><h1>Comentar</h1></center>
             <div>
                 <div>
@@ -49,12 +69,12 @@
                 }
                 <div>
                     <strong>Calificación:</strong>
-                    <input type="number" max="10" min="0" style="width:75px" />
+                    <input type="number" name="stars" max="10" min="0" style="width:75px" />
                 </div>
             </div>
             <section>
                 <div>
-                    <textarea placeholder="Introduzca aqui su comentario"></textarea>
+                    <textarea name="comment" placeholder="Introduzca aqui su comentario"></textarea>
                 </div>
             </section>
             <center><button type="submit" class="boton"><h4>Enviar Comentario</h4></button></center>
@@ -63,31 +83,31 @@
 
 }
 
-@if (p == 2)
+@if (ViewBag.page == 2)
 {
     <center>
-        <h3>Servicio: Comida Rapida</h3>
+        <h3>Servicio: @Html.DisplayFor(m=>serviceInst[0].Name)</h3>
     </center>
     <div style="display:flex;justify-content:space-around;">
         <div>Aeropuerto: Jose Marti</div>
-        <div>Instalacion #4</div>
-        <div>Precio: $4.99</div>
+        <div>Instalacion </div>
+        <div>Precio: $@Html.DisplayFor(m=>serviceInst[0].Price)</div>
         <div>Calificación: @Calificacion(a)</div>
     </div>
 
-    @foreach (var solicitud in sol)
+    @foreach (On_siteDTO serv in serviceInst)
     {
         <section class="dataToShow" style="font-size:x-large">
             <div>
-                <div>Fecha: 10/10/2020</div>
-                <div>Usuario: Alan Brito Rojo</div>
+                <div>Fecha: @Html.DisplayFor(m=>serv.Fecha)</div>
+                <div>Usuario: @Html.DisplayFor(m=>serv.Name)</div>
             </div>
             <div>
-                <div style="flex:none;">@Calificacion(solicitud)</div>
+                <div style="flex:none;">@Calificacion(a)</div>
                 <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
                     <details>
                         <summary><strong>Leer Comentario: </strong></summary>
-                        Poner aqui el comentario correspondiente si existe
+                        @Html.DisplayFor(m=>serv.Comment)
                     </details>
                 </div>
             </div>
@@ -96,39 +116,39 @@
     }
 }
 
-@if (p == 3)
+@if (ViewBag.page == 3)
 {
     <center>
-        <h3>Historial de reparaciones: Reparación Capital</h3>
+        <h3>Historial de reparaciones: @Html.DisplayFor(m=>repairInst[0].Name)</h3>
     </center>
     <div style="display:flex;justify-content:space-around;">
         <div>Aeropuerto: Jose Marti</div>
-        <div>Instalacion #4</div>
-        <div>Precio: $4.99/h</div>
+        <div>Instalacion #</div>
+        <div>Precio: $@Html.DisplayFor(m=>repairInst[0].Price)/h</div>
         <div>Calificación: @Calificacion(a)</div>
     </div>
 
-    @foreach (var solicitud in sol)
+    @foreach (RepairShipDTO rep in repairInst)
     {
         <section class="dataToShow" style="font-size:x-large">
             <div style="display: flex;">
-                <div>Matricula: aaaaaaaa</div>
-                <div>Estado: asadasdsd</div>
-                <div>tipo: sssdddqqw</div>
+                <div>Matricula: @Html.DisplayFor(m=>rep.Plate)</div>
+                <div>Estado: @Html.DisplayFor(m=>rep.State)</div>
+                <div>tipo: @Html.DisplayFor(m=>rep.Name)</div>
             </div>
             <div>
-                <div>Inicio: 10/10/2020</div>
-                <div>Terminación: 10/10/2020</div>
-                <div>Costo: $400</div>
+                <div>Inicio: @Html.DisplayFor(m=>rep.Init)</div>
+                <div>Terminación: @Html.DisplayFor(m=>rep.Finish)</div>
+                <div>Costo: $@Html.DisplayFor(m=>rep.Price)</div>
             </div>
             @if (b)
             {
                 <div>
-                    <div style="flex:none;">@Calificacion(solicitud)</div>
+                    <div style="flex:none;">@Calificacion(a)</div>
                     <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
                         <details>
                             <summary><strong>Leer Comentario: </strong></summary>
-                            Poner aqui el comentario correspondiente si existe
+                            @Html.DisplayFor(m=>rep.Comment)
                         </details>
                     </div>
                 </div>
@@ -144,33 +164,33 @@
     }
 }
 
-@if (p == 4)
+@if (ViewBag.page == 4)
 {
     <center>
-        <h3>Historial de reparaciones: Matricula 121312</h3>
+        <h3>Historial de reparaciones: @Html.DisplayFor(m=>ship.Plate)</h3>
     </center>
 
-    @foreach (var solicitud in sol)
+    @foreach (RepairShipDTO report in ship.Reports)
     {
         <section class="dataToShow" style="font-size:x-large">
             <div style="display: flex;">
                 <div>Aeropuerto: Jose Marti</div>
-                <div>Estado: asadasdsd</div>
-                <div>tipo: sssdddqqw</div>
+                <div>Estado: @Html.DisplayFor(m=>report.State)</div>
+                <div>tipo: @Html.DisplayFor(m=>report.Name)</div>
             </div>
             <div>
-                <div>Inicio: 10/10/2020</div>
-                <div>Terminación: 10/10/2020</div>
-                <div>Costo: $400</div>
+                <div>Inicio: @Html.DisplayFor(m=>report.Init)</div>
+                <div>Terminación: @Html.DisplayFor(m=>report.Finish)</div>
+                <div>Costo: $@Html.DisplayFor(m=>report.Price)</div>
             </div>
             @if (b)
             {
                 <div>
-                    <div style="flex:none;">@Calificacion(solicitud)</div>
+                    <div style="flex:none;">@Calificacion(a)</div>
                     <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
                         <details>
                             <summary><strong>Leer Comentario: </strong></summary>
-                            Poner aqui el comentario correspondiente si existe
+                            @Html.DisplayFor(m=>report.Comment)
                         </details>
                     </div>
                     <button class="boton" style="align-self:center;">Editar</button>
@@ -185,4 +205,78 @@
             }
         </section>
     }
+}
+
+@if (ViewBag.page == 5)
+{
+    <center>
+        <h3>Historial de vuelo: Matricula 121312</h3>
+        <table>
+            @*Aqui modificar la cabecera para poder filtrar y ordenar la informacion*@
+            <thead>
+                <tr>
+                    <th>
+                        <center>
+                            Tipo
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                    <th>
+                        <center>
+                            Fecha
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                    <th>
+                        <center>
+                            Aeropuerto
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                    <th>
+                        <center>
+                            Rol del Dueño
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                    <th>
+                        <center>
+                            Estado de la nave
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                </tr>
+            </thead>
+            @*Aqui modificar el cuerpo para ajustarlo a los datos*@
+            <tbody>
+                @foreach (var solicitud in sol)
+                {
+                    <tr>
+                        <td><center>Salida</center></td>
+                        <td><center>06/10/2023</center></td>
+                        <td><center>Jose Marti</center></td>
+                        <td><center>Capitán</center></td>
+                        <td><center>BIEN</center></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </center>
 }

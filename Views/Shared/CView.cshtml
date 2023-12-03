@@ -45,9 +45,9 @@
 
                 <div>
                     <div>Fecha de salida programada:</div>
-                    <div>1/12/2024</div>
+                    <div>@Html.DisplayFor(m=>ship.NextFly)</div>
                     <form method="post">
-                        <button class="boton" type="submit">
+                        <button asp-controller="History" asp-action="" class="boton" type="submit">
                             Ver historial
                         </button>
                         <button class="boton" type="submit">
@@ -88,17 +88,17 @@
     <div class="ofertas" style="text-align:left">
         @foreach (ServiceInstallationDTO service in ViewBag.services)
         {
-            <div>
-                <div>
+            <div style="display:block">
+                <div style="display:flex">
                     <div>
                         @Html.DisplayFor(m=>service.Name)
                     </div>
                     <div>
+                            Aeropuerto: Jose Marti
+                    </div>
+                    <div>
                         Instalacion #@Html.DisplayFor(m=>service.InstallationID)
                     </div>
-                    <form method="post">
-                        <button class="boton">Valorar</button>
-                    </form>
                 </div>
 
                 <aside>
@@ -111,11 +111,19 @@
                     <div style="color:white;font-size:x-small;">
                         relleno
                     </div>
+                </aside>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+                    <form method="post">
+                        <button class="boton">Valorar</button>
+                    </form>
+                    <form method="post">
+                        <button class="goodboton">Solicitar</button>
+                    </form>
                     <form method="post">
                         <button class="boton">Ver reseñas</button>
                     </form>
-                </aside>
-            </div>
+                </div>
         }
     </div>
 }

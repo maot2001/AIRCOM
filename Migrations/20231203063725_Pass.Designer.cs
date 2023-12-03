@@ -4,6 +4,7 @@ using AIRCOM.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIRCOM.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20231203063725_Pass")]
+    partial class Pass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,11 +265,11 @@ namespace AIRCOM.Migrations
 
             modelBuilder.Entity("AIRCOM.Models.RepairShip", b =>
                 {
-                    b.Property<int>("RSID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RSID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -288,8 +291,7 @@ namespace AIRCOM.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int?>("RepairInstallationID")
-                        .IsRequired()
+                    b.Property<int>("RepairInstallationID")
                         .HasColumnType("int");
 
                     b.Property<int?>("Stars")
@@ -302,12 +304,12 @@ namespace AIRCOM.Migrations
                     b.Property<int>("Time")
                         .HasColumnType("int");
 
-                    b.HasKey("RSID");
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID")
+                        .IsUnique();
 
                     b.HasIndex("Plate");
-
-                    b.HasIndex("RSID")
-                        .IsUnique();
 
                     b.HasIndex("RepairInstallationID");
 
@@ -371,9 +373,6 @@ namespace AIRCOM.Migrations
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("NextFly")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Pass")
                         .HasColumnType("int");

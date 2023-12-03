@@ -26,7 +26,7 @@ namespace AIRCOM.Controllers
 
         // POST: On_site/5
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ServiceInstallationDTO service)
+        public async Task<IActionResult> Create(ServiceInstallationDTO service)
         {
             var userId = HttpContext.User.FindFirst("Id")?.Value;
             await _service.Create(service, userId);
@@ -35,7 +35,7 @@ namespace AIRCOM.Controllers
 
         // PUT: On_site
         [HttpPut]
-        public async Task<IActionResult> Valorate([FromBody] On_siteDTO service)
+        public async Task<IActionResult> Valorate(On_siteDTO service)
         {
             await _service.Valorate(service);
             return RedirectToAction(nameof(Get));
