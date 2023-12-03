@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    //[Authorize]
+    [Authorize(Policy = "Security")]
     public class ShipsController : Controller
     {
         private readonly ShipsService _service;
@@ -23,29 +23,28 @@ namespace AIRCOM.Controllers
         {
             int page = 2;
             var ships = await _service.Get();
-            return RedirectToAction(nameof(SecurityController.Index), "Security", new { ships = ships.ToList(), page = page });
+            return RedirectToAction("Index", "Security", new { ships = ships.ToList(), page = page });
         }
 
         // POST: Ships
-        //[Authorize(Policy = "Security")]
         [HttpPost]
         public async Task<IActionResult> Create(ShipsDTO ship)
         {
             try
             {
                 await _service.Create(ship);
-                return RedirectToAction(nameof(SecurityController.Index), "Security");
+                return RedirectToAction("Index", "Security");
             }
             catch (DbUpdateException e)
             {
                 int lugar_del_error = 6;
                 string error = "Error al insertar valores repetidos";
-                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = error });
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
                 int lugar_del_error = 6;
-                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 

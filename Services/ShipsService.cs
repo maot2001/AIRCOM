@@ -32,7 +32,7 @@ namespace AIRCOM.Services
         {
             var ships = _mapper.Map<Ships>(ship);
 
-            if (ship.ClientID != 0)
+            if (ship.ClientID is not null)
                 await Errors(ship.ClientID);
 
             _context.Shipss.Add(ships);

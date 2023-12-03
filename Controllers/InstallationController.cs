@@ -3,10 +3,11 @@ using AIRCOM.Models.DTO;
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    //[Authorize]
+    [Authorize(Policy = "Direction")]
     public class InstallationController : Controller
     {
         private readonly InstallationService _service;
@@ -27,56 +28,63 @@ namespace AIRCOM.Controllers
         }
 
         // POST: Installation
-        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Create(InstallationDTO installation)
         {
-            int page = 1;
             try
             {
-                //var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Create(installation, "1");
-                return RedirectToAction(nameof(DirectionController.Index), "Direction", new { page = page });
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(installation, userId);
+                return RedirectToAction("Index", "Direction");
+            }
+            catch (DbUpdateException e)
+            {
+                int lugar_del_error = 1;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction("Index", "Direction", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
         // PUT: Installation
-        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Edit(InstallationDTO installation)
         {
             try
             {
                 await _service.Edit(installation);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Direction");
             }
-            catch (ArgumentNullException e)
+            catch (DbUpdateException e)
             {
-                return NotFound(e.Message);
+                int lugar_del_error = 1;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction("Index", "Direction", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
         // DELETE: Installation
-        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 await _service.Delete(id);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Direction");
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
         // ---------------------------------------------------------------------

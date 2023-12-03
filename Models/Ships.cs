@@ -12,6 +12,7 @@ namespace AIRCOM.Models
         public string Model { get; set; }
         public int Capacity { get; set; }
         public int Crew { get; set; }
+        public int Pass { get; set; }
         public string State { get; set; }
         public bool Active { get; set; } = true;
         public int? ClientID { get; set; }

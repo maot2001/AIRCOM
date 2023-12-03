@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    //[Authorize]
+    [Authorize(Policy = "Security")]
     public class ClientController : Controller
     {
         private readonly ClientService _service;
@@ -31,25 +31,25 @@ namespace AIRCOM.Controllers
         }*/
 
 
-        //[Authorize(Policy = "Client")]
         [HttpPost]
         public async Task<IActionResult> Create(ClientDTO client)
         {
             try
             {
-                await _service.Create(client, "1");
-                return RedirectToAction(nameof(SecurityController.Index), "Security");
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(client, userId);
+                return RedirectToAction("Index", "Security");
             }
             catch (DbUpdateException e)
             {
                 int lugar_del_error = 4;
                 string error = "Error al insertar valores repetidos";
-                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = error });
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
                 int lugar_del_error = 4;
-                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
@@ -59,18 +59,18 @@ namespace AIRCOM.Controllers
             try
             {
                 await _service.Edit(client);
-                return RedirectToAction(nameof(SecurityController.Index), "Security");
+                return RedirectToAction("Index", "Security");
             }
             catch (DbUpdateException e)
             {
                 int lugar_del_error = 9;
                 string error = "Error al insertar valores repetidos";
-                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = error });
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
                 int lugar_del_error = 9;
-                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
@@ -80,12 +80,12 @@ namespace AIRCOM.Controllers
             try
             {
                 await _service.Delete(email);
-                return RedirectToAction(nameof(SecurityController.Index), "Security");
+                return RedirectToAction("Index", "Security");
             }
             catch (Exception e)
             {
                 int lugar_del_error = 9;
-                return RedirectToAction(nameof(AdminController.Init), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
     }

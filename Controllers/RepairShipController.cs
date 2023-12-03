@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class RepairShipController : Controller
     {
         private readonly RepairShipService _service;
@@ -16,26 +16,26 @@ namespace AIRCOM.Controllers
 
         // Security ------------------------------------------------------------
         // POST: RepairShip/5
-        //[Authorize(Policy = "Security")]
+        [Authorize(Policy = "Security")]
         [HttpPost]
         public async Task<IActionResult> RequestRepair(string plate, RepairInstallationDTO repair)
         {
             try
             {
                 await _service.RequestRepair(plate, repair);
-                return RedirectToAction(nameof(SecurityController.Index), "Security");
+                return RedirectToAction("Index", "Security");
             }
             catch (Exception e)
             {
                 int lugar_del_error = 7;
-                return RedirectToAction(nameof(SecurityController.Index), "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
         // ---------------------------------------------------------------------
 
         // Mechanic ------------------------------------------------------------
         // GET: RepairShip/GetRequest
-        //[Authorize(Policy = "Mechanic")]
+        [Authorize(Policy = "Mechanic")]
         [HttpGet("GetRequest")]
         public async Task<IActionResult> GetRequest(string? token = null)
         {
@@ -45,7 +45,7 @@ namespace AIRCOM.Controllers
         }
 
         // GET: RepairShip/GetProcess
-        //[Authorize(Policy = "Mechanic")]
+        [Authorize(Policy = "Mechanic")]
         [HttpGet("GetProcess")]
         public async Task<IActionResult> GetProcess()
         {
@@ -55,7 +55,7 @@ namespace AIRCOM.Controllers
         }
 
         // GET: RepairShip/GetFinish
-        //[Authorize(Policy = "Mechanic")]
+        [Authorize(Policy = "Mechanic")]
         [HttpGet("GetFinish")]
         public async Task<IActionResult> GetFinish()
         {
@@ -76,41 +76,41 @@ namespace AIRCOM.Controllers
         }
 
         // PUT: RepairShip/ProcessRepair
-        //[Authorize(Policy = "Mechanic")]
+        [Authorize(Policy = "Mechanic")]
         [HttpPost]
         public async Task<IActionResult> ProcessRepair(RepairShipDTO repair)
         {
             try
             {
                 await _service.ProcessRepair(repair);
-                return RedirectToAction(nameof(MechanicController.Index), "Mechanic");
+                return RedirectToAction("Index", "Mechanic");
             }
             catch
             {
-                return RedirectToAction(nameof(MechanicController.Index), "Mechanic");
+                return RedirectToAction("Index", "Mechanic");
             }
         }
 
         // PUT: RepairShip/FinishRepair
-        //[Authorize(Policy = "Mechanic")]
+        [Authorize(Policy = "Mechanic")]
         [HttpPost]
-        public async Task<IActionResult> FinishRepair([FromBody] RepairShipDTO repair)
+        public async Task<IActionResult> FinishRepair(RepairShipDTO repair)
         {
             try
             {
                 await _service.FinishRepair(repair);
-                return RedirectToAction(nameof(GetProcess));
+                return RedirectToAction("Index", "Mechanic");
             }
             catch
             {
-                return NotFound();
+                return RedirectToAction("Index", "Mechanic");
             }
         }
         // ---------------------------------------------------------------------
 
         // Client --------------------------------------------------------------
         // GET: RepairShip/ClientShip
-        //[Authorize(Policy = "Client")]
+        [Authorize(Policy = "Client")]
         [HttpGet("ClientShip")]
         public async Task<IActionResult> CSRepair()
         {

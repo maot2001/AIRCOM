@@ -4,9 +4,7 @@
     {
         public int? ID { get; set; }
         public string Name { get; set; }
-        public int InstallationID { get; set; }
-        public int? AirportID { get; set; }
-        public int RepairID { get; set; }
+        public int RepairInstallationID { get; set; }
         public string Plate { get; set; }
         public DateTime? Init { get; set; }
         public DateTime? Finish { get; set; }

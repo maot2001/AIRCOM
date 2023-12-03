@@ -9,12 +9,10 @@ namespace AIRCOM.Services
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        private readonly InstallationService _aux;
-        public RepairInstallationService(DBContext context, IMapper mapper, InstallationService aux)
+        public RepairInstallationService(DBContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _aux = aux;
         }
 
         public async Task<IEnumerable<RepairInstallationDTO>> Get(string userId)
@@ -25,15 +23,15 @@ namespace AIRCOM.Services
             var repairs = _mapper.Map<List<RepairInstallationDTO>>(repairsDB);
             foreach (var repair in repairs)
             {
-                var installation = await _aux.GetInstallationById(repair.InstallationID);
+                var installation = await _context.Installations.FindAsync(repair.InstallationID);
                 repair.InstallationID = installation.InstallationID;
             }
             return repairs;
         }
 
-        public async Task Create(RepairInstallationDTO repair, string userId)
+        public async Task Create(RepairInstallationDTO repair)
         {
-            await Errors(repair, userId);
+            await Errors(repair);
 
             var repairInstallation = _mapper.Map<RepairInstallation>(repair);
 
@@ -41,9 +39,9 @@ namespace AIRCOM.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task Edit(RepairInstallationDTO repair, string userId)
+        public async Task Edit(RepairInstallationDTO repair)
         {
-            await Errors(repair, userId);
+            await Errors(repair);
 
             var repairDB = await GetRepairInstallation(repair);
             //epairDB.Price = repair.Price;
@@ -66,7 +64,7 @@ namespace AIRCOM.Services
         //-------------------------------------------------------------------------
         public async Task<RepairInstallation> GetRepairInstallation(RepairInstallationDTO repair)
         {
-            var installationDB = await _aux.GetInstallationById(repair.InstallationID);
+            var installationDB = await _context.Installations.FindAsync(repair.InstallationID);
             
             var repairDB = await _context.RepairInstallations
                 .Include(ri => ri.Installation)
@@ -79,23 +77,21 @@ namespace AIRCOM.Services
             return repairDB;
         }
 
-        private async Task Errors(RepairInstallationDTO repair, string userId)
+        private async Task Errors(RepairInstallationDTO repair)
         {
-            var installationDB = await _aux.GetInstallationById(repair.InstallationID);
+            var installationDB = await _context.Installations.FindAsync(repair.InstallationID);
 
-            var repairDB = await _context.Repairs.SingleOrDefaultAsync(r => r.RepairID == repair.RepairID);
+            var repairDB = await _context.Repairs.FindAsync(repair.RepairID);
             if (repairDB is null)
                 throw new Exception("La reparación no existe");
 
             var exist = await _context.RepairInstallations
                 .Include(ri => ri.Installation)
-                .SingleOrDefaultAsync(ri =>ri.InstallationID == installationDB.ID && ri.Installation.AirportID == installationDB.AirportID && 
-                                      ri.RepairID == repair.RepairID);
+                .SingleOrDefaultAsync(ri => ri.InstallationID == installationDB.ID && ri.RepairID == repair.RepairID);
             if (exist is not null)
                 throw new Exception("En esta instalación ya se realiza esta reparación");
 
             repair.Name = repairDB.Name;
-            repair.AirportID = installationDB.AirportID;
         }
     }
 }

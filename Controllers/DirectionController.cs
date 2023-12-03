@@ -1,9 +1,11 @@
 ﻿using AIRCOM.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AIRCOM.Controllers
 {
+    [Authorize(Policy = "Direction")]
     public class DirectionController : Controller
     {
         private readonly InstallationService _aux;
@@ -17,7 +19,7 @@ namespace AIRCOM.Controllers
             _aux3 = aux3;
             _aux4 = aux4;
         }
-        public async Task<IActionResult> Index(int page = 3, int lugar_del_error = 0, string error = "")
+        public async Task<IActionResult> Index(int page = 1, int lugar_del_error = 0, string error = "")
         {
                
             ViewData["page"] = page;

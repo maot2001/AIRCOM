@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    //[Authorize]
+    [Authorize(Policy = "Direction")]
     public class RepairInstallationController : Controller
     {
         private readonly RepairInstallationService _service;
@@ -17,7 +17,6 @@ namespace AIRCOM.Controllers
 
         // Direction -----------------------------------------------------------
         // GET: RepairInstallation
-        //[Authorize(Policy = "Direction")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -27,59 +26,65 @@ namespace AIRCOM.Controllers
         }
 
         // POST: RepairInstallation
-        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Create(RepairInstallationDTO repair)
         {
+            int page = 3;
             try
             {
-                //var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Create(repair, "1");
-                return RedirectToAction(nameof(DirectionController.Index), "Direction");
+                await _service.Create(repair);
+                return RedirectToAction("Index", "Direction", new { page = page });
             }
             catch (DbUpdateException e)
             {
-                int lugar_del_error = 3;
+                int lugar_del_error = 1;
                 string error = "Error al insertar valores repetidos";
-                return RedirectToAction(nameof(DirectionController.Index), "Direction", new { lugar_del_error = lugar_del_error, error = error });
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
-                int lugar_del_error = 3;
-                return RedirectToAction(nameof(DirectionController.Index), "Direction", new { lugar_del_error = lugar_del_error, error = e.Message });
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
         // PUT: RepairInstallation
-        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Edit(RepairInstallationDTO repair)
         {
+            int page = 3;
             try
             {
-                var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Edit(repair, userId);
-                return RedirectToAction(nameof(Get));
+                await _service.Edit(repair);
+                return RedirectToAction("Index", "Direction", new { page = page });
             }
-            catch
+            catch (DbUpdateException e)
             {
-                return NotFound();
+                int lugar_del_error = 1;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = error });
+            }
+            catch (Exception e)
+            {
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
         // DELETE: RepairInstallation
-        //[Authorize(Policy = "Direction")]
         [HttpPost]
         public async Task<IActionResult> Delete(RepairInstallationDTO repair)
         {
+            int page = 3;
             try
             {
                 await _service.Delete(repair);
-                return RedirectToAction(nameof(DirectionController.Index), "Direction");
+                return RedirectToAction("Index", "Direction", new { page = page });
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
         // ---------------------------------------------------------------------
