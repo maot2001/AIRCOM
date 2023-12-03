@@ -62,7 +62,7 @@ namespace AIRCOM.Services
 
         public async Task Edit(ClientDTO client)
         {
-            await Errors(client);
+            await ErrorsEdit(client);
 
             if (types.Contains(client.Type))
             {
@@ -158,6 +158,14 @@ namespace AIRCOM.Services
         {
             var errors = await _context.Clients.SingleOrDefaultAsync(c => (c.CI == client.CI && c.Nationality == client.Nationality) || c.Email == client.Email);
             var errors2 = await _context.Workers.SingleOrDefaultAsync(w => (w.CI == client.CI && w.Nationality == client.Nationality) || w.Email == client.Email);
+
+            if (errors is not null || errors2 is not null)
+                throw new Exception("Credenciales existentes");
+        }
+        private async Task ErrorsEdit(ClientDTO client)
+        {
+            var errors = await _context.Clients.SingleOrDefaultAsync(c => (c.CI == client.CI && c.Nationality == client.Nationality) );
+            var errors2 = await _context.Workers.SingleOrDefaultAsync(w => (w.CI == client.CI && w.Nationality == client.Nationality) );
 
             if (errors is not null || errors2 is not null)
                 throw new Exception("Credenciales existentes");
