@@ -1,0 +1,75 @@
+@{
+    int[] sol = new int[] { 1, 1, 1 };
+    string Evaluation(int val)
+    {
+        string cal = "";
+        for (int i = 0; i < val/2; i++)
+            cal+="⭐";
+        if(val%2==1)
+            cal+="🌗";
+        for (int i = 0; i < (10- val) / 2; i++)
+            cal += "🌑";
+        return cal;
+
+    }
+}
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>USUARIO</h4>
+</nav>
+<nav class="navegacion">
+    <form asp-controller="CView" asp-action="Index">
+        <div>
+            <button class="pasive" type="submit" name="page" value="1"><h2>Mis naves</h2></button>
+            <p style="color:white;">____</p>
+            <button class="active" type="submit" name="page" value="2"><h2>Servicios Ofertados</h2></button>
+        </div>
+    </form>
+    <aside><input type="text" placeholder="🔍buscar"></aside>
+</nav>
+
+<div class="ofertas" style="text-align:left">
+    @foreach (ServiceInstallationDTO service in ViewBag.services)
+    {
+        <div style="display:block">
+            <div style="display:flex">
+                <div>
+                    @Html.DisplayFor(m=>service.Name)
+                </div>
+                <div>
+                        Aeropuerto: Jose Marti
+                </div>
+                <div>
+                    Instalacion #@Html.DisplayFor(m=>service.InstallationID)
+                </div>
+            </div>
+
+            <aside>
+                <div>
+                    <h3>$@Html.DisplayFor(m=>service.Price)</h3>
+                </div>
+                <div>
+                    @Evaluation(10);
+                </div>
+                <div class="ignorar">
+                    relleno
+                </div>
+            </aside>
+        </div>
+        <div style="display:flex;justify-content:space-between">
+                <form method="post">
+                    <button class="boton">Valorar</button>
+                </form>
+                <form method="post">
+                    <button class="goodboton">Solicitar</button>
+                </form>
+                <form method="post">
+                    <button class="boton">Ver reseñas</button>
+                </form>
+            </div>
+    }
+</div>
