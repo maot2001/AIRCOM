@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIRCOM.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20231202204642_javier")]
-    partial class javier
+    [Migration("20231202223134_OnePiece")]
+    partial class OnePiece
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -5,7 +5,7 @@
 namespace AIRCOM.Migrations
 {
     /// <inheritdoc />
-    public partial class javier : Migration
+    public partial class OnePiece : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
