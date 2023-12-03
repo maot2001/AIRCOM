@@ -23,9 +23,9 @@ namespace AIRCOM.Controllers
             _aux5 = aux5;
         }
 
-        public async Task<IActionResult> Index(int page = 4, int lugar_del_error = 0, string error = "", string? plate = null)
+        public async Task<IActionResult> Index(int page = 4, int lugar_del_error = 0, string error = "", string? plate = null, string sucess="")
         {
-            ViewData["page"] = page;
+            ViewData["sucess"] = sucess;
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
@@ -34,22 +34,20 @@ namespace AIRCOM.Controllers
             {
                 case 1:
                     ViewData["historys"] = await _aux5.Get(plate);
-                    break;
+                    return View("Historial de aeropuerto");
                 case 2:
                     ViewData["ships"] = await _aux3.Get();
-                    break;
+                    return View("Naves");
                 case 3:
                     ViewData["clients"] = await _aux4.Get(userId);
-                    break;
+                    return View("Personas");
                 default:
                     var installations = await _aux.Get(userId);
                     ViewData["installations"] = new SelectList(installations, "ID", "Name");
                     var repairs = await _aux2.Get();
                     ViewData["repairs"] = new SelectList(repairs, "RepairID", "Name");
-                    break;
+                    return View("Index");
             }
-
-            return View("Security");
         }
     }
 }

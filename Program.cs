@@ -3,6 +3,7 @@ using AIRCOM.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,8 +33,8 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Client", policy => policy.RequireClaim("UserType", "Cliente"));
     options.AddPolicy("Security", policy => policy.RequireClaim("UserType", "Seguridad"));
-    options.AddPolicy("Mechanic", policy => policy.RequireClaim("UserType", "Mecanico"));
-    options.AddPolicy("Direction", policy => policy.RequireClaim("UserType", "Direccion"));
+    options.AddPolicy("Mechanic", policy => policy.RequireClaim("UserType", "Mecánico"));
+    options.AddPolicy("Direction", policy => policy.RequireClaim("UserType", "Dirección"));
     options.AddPolicy("Admin", policy => policy.RequireClaim("UserType", "Administrador"));
 });
 
@@ -73,6 +74,18 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseCookiePolicy();
+app.Use(async (context, next) =>
+{
+    var userData = context.Request.Cookies["UserData"];
+
+    if (!string.IsNullOrEmpty(userData))
+    {
+        var userDataJson = JsonConvert.DeserializeObject<string>(userData);
+        context.Request.Headers.Add($"Authorization", $"Bearer {userDataJson}");
+    }
+    await next();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

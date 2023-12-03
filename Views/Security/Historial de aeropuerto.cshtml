@@ -1,0 +1,88 @@
+@*CAMBIAR AEROPUERTO>USUARIO*@
+@*PEDIR TIPO DE VUELO (Salida/Llegada)*@
+@*Dejar de pedir fecha de salida*@
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEROPUERTO > USUARIO</h4>
+        <<form asp-controller="Security" asp-action="Index">
+        <div>
+            <div><button class="yes" type="submit" name="page" value="1">🕑</button></div>
+            <div><button class="no" type="submit" name="page" value="2">✈️</button></div>
+            <div><button class="no" type="submit" name="page" value="3">👨‍💼</button></div>
+            <div><button class="no" type="submit" name="page" value="4">➕</button></div>
+        </div>
+    </form>
+</nav>
+
+<center>
+    <h1>Historial</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <center>
+                        Fecha de arribo
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Matrícula
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Rol del Dueño
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Estado de la nave
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+                <th>
+                    <center>
+                        Próximo vuelo
+                        <button class="no">🔽</button>
+                    </center>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+                <td>
+                    <input type="text" placeholder="🔍filtrar">
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (HistoryDTO hist in ViewBag.historys)
+            {
+                <tr>
+                    <td><center>Salida</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.ArrivalDate)</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.Plate)</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.OwnerRole)</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.State)</center></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</center>
