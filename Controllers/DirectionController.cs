@@ -21,8 +21,6 @@ namespace AIRCOM.Controllers
         }
         public async Task<IActionResult> Index(int page = 1, int lugar_del_error = 0, string error = "")
         {
-               
-            ViewData["page"] = page;
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
             var installations = await _aux.Get("1");
@@ -31,23 +29,20 @@ namespace AIRCOM.Controllers
             {
                 case 1:
                     ViewData["installations"] = installations;
-                    break;
+                    return View("Instalaciones");
                 case 2:
                     ViewData["installations"] = new SelectList(installations, "ID", "Name");
                     var services = await _aux3.Get("1");
                     ViewData["services"] = new SelectList(services, "Code", "Name");
-                    break;
+                    return View("Servicios");
                 default:
                     ViewData["installations"] = new SelectList(installations, "ID", "Name");
                     var repairs = await _aux2.Get();
                     ViewData["rep"] = new SelectList(repairs, "RepairID", "Name");
                     var ri = await _aux4.Get("1");
                     ViewData["repairs"] = ri;
-                    break;
+                    return View("Reparaciones");
             }
-
-            return View("Direction");
-            
         }
     }
 }

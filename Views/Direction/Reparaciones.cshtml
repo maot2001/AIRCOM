@@ -1,0 +1,146 @@
+@{
+    int[] sol = new int[] { 1, 2, 3, 4 };
+    bool a = true;
+    bool b = true;
+}
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEREOPUERTO > USUARIO</h4>
+</nav>
+<nav class="navegacion">
+    <form method="post">
+        <div>
+            <button class="pasive" type="submit" name="page" value="1"><h2>Instalaciones</h2></button>
+            <p style="color:white;">____</p>
+            <button class="pasive" type="submit" name="page" value="2"><h2>Servicios</h2></button>
+            <p style="color:white;">____</p>
+            <button class="active" type="submit" name="page" value="3"><h2>Reparaciones</h2></button>
+        </div>
+    </form>
+    <aside>
+        <button class="no">➕</button>
+        <input type="text" placeholder="🔍buscar">
+    </aside>
+</nav>
+
+@if (a && b)
+{
+    <center class="add">
+        <div>
+            <div>
+                <h4>Agregar nueva reparación</h4>
+                <button class="no">✖️</button>
+            </div>
+            <form asp-controller="RepairInstallation" asp-action="Create">
+                <div>
+                    <div>
+                        <div>
+                            <h5>Instalación:</h5>
+                        </div>
+
+                        <div>
+                            <select name="InstallationID" asp-items="ViewBag.installations"></select>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <h5>Reparación:</h5>
+                        </div>
+                        <div>
+                            <select name="RepairID" asp-items="ViewBag.rep"></select>
+                        </div>
+                    </div>
+                </div>
+                <div style="justify-content:center;">
+                    <h5>Precio: $</h5>
+                    <input type="number" name="price">
+                    <button class="boton" type="submit">Crear</button>
+                </div>
+            </form>
+            @if (ViewBag.lugar_del_error == 3)
+            {
+                <aside class="error">
+                    @ViewBag.error
+                </aside>
+            }
+        </div>
+    </center>
+
+}
+<div class="ofertas">
+
+    @foreach (RepairInstallationDTO repair in ViewBag.repairs)
+    {
+        @if (a)
+        {
+            <div style="display:block">
+                <div style="display:flex;justify-content:space-between;">
+                    <div>
+                        <div>
+                            @Html.DisplayFor(m=>repair.Name)
+                        </div>
+                        <div>
+                            Instalacion #@Html.DisplayFor(m=>repair.InstallationID)
+                        </div>
+                    </div>
+                    <aside>
+                        <div>
+                            <h3>$@Html.DisplayFor(m=>repair.Price)/h</h3>
+                        </div>
+                        <div>
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </aside>
+                </div>
+                <div style="margin-top:2%;">
+                    <button class="boton">Cambiar precio</button>
+                    <button class="boton" style="background-color:rgb(175,10,10)">Eliminar</button>
+                    <button class="boton">Ver reseñas</button>
+                </div>
+            </div>
+        }
+        @if (!a && b)
+        {
+            <div style="display:block;">
+                <div>
+                    <h3>Nuevo precio por hora:</h3>
+                </div>
+                <form asp-controller="RepairInstallation" asp-action="Edit">
+                    <input name="id" value="@Html.DisplayFor(m=>repair.ID)" hidden>
+                    <center>
+                        $
+                        <input type="number" name="price">
+                        /h
+                    </center>
+                    <center>
+                        <button type="submit" class="boton" style="background-color:rgb(20,150,20)">Cambiar</button>
+                        <button class="boton" style="background-color:rgb(175,10,10)">Volver</button>
+                    </center>
+                </form>
+            </div>
+        }
+        @if (a && b)
+        {
+            <div style="display:block;">
+                <div>
+                    <h3>¿Desea eliminarlo?</h3>
+                </div>
+                <form asp-controller="RepairInstallation" asp-action="Delete">
+                    <center>
+                        <input name="installationid" value="@Html.DisplayFor(m=>repair.InstallationID)" hidden>
+                        <input name="repairid" value="@Html.DisplayFor(m=>repair.RepairID)" hidden>
+                        <button type="submit" class="boton" style="background-color:rgb(20,150,20)">SI</button>
+                        <button class="boton" style="background-color:rgb(175,10,10)">NO</button>
+                    </center>
+                </form>
+            </div>
+        }
+    }
+</div>
+
+
+

@@ -15,7 +15,7 @@
 
 <nav>
     <h4>AEROPUERTO > USUARIO</h4>
-        <<form asp-controller="Security" asp-action="Index">
+        <form asp-controller="Security" asp-action="Index">
         <div>
             <div><button class="no" type="submit" name="page" value="1">🕑</button></div>
             <div><button class="no" type="submit" name="page" value="2">✈️</button></div>
@@ -156,15 +156,15 @@
                     </tr>
                     <tr>
                         <td>Capacidad de carga (en toneladas): </td>
-                        <td><input type="text" name="crew" min="0" required></td>
+                        <td><input type="number" name="crew" min="0" placeholder="Introduzca Capacidad" required></td>
                     </tr>
                     <tr>
                         <td>Cantidad de tripulacion: </td>
-                        <td><input type="text" name="capacity" min="0" required></td>
+                        <td><input type="number" name="capacity" placeholder="Introduzca Tripulacion" min="0" required></td>
                     </tr>
                     <tr>
                         <td>Cantidad de pasajeros: </td>
-                        <td><input type="text" name="pass" min="0" required></td>
+                        <td><input type="number" name="pass" min="0" placeholder="Introduzca cantidad" required></td>
                     </tr>
                 </table>
                 @if (ViewBag.lugar_del_error == 6)

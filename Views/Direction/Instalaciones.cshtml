@@ -1,0 +1,141 @@
+@{
+    int[] sol = new int[] { 1, 2, 3, 4 };
+    bool a = true;
+    bool b = true;
+}
+
+<header>
+    AIRCOM
+</header>
+
+<nav>
+    <h4>AEREOPUERTO > USUARIO</h4>
+</nav>
+<nav class="navegacion">
+    <form method="post">
+        <div>
+            <button class="active" type="submit" name="page" value="1"><h2>Instalaciones</h2></button>
+            <p style="color:white;">____</p>
+            <button class="pasive" type="submit" name="page" value="2"><h2>Servicios</h2></button>
+            <p style="color:white;">____</p>
+            <button class="pasive" type="submit" name="page" value="3"><h2>Reparaciones</h2></button>
+        </div>
+    </form>
+</nav>
+
+<center class="add">
+    <div>
+        <div>
+            <h4>Agregar nueva instalación</h4>
+        </div>
+        <form asp-controller="Installation" asp-action="Create">
+            <div>
+                <div>
+                    <div>
+                        <div>
+                            <h5>Id:</h5>
+                            <input type="number" name="installationid" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <h5>Ubicación:</h5>
+                    </div>
+
+                    <select name="ubication">
+                        @foreach (var x in new string[] { "Norte", "Sur", "Este", "Oeste", "Centro", "Noreste", "Noroeste", "Sureste", "Suroeste" })
+                        {
+                            <option>@x</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <div>
+                        <h5>Nombre (Opcional):</h5>
+                    </div>
+                    <input type="text" name="name">
+                </div>
+            </div>
+            <div style="justify-content:center;">
+                <h5>Tipo:</h5>
+                <input type="text" name="type">
+                <button class="boton" type="submit">Crear</button>
+            </div>
+        </form>
+        @if (ViewBag.lugar_del_error == 1)
+        {
+            <aside class="error">
+                ViewBag.error
+            </aside>
+        }
+    </div>
+</center>
+
+<div class="ofertas">
+    @foreach (InstallationDTO inst in ViewBag.installations)
+    {
+        @if (a)
+        {
+            <div>
+                <div>
+                    <div>
+                        <strong>Instalación #@Html.DisplayFor(m=>inst.InstallationID)</strong>
+                    </div>
+                    <div>
+                        <strong>Ubicación:</strong> @Html.DisplayFor(m=>inst.Ubication)
+                    </div>
+                    @if (b)
+                    {
+                        <div>
+                            <strong>Nombre:</strong> @Html.DisplayFor(m=>inst.Name)
+                        </div>
+                        <div>
+                            <strong>Tipo:</strong> @Html.DisplayFor(m=>inst.Type)
+                        </div>
+                        <center>
+                            <button class="goodboton">Editar</button>
+                        </center>
+                    }
+                    @if (!b)
+                    {
+                        <form asp-controller="Installation" asp-action="Edit">
+                                <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
+                            <div>
+                                <strong>Nombre:</strong> <input name="name">
+                            </div>
+                            <div>
+                                <strong>Tipo:</strong> <input name="type">
+                            </div>
+                            <center>
+                                <button class="goodboton" type="submit">Enviar</button>
+                                <button class="badboton">Volver</button>
+
+                                <button class="boton" style="background-color:rgb(165,5,5)">Eliminar</button>
+                            </center>
+                        </form>
+                    }
+                    <center>
+                        <button class="boton">Servicios</button>
+                        <button class="boton">Reparaciones</button>
+                    </center>
+                </div>
+            </div>
+        }
+        @if (!a)
+        {
+            <div style="display:block;">
+                <div>
+                    <h3>¿Desea eliminarlo?</h3>
+                </div>
+                <form asp-controller="Installation" asp-action="Delete">
+                    <center>
+                        <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
+                        <button type="submit" class="goodboton">SI</button>
+                        <button class="badboton">NO</button>
+                    </center>
+                </form>
+            </div>
+        }
+    }
+</div>
+
