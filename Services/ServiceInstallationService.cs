@@ -25,17 +25,17 @@ namespace AIRCOM.Services
             return _mapper.Map<List<ServiceInstallationDTO>>(service);
         }
 
-        public async Task Create(ServiceInstallationDTO service, string userId)
+        public async Task Create(ServiceInstallationDTO service)
         {
-            await Errors(service, userId);
+            await Errors(service);
             var serviceInstallation = _mapper.Map<ServicesInstallation>(service);
             _context.ServicesInstallations.Add(serviceInstallation);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Edit(ServiceInstallationDTO service, string userId)
+        public async Task Edit(ServiceInstallationDTO service)
         {
-            await Errors(service, userId);
+            await Errors(service);
             var serviceDB = await GetServiceInstallation(service);
             serviceDB.InstallationID = service.InstallationID;
             serviceDB.Name = service.Name;
@@ -67,15 +67,15 @@ namespace AIRCOM.Services
             return serviceDB;
         }
 
-        private async Task Errors(ServiceInstallationDTO service, string userId)
+        private async Task Errors(ServiceInstallationDTO service)
         {
             var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
-            i.InstallationID == service.InstallationID);
+            i.ID == service.InstallationID);
             if (installationDB is null)
                 throw new Exception();
 
             var exist = _context.ServicesInstallations.SingleOrDefaultAsync(si =>
-            si.InstallationID == service.InstallationID && si.Installation.AirportID == int.Parse(userId) && si.Name == service.Name);
+            si.InstallationID == service.InstallationID && si.Name == service.Name);
             if (exist is not null)
                 throw new Exception();
         }

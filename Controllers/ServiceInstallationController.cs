@@ -2,10 +2,11 @@
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ServiceInstallationController : Controller
     {
         private readonly ServiceInstallationService _service;
@@ -16,7 +17,7 @@ namespace AIRCOM.Controllers
 
         // Direction -----------------------------------------------------------
         // GET: ServiceInstallation
-        //[Authorize(Policy = "Direction")]
+        [Authorize(Policy = "Direction")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -26,59 +27,75 @@ namespace AIRCOM.Controllers
         }
 
         // POST: ServiceInstallation
-        //[Authorize(Policy = "Direction")]
+        [Authorize(Policy = "Direction")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ServiceInstallationDTO service)
+        public async Task<IActionResult> Create(ServiceInstallationDTO service)
         {
+            int page = 2;
             try
             {
-                var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Create(service, userId);
-                return RedirectToAction(nameof(Get));
+                await _service.Create(service);
+                return RedirectToAction("Index", "Direction", new { page = page });
             }
-            catch
+            catch (DbUpdateException e)
             {
-                return NotFound();
+                int lugar_del_error = 1;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = error });
+            }
+            catch (Exception e)
+            {
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
         // PUT: ServiceInstallation
-        //[Authorize(Policy = "Direction")]
+        [Authorize(Policy = "Direction")]
         [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] ServiceInstallationDTO service)
+        public async Task<IActionResult> Edit(ServiceInstallationDTO service)
         {
+            int page = 2;
             try
             {
-                var userId = HttpContext.User.FindFirst("Airport")?.Value;
-                await _service.Edit(service, userId);
-                return RedirectToAction(nameof(Get));
+                await _service.Edit(service);
+                return RedirectToAction("Index", "Direction", new { page = page });
             }
-            catch
+            catch (DbUpdateException e)
             {
-                return NotFound();
+                int lugar_del_error = 1;
+                string error = "Error al insertar valores repetidos";
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = error });
+            }
+            catch (Exception e)
+            {
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
         // DELETE: ServiceInstallation
-        //[Authorize(Policy = "Direction")]
+        [Authorize(Policy = "Direction")]
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] ServiceInstallationDTO service)
+        public async Task<IActionResult> Delete(ServiceInstallationDTO service)
         {
+            int page = 2;
             try
             {
                 await _service.Delete(service);
-                return RedirectToAction(nameof(Get));
+                return RedirectToAction("Index", "Direction", new { page = page });
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound();
+                int lugar_del_error = 1;
+                return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
         // ---------------------------------------------------------------------
 
         // Client --------------------------------------------------------------
         // GET : ServiceInstallation/Client
-        //[Authorize(Policy = "Client")]
+        [Authorize(Policy = "Client")]
         [HttpGet("GetClient")]
         public async Task<IActionResult> GetClient()
         {

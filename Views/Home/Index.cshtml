@@ -51,4 +51,11 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        console.log("pp");
+        window.onunload = function () {
+            DeleteCookie("UserData");
+        };
+    </script>
 }

@@ -30,7 +30,7 @@ namespace AIRCOM.Services
             _context.Airports.Add(airportDB);
             await _context.SaveChangesAsync();
 
-            var airp = await _context.Airports.FirstOrDefaultAsync(a => a.Name == airport.Name);
+            var airp = await _context.Airports.SingleOrDefaultAsync(a => a.Name == airport.Name);
             return airp.AirportID;
         }
 

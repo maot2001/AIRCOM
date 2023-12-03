@@ -76,14 +76,14 @@
                     <input type="text" placeholder="🔍filtrar">
                 </td>
             </tr>
-            @foreach (var solicitud in sol.Take(10))
+            @foreach (HistoryDTO hist in ViewBag.historys)
             {
                 <tr>
-                    <td><center>06/10/2023</center></td>
-                    <td><center>251615</center></td>
-                    <td><center>Capitán</center></td>
-                    <td><center>BIEN</center></td>
-                    <td><center>06/01/2024</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.ArrivalDate)</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.Plate)</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.OwnerRole)</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.State)</center></td>
+                    <td><center>@Html.DisplayFor(m=>hist.ExitDate)</center></td>
                 </tr>
             }
             @foreach (var solicitud in sol.Skip(10))
@@ -131,13 +131,11 @@
                 <div>
                     <div>Fecha de salida programada:</div>
                     <div>1/12/2024</div>
-                    <form method="post">
-                        <button class="boton" type="submit">
-                            Ver historial
-                        </button>
-                        <button class="boton" type="submit">
-                            Solicitar reparación
-                        </button>
+                    <form>
+                        <input type="text" name="plate" value="@Html.DisplayFor(m=>ship.Plate)" hidden>
+                        <input type="text" name="page" value="1" hidden>
+                        <input asp-controller="Security" asp-action="Index" class="boton" type="submit" value="Ver historial">
+                        <input class="boton" type="submit" value="Solicitar reparación">
                     </form>
                 </div>
             </div>
@@ -245,7 +243,7 @@
                         </tr>
                         <tr>
                             <td>Carnet de identidad: </td>
-                            <td><input type="text" name='ci'></td>
+                            <td><input type="text" name='ci' pattern="[0-9]{1,}" title="Debe ser numero"></td>
                         </tr>
                         <tr>
                             <td>Nacionalidad: </td>
@@ -294,7 +292,7 @@
                         </tr>
                         <tr>
                             <td>Carnet de identidad: </td>
-                            <td><input type="text" name='ci'></td>
+                            <td><input type="text" name='ci' pattern="[0-9]{1,}" title="Debe ser numero"></td>
                         </tr>
                         <tr>
                             <td><input type="text" name='nationality' value='Cuba' hidden></td>
@@ -304,8 +302,8 @@
                             <td>
                                 <select name='type'>
                                     <option>Seguridad</option>
-                                    <option>Direccion</option>
-                                    <option>Mecanico</option>
+                                    <option>Dirección</option>
+                                    <option>Mecánico</option>
                                 </select>
                             </td>
                         </tr>
@@ -414,7 +412,7 @@
                     <table>
                         <tr>
                             <td>Matricula: </td>
-                            <td><input type="text"> name="plate</td>
+                            <td><input type="text" name="plate"></td>
                         </tr>
                         <tr>
                             <td>Rol del dueño:</td>
@@ -485,4 +483,3 @@
         </details>
     </section>
 }
-

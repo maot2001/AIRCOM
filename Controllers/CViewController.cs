@@ -1,8 +1,10 @@
 ﻿using AIRCOM.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
+    [Authorize(Policy = "Client")]
     public class CViewController : Controller
     {
         private readonly ShipsService _aux;

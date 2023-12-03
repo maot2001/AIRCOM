@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
-    //[Authorize]
+    [Authorize(Policy = "Admin")]
     public class RepairController : Controller
     {
         private readonly RepairService _service;
@@ -17,7 +17,6 @@ namespace AIRCOM.Controllers
 
         // Admin -----------------------------------------------------
         // GET: Repair
-        //[Authorize(Policy = "Admin")]
         public async Task<IActionResult> Get()
         {
             var repairs = await _service.Get();
@@ -25,12 +24,11 @@ namespace AIRCOM.Controllers
         }
 
         // POST: Repair
-        //[Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(RepairDTO repair)
         {
             await _service.Create(repair);
-            return RedirectToAction(nameof(AdminController.Init), "Admin");
+            return RedirectToAction("Init", "Admin");
         }
         /*
         // PUT: Repair
@@ -54,19 +52,18 @@ namespace AIRCOM.Controllers
         }*/
 
         // DELETE: Repair/5
-        //[Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Delete(string name, bool cascada)
         {
             try
             {
                 await _service.Delete(name, cascada);
-                return RedirectToAction(nameof(AdminController.Init), "Admin");
+                return RedirectToAction("Init", "Admin");
             }
             catch (Exception e)
             {
                 int lugar_del_error = 5;
-                return RedirectToAction(nameof(AdminController.Init), "Admin", new { lugar_del_error = lugar_del_error, error = e.Message });
+                return RedirectToAction("Init", "Admin", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
         // ---------------------------------------------------------------------

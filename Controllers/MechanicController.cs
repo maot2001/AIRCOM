@@ -1,8 +1,10 @@
 ﻿using AIRCOM.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AIRCOM.Controllers
 {
+    [Authorize(Policy = "Mechanic")]
     public class MechanicController : Controller
     {
         private readonly RepairShipService _aux;

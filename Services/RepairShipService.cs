@@ -103,9 +103,7 @@ namespace AIRCOM.Services
                 repair.newTime = DateTime.Now;
 
             var shipRepair = await _context.RepairShips.SingleOrDefaultAsync(r =>
-            r.RepairInstallation.InstallationID == repair.InstallationID && r.RepairInstallation.RepairID == repair.RepairID &&
-            r.Plate == repair.Plate && r.Init == repair.Init);
-
+            r.RepairInstallation.ID == repair.RepairInstallationID && r.Plate == repair.Plate);
             if (shipRepair is null)
                 throw new Exception();
             return shipRepair;
@@ -125,7 +123,6 @@ namespace AIRCOM.Services
             if (exist is not null)
                 throw new Exception();
 
-            repair.AirportID = repairDB.Installation.AirportID;
             repair.Name = repairDB.Name;
             repair.Price = repairDB.Price;
         }

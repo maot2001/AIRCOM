@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -33,16 +34,19 @@ namespace AIRCOM.Controllers
             try
             {
                 var Token = await _service.Login(client);
+                var userResponseJson = JsonConvert.SerializeObject(Token.Item1);
+                HttpContext.Response.Cookies.Append("UserData", userResponseJson);
+
                 switch (Token.Item2)
                 {
                     case 0:
-                        return RedirectToAction(nameof(CViewController.Index), "CView");
+                        return RedirectToAction("Index", "CView");
                     case 1:
-                        return RedirectToAction(nameof(SecurityController.Index), "Security", new { token = Token.Item1 });
+                        return RedirectToAction("Index", "Security");
                     case 2:
-                        return RedirectToAction(nameof(MechanicController.Index), "Mechanic");
+                        return RedirectToAction("Index", "Mechanic");
                     default:
-                        return RedirectToAction(nameof(DirectionController.Index), "Direction");
+                        return RedirectToAction("Index", "Direction");
                 }
             }
             catch
