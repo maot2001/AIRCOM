@@ -25,7 +25,7 @@ namespace AIRCOM.Services
         }
 
         //1
-        public async Task<IEnumerable<AirportDTO>> GetPoint1()
+        public async Task<List<AirportDTO>> GetPoint1()
         {
             var airports = await _context.Airports.ToListAsync();
             List<Airport> exit = new List<Airport>();
@@ -38,7 +38,7 @@ namespace AIRCOM.Services
             return _mapper.Map<List<AirportDTO>>(exit);
         }
         //2
-        public async Task<IEnumerable<List<(AirportDTO, int)>>> GetPoint2()
+        public async Task<List<(AirportDTO, int)>> GetPoint2()
         {
             var airports = await _context.Airports.ToListAsync();
             List<(Airport, int)> exit = new List<(Airport, int)>();
@@ -55,11 +55,11 @@ namespace AIRCOM.Services
                 exit.Add((airport, CapitalReparationsCounter));
             }
 
-            return (IEnumerable<List<(AirportDTO, int)>>)_mapper.Map<List<(AirportDTO, int)>>(exit);
+            return _mapper.Map<List<(AirportDTO, int)>>(exit);
         }
        
-
-        public async Task<IEnumerable<List<ClientDTO>>> GetPoint3()
+        
+        public async Task<List<ClientDTO>> GetPoint3()
         {
 
             var historys = await _context.Historys.ToListAsync();
@@ -74,12 +74,12 @@ namespace AIRCOM.Services
                 }
 
             }
-            return (IEnumerable<List<ClientDTO>>)_mapper.Map<List<ClientDTO>>(exit);
+            return _mapper.Map<List<ClientDTO>>(exit);
 
         }
         //4 
       
-        public async Task<IEnumerable<List<AirportDTO>>> GetPoint4()
+        public async Task<List<(Airport,int)>> GetPoint4()
         {
 
             var date1 = new DateTime(2010, 1, 1);
@@ -117,7 +117,7 @@ namespace AIRCOM.Services
                 exit.Add((airport1, date1.Year));
                 date1 += change;
             }
-            return (IEnumerable<List<AirportDTO>>)_mapper.Map<List<(Airport, int)>>(exit);
+            return _mapper.Map<List<(Airport, int)>>(exit);
         }
     }
 }
