@@ -206,3 +206,77 @@
         </section>
     }
 }
+
+@if (ViewBag.page == 5)
+{
+    <center>
+        <h3>Historial de vuelo: Matricula 121312</h3>
+        <table>
+            @*Aqui modificar la cabecera para poder filtrar y ordenar la informacion*@
+            <thead>
+                <tr>
+                    <th>
+                        <center>
+                            Tipo
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                    <th>
+                        <center>
+                            Fecha
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                    <th>
+                        <center>
+                            Aeropuerto
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                    <th>
+                        <center>
+                            Rol del Dueño
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                    <th>
+                        <center>
+                            Estado de la nave
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                    <td>
+                        <input type="text" placeholder="🔍filtrar">
+                    </td>
+                </tr>
+            </thead>
+            @*Aqui modificar el cuerpo para ajustarlo a los datos*@
+            <tbody>
+                @foreach (var solicitud in sol)
+                {
+                    <tr>
+                        <td><center>Salida</center></td>
+                        <td><center>06/10/2023</center></td>
+                        <td><center>Jose Marti</center></td>
+                        <td><center>Capitán</center></td>
+                        <td><center>BIEN</center></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </center>
+}
