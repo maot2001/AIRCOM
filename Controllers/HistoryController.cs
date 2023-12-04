@@ -47,7 +47,7 @@ namespace AIRCOM.Controllers
             {
                 var userId = HttpContext.User.FindFirst("Airport")?.Value;
                 await _service.Create(history, userId);
-                return RedirectToAction("Index", "Security");
+                return RedirectToAction("Index", "Security", new { sucess = "Los cambios han sido aplicados correctamente" });
             }
             catch (DbUpdateException ex)
             {

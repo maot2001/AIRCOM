@@ -56,7 +56,7 @@ namespace AIRCOM.Controllers
             try
             {
                 await _service.Edit(ship);
-                return RedirectToAction("Index", "Security");
+                return RedirectToAction("Index", "Security", new { sucess = "Los cambios han sido aplicados correctamente" });
             }
             catch (DbUpdateException e)
             {
@@ -78,7 +78,7 @@ namespace AIRCOM.Controllers
             try
             {
                 await _service.Delete(plate);
-                return RedirectToAction("Index", "Security");
+                return RedirectToAction("Index", "Security", new { sucess = "Los cambios han sido aplicados correctamente" });
             }
             catch (Exception e)
             {
