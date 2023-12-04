@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AIRCOM.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20231203063725_Pass")]
-    partial class Pass
+    [Migration("20231204103340_La_Que_Espero_Que_Sea_La_Ultima")]
+    partial class La_Que_Espero_Que_Sea_La_Ultima
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.14")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -109,6 +109,32 @@ namespace AIRCOM.Migrations
                         .IsUnique();
 
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("AIRCOM.Models.Depend", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("PrimaryID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SecondID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID")
+                        .IsUnique();
+
+                    b.ToTable("Depends");
                 });
 
             modelBuilder.Entity("AIRCOM.Models.History", b =>
@@ -236,7 +262,6 @@ namespace AIRCOM.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
@@ -265,14 +290,17 @@ namespace AIRCOM.Migrations
 
             modelBuilder.Entity("AIRCOM.Models.RepairShip", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("RSID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RSID"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Eficient")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("Finish")
                         .HasColumnType("datetime2");
@@ -291,7 +319,8 @@ namespace AIRCOM.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("RepairInstallationID")
+                    b.Property<int?>("RepairInstallationID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("Stars")
@@ -304,12 +333,12 @@ namespace AIRCOM.Migrations
                     b.Property<int>("Time")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
-
-                    b.HasIndex("ID")
-                        .IsUnique();
+                    b.HasKey("RSID");
 
                     b.HasIndex("Plate");
+
+                    b.HasIndex("RSID")
+                        .IsUnique();
 
                     b.HasIndex("RepairInstallationID");
 
@@ -373,6 +402,9 @@ namespace AIRCOM.Migrations
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("NextFly")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Pass")
                         .HasColumnType("int");
@@ -495,7 +527,7 @@ namespace AIRCOM.Migrations
                         .HasForeignKey("ExitID");
 
                     b.HasOne("AIRCOM.Models.Ships", "Ships")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("Plate")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -644,6 +676,8 @@ namespace AIRCOM.Migrations
 
             modelBuilder.Entity("AIRCOM.Models.Ships", b =>
                 {
+                    b.Navigation("Histories");
+
                     b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618

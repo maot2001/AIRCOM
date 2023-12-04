@@ -108,6 +108,32 @@ namespace AIRCOM.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("AIRCOM.Models.Depend", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("PrimaryID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SecondID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID")
+                        .IsUnique();
+
+                    b.ToTable("Depends");
+                });
+
             modelBuilder.Entity("AIRCOM.Models.History", b =>
                 {
                     b.Property<int>("ID")
@@ -233,7 +259,6 @@ namespace AIRCOM.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
@@ -270,6 +295,9 @@ namespace AIRCOM.Migrations
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Eficient")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("Finish")
                         .HasColumnType("datetime2");

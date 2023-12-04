@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AIRCOM.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class La_Que_Espero_Que_Sea_La_Ultima : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,6 +44,21 @@ namespace AIRCOM.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.ClientID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Depends",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PrimaryID = table.Column<int>(type: "int", nullable: false),
+                    SecondID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Depends", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,8 +134,10 @@ namespace AIRCOM.Migrations
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     Crew = table.Column<int>(type: "int", nullable: false),
+                    Pass = table.Column<int>(type: "int", nullable: false),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
+                    NextFly = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -139,7 +156,7 @@ namespace AIRCOM.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<float>(type: "real", nullable: false),
                     Stars = table.Column<float>(type: "real", nullable: true),
                     Votes = table.Column<int>(type: "int", nullable: true),
@@ -226,7 +243,7 @@ namespace AIRCOM.Migrations
                 name: "RepairShips",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    RSID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Init = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -236,12 +253,13 @@ namespace AIRCOM.Migrations
                     Price = table.Column<float>(type: "real", nullable: false),
                     Stars = table.Column<int>(type: "int", nullable: true),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Eficient = table.Column<bool>(type: "bit", nullable: false),
                     RepairInstallationID = table.Column<int>(type: "int", nullable: false),
                     Plate = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RepairShips", x => x.ID);
+                    table.PrimaryKey("PK_RepairShips", x => x.RSID);
                     table.ForeignKey(
                         name: "FK_RepairShips_RepairInstallations_RepairInstallationID",
                         column: x => x.RepairInstallationID,
@@ -324,6 +342,12 @@ namespace AIRCOM.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Depends_ID",
+                table: "Depends",
+                column: "ID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Historys_ArrivalID",
                 table: "Historys",
                 column: "ArrivalID");
@@ -400,12 +424,6 @@ namespace AIRCOM.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RepairShips_ID",
-                table: "RepairShips",
-                column: "ID",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RepairShips_Plate",
                 table: "RepairShips",
                 column: "Plate");
@@ -414,6 +432,12 @@ namespace AIRCOM.Migrations
                 name: "IX_RepairShips_RepairInstallationID",
                 table: "RepairShips",
                 column: "RepairInstallationID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepairShips_RSID",
+                table: "RepairShips",
+                column: "RSID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServicesInstallations_Code",
@@ -458,6 +482,9 @@ namespace AIRCOM.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Depends");
+
             migrationBuilder.DropTable(
                 name: "Historys");
 

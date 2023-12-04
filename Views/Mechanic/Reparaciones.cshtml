@@ -23,8 +23,8 @@
             <div>tipo: @Html.DisplayFor(m=>repair.Name)</div>
         </div>
         <div>
-            <div>Inicio: @Html.DisplayFor(m=>repair.Init)</div>
-            <div>Terminación: @Html.DisplayFor(m=>repair.Finish)</div>
+            <div>Inicio: @Html.DisplayFor(m=>repair.Init.ToString().Split()[0])</div>
+            <div>Terminación: @Html.DisplayFor(m=>repair.Finish.ToString().Split()[0])</div>
             <div>Horas previstas: @Html.DisplayFor(m=>repair.Time)</div>
         </div>
 

@@ -40,17 +40,33 @@
             <div>tipo: @Html.DisplayFor(m=>repair.Name)</div>
         </div>
         <div>
-            <div>Inicio: @Html.DisplayFor(m=>repair.Init)</div>
-            <div>Terminación: @Html.DisplayFor(m=>repair.Finish)</div>
+            <div>Inicio: @Html.DisplayFor(m=>repair.Init.ToString().Split()[0])</div>
+            <div>Terminación: @Html.DisplayFor(m=>repair.Finish.ToString().Split()[0])</div>
             <div>Costo: $@Html.DisplayFor(m=>repair.Price)</div>
         </div>
         <div>
-            <div style="flex:none;">@Calificacion((int)repair.Stars)</div>
+            <div style="flex:none;">
+                @if (repair.Stars is null)
+                {
+                    <p>no hay reseñas</p>
+                }
+                @if (repair.Stars is not null)
+                {
+                    @Calificacion((int)repair.Stars)
+                }
+            </div>
             <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
-                <details>
-                    <summary><strong>Leer Comentario: </strong></summary>
-                    Poner aqui el comentario correspondiente si existe
-                </details>
+                @if (repair.Comment is null)
+                {
+                    <p>No hubo Comentario</p>
+                }
+                @if (repair.Comment is not null)
+                {
+                    <details>
+                        <summary><strong>Leer Comentario: </strong></summary>
+                        @repair.Comment
+                    </details>
+                }
             </div>
         </div>
 

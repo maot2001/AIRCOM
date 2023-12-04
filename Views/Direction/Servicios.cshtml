@@ -93,7 +93,14 @@
                         <h3>$@Html.DisplayFor(m=>service.Price)/h</h3>
                     </div>
                     <div>
-                        @Evaluation((int)service.Stars)
+                        @if (service.Stars is null)
+                        {
+                            <p>no hay reseñas</p>
+                        }
+                        @if (service.Stars is not null)
+                        {
+                            @Evaluation((int)service.Stars)
+                        }
                     </div>
                 </aside>
             </div>
