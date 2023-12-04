@@ -276,31 +276,32 @@ section > details {
             width: 98%;
         }
 
-.add {
+#add {
     padding: 0% 20%;
+    display:none;
 }
 
-    .add > div {
+    #add > div {
         border: solid grey 2px;
         padding: 1% 4%;
     }
 
-        .add > div > div {
+        #add > div > div {
             display: flex;
             justify-content: space-between;
         }
 
-    .add form > div {
+    #add form > div {
         display: flex;
         text-align: center;
     }
 
-        .add form > div > div {
+        #add form > div > div {
             flex: 1;
             margin: 2% 2% 2% 0%;
         }
 
-    .add select {
+    #add select {
         background: white;
         border: solid grey;
     }

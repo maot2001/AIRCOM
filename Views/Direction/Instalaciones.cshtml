@@ -1,9 +1,3 @@
-@{
-    int[] sol = new int[] { 1, 2, 3, 4 };
-    bool a = true;
-    bool b = true;
-}
-
 <header>
     AIRCOM
 </header>
@@ -21,12 +15,17 @@
             <button class="pasive" type="submit" name="page" value="3"><h2>Reparaciones</h2></button>
         </div>
     </form>
+    <aside>
+        <button class="no" onclick="show()">➕</button>
+    </aside>
 </nav>
 
-<center class="add">
+<center id="add">
     <div>
         <div>
             <h4>Agregar nueva instalación</h4>
+
+            <button class="no" onclick="hide()">✖️</button>
         </div>
         <form asp-controller="Installation" asp-action="Create">
             <div>
@@ -65,7 +64,7 @@
         @if (ViewBag.lugar_del_error == 1)
         {
             <aside class="error">
-                ViewBag.error
+                @ViewBag.error
             </aside>
         }
     </div>
@@ -74,68 +73,46 @@
 <div class="ofertas">
     @foreach (InstallationDTO inst in ViewBag.installations)
     {
-        @if (a)
-        {
+        <div>
             <div>
                 <div>
+                    <strong>Instalación #@Html.DisplayFor(m=>inst.InstallationID)</strong>
+                </div>
+                <div>
+                    <strong>Ubicación:</strong> @Html.DisplayFor(m=>inst.Ubication)
+                </div>
+                    
+                <div id=@inst.ID.ToString()>
                     <div>
-                        <strong>Instalación #@Html.DisplayFor(m=>inst.InstallationID)</strong>
+                        <strong>Nombre:</strong> @Html.DisplayFor(m=>inst.Name)
                     </div>
                     <div>
-                        <strong>Ubicación:</strong> @Html.DisplayFor(m=>inst.Ubication)
+                        <strong>Tipo:</strong> @Html.DisplayFor(m=>inst.Type)
                     </div>
-                    @if (b)
-                    {
-                        <div>
-                            <strong>Nombre:</strong> @Html.DisplayFor(m=>inst.Name)
-                        </div>
-                        <div>
-                            <strong>Tipo:</strong> @Html.DisplayFor(m=>inst.Type)
-                        </div>
-                        <center>
-                            <button class="goodboton">Editar</button>
-                        </center>
-                    }
-                    @if (!b)
-                    {
-                        <form asp-controller="Installation" asp-action="Edit">
-                                <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
-                            <div>
-                                <strong>Nombre:</strong> <input name="name">
-                            </div>
-                            <div>
-                                <strong>Tipo:</strong> <input name="type">
-                            </div>
-                            <center>
-                                <button class="goodboton" type="submit">Enviar</button>
-                                <button class="badboton">Volver</button>
-
-                                <button class="boton" style="background-color:rgb(165,5,5)">Eliminar</button>
-                            </center>
-                        </form>
-                    }
                     <center>
-                        <button class="boton">Servicios</button>
-                        <button class="boton">Reparaciones</button>
+                        <button class="goodboton" onclick="swap(@inst.ID.ToString(),true)">Editar</button>
                     </center>
                 </div>
-            </div>
-        }
-        @if (!a)
-        {
-            <div style="display:block;">
-                <div>
-                    <h3>¿Desea eliminarlo?</h3>
-                </div>
-                <form asp-controller="Installation" asp-action="Delete">
-                    <center>
+                <form asp-controller="Installation" asp-action="Edit" id=@("a"+@inst.ID.ToString()) style="display:none">
                         <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
-                        <button type="submit" class="goodboton">SI</button>
-                        <button class="badboton">NO</button>
+                    <div>
+                        <strong>Nombre:</strong> <input name="name">
+                    </div>
+                    <div>
+                        <strong>Tipo:</strong> <input name="type">
+                    </div>
+                    <center>
+                        <button class="goodboton" type="submit">Enviar</button>
+                        <button type="button" class="badboton" onclick="swap(@inst.ID.ToString(),false)">Volver</button>
+
+                        <button class="boton" style="background-color:rgb(165,5,5)">Eliminar</button>
                     </center>
                 </form>
+                <center>
+                    <button class="boton">Servicios</button>
+                    <button class="boton">Reparaciones</button>
+                </center>
             </div>
-        }
+        </div>
     }
 </div>
-
