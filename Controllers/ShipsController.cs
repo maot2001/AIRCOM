@@ -50,41 +50,44 @@ namespace AIRCOM.Controllers
 
         // PUT: Ships/5
         //[Authorize(Policy = "Security")]
-        /*[HttpPut]
-        public async Task<IActionResult> Edit([FromBody] ShipsDTO ship)
+        [HttpPost]
+        public async Task<IActionResult> Edit(ShipsDTO ship)
         {
             try
             {
                 await _service.Edit(ship);
-                return RedirectToAction(nameof(Get));
+                return RedirectToAction("Index", "Security");
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores repetidos");
+                int lugar_del_error = 7;
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = "Error al insertar valores repetidos" }); 
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                int lugar_del_error = 7;
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
 
         // DELETE: Ships/5
         //[Authorize(Policy = "Security")]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(string plate)
         {
             try
             {
-                await _service.Delete(id);
-                return RedirectToAction(nameof(Get));
+                await _service.Delete(plate);
+                return RedirectToAction("Index", "Security");
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);
+                int lugar_del_error = 7;
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
         // -----------------------------------------------------------   
-
+        /*
         // Client ----------------------------------------------------
         // GET: Ships/Client
         //[Authorize(Policy = "Client")]

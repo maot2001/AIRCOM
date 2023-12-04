@@ -153,18 +153,18 @@ namespace AIRCOM.Services
                     {
                         foreach (var repairInstallation in installation.RepairInstallations)
                         {
-                            
-                        float sum = 0;
-                        int count = 0;
-                        bool itHappened = false;
 
-                        foreach (var repairShip in repairInstallation.RepairShips)
-                        {
-                            sum += repairShip.Price;
-                            count++;
-                            if (!repairShip.Eficient) itHappened = true;
-                        }
-                        if (itHappened) exit.Add((repairInstallation, sum / count));
+                            float sum = 0;
+                            int count = 0;
+                            bool itHappened = false;
+
+                            foreach (var repairShip in repairInstallation.RepairShips)
+                            {
+                                sum += repairShip.Price;
+                                count++;
+                                if (!repairShip.Eficient) itHappened = true;
+                            }
+                            if (itHappened) exit.Add((repairInstallation, sum / count));
                         }
 
                     }
@@ -173,6 +173,5 @@ namespace AIRCOM.Services
             }
             return _mapper.Map<List<(RepairInstallation, float)>>(exit);
         }
-        //
     }
 }

@@ -55,23 +55,24 @@ namespace AIRCOM.Controllers
         
         // PUT: Airport
         //[Authorize(Policy = "Admin")]
-        /*[HttpPut]
-        public async Task<IActionResult> Edit([FromBody] AirportDTO airport)
+        [HttpPost]
+        public async Task<IActionResult> Edit(AirportDTO airport)
         {
             try
             {
-                await _service.Edit(airport);
-                return RedirectToAction(nameof(Get));
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Edit(airport, userId);
+                return RedirectToAction("Index", "Security");
             }
             catch (DbUpdateException e)
             {
-                return BadRequest("Error al insertar valores repetidos");
+                return RedirectToAction("Index", "Security");
             }
             catch (Exception e)
             {
                 return NotFound(e.Message);
             }
-        }*/
+        }
 
         // DELETE: Airport/5
         [HttpPost]
