@@ -8,11 +8,11 @@
 <nav class="navegacion">
     <form method="post">
         <div>
-            <button class="pasive" type="submit" name="page" value="1"><h2>Instalaciones</h2></button>
+            <button asp-controller="Direction" asp-action="Index" class="pasive" type="submit" name="page" value="1"><h2>Instalaciones</h2></button>
             <p style="color:white;">____</p>
-            <button class="active" type="submit" name="page" value="2"><h2>Servicios</h2></button>
+            <button asp-controller="Direction" asp-action="Index" class="active" type="submit" name="page" value="2"><h2>Servicios</h2></button>
             <p style="color:white;">____</p>
-            <button class="pasive" type="submit" name="page" value="3"><h2>Reparaciones</h2></button>
+            <button asp-controller="Direction" asp-action="Index" class="pasive" type="submit" name="page" value="3"><h2>Reparaciones</h2></button>
         </div>
     </form>
     <aside>
@@ -84,9 +84,16 @@
                 </aside>
             </div>
             <div style="margin-top:2%;">
-                <button class="boton" onclick="swap(@service.Code.ToString(),true)">Cambiar precio</button>
-                <button class="badboton">Eliminar</button>
-                <button class="boton">Ver reseñas</button>
+                    <button class="boton" onclick="swap(@service.Code.ToString(),true)">Cambiar precio</button>
+                <form asp-controller="ServiceInstallation" asp-action="Delete">
+                    <input name="code" value="@Html.DisplayFor(m=>service.Code)" hidden>
+                    <input name="installationid" value="@Html.DisplayFor(m=>service.InstallationID)" hidden>
+                    <button type="submit" class="badboton">Eliminar</button>
+                </form>
+                <form asp-controller="Extra" asp-action="Index">
+                    <input name="code" value="@Html.DisplayFor(m=>service.Code)" hidden>
+                    <button name="page" value="2" type="submit" class="boton">Ver reseñas</button>
+                </form>
             </div>
         </div>
         <div style="display:none;" id=@("a"+service.Code.ToString())>
@@ -94,7 +101,8 @@
                 <h3>Nuevo precio del servicio:</h3>
             </div>
             <form asp-controller="ServiceInstallation" asp-action="Edit">
-                <input name="id" value="@Html.DisplayFor(m=>service.Code)" hidden>
+                <input name="code" value="@Html.DisplayFor(m=>service.Code)" hidden>
+                <input name="installationid" value="@Html.DisplayFor(m=>service.InstallationID)" hidden>
                 <center>
                     $
                     <input type="number" name="price">
