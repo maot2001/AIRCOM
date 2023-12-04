@@ -30,7 +30,14 @@
         <div style="display: flex;">
             <div>Matricula: @Html.DisplayFor(m=>ship.Plate)</div>
             <div>Estado: @Html.DisplayFor(m=>ship.State)</div>
-            <div>ID Propietario: @Html.DisplayFor(m=>ship.ClientID)</div>
+            @if(ship.ClientID is null)
+            {
+                <div>ID Propietario: No tiene</div>
+            }
+            @if (ship.ClientID is not null)
+            {
+                <div>ID Propietario: @Html.DisplayFor(m=>ship.ClientID)</div>
+            }
 
         </div>
 

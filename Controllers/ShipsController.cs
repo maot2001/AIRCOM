@@ -33,7 +33,7 @@ namespace AIRCOM.Controllers
             try
             {
                 await _service.Create(ship);
-                return RedirectToAction("Index", "Security");
+                return RedirectToAction("Index", "Security", new { sucess = "Los cambios han sido realizados satisfactoriamente" });
             }
             catch (DbUpdateException e)
             {

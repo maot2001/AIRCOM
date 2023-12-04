@@ -17,24 +17,27 @@
     </div>
 </nav>
 
-@foreach(var a in sol)
-{
-    <section class="dataToShow">
-        <div>
-            <div>Aeropuerto: Jose Marti</div>
-            <div>Direccion: 2893 /8d3 y 2</div>
-            <div>Coordenadas: 192.168.4.64</div>
-        </div>
-        <div class="tag">
-            <aside>
-                <div>Numero de instalaciones: 4</div>
-                <div>Reparaciones disponibles: 5</div>
-                <div>Cantidad de servicios ofertados: 20</div>
-                <div>Cantidad de empleados: 60</div>
-            </aside>
-        </div>
-    </section>    
-}
+<section>
+    <details>
+        <summary>Aeropuertos con reparación</summary>
+
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Posición geográfica</th>
+            </tr>
+
+            @foreach (var item in ViewBag.Nombre_posición)
+            {
+                <tr>
+                    <th>item.Name</th>
+                    <th>item.Coordinates</th>
+                </tr>
+            }
+        </table>
+    </details>
+</section>
+
 
 @section Scripts{
     @{

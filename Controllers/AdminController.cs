@@ -15,10 +15,12 @@ namespace AIRCOM.Controllers
     {
         private IConfiguration _config;
         private readonly RepairService _aux;
-        public AdminController(IConfiguration config, RepairService aux)
+        private readonly ConsultService _aux2;
+        public AdminController(IConfiguration config, RepairService aux , ConsultService aux2)
         {
             _config = config;
             _aux = aux;
+            _aux2 = aux2;
         }
 
         public IActionResult Index()
@@ -53,8 +55,11 @@ namespace AIRCOM.Controllers
         }
 
         [Authorize(Policy = "Admin")]
-        public IActionResult ChangePage(string page)
+        public async Task<IActionResult> ChangePage(string page)
         {
+            var a = await _aux2.GetPoint1();
+            ViewData["Nombre_posición"] = a;
+            ViewData["cant_reps"] = await _aux2.GetPoint2();
             return View("Estadisticas");
         }
 

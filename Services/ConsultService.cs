@@ -27,35 +27,54 @@ namespace AIRCOM.Services
         //1
         public async Task<List<AirportDTO>> GetPoint1()
         {
-            var airports = await _context.Airports.ToListAsync();
+            var airports = await _context.Airports
+                .Include(a => a.Installations).ThenInclude(i => i.RepairInstallations)
+                .ToListAsync();
             List<Airport> exit = new List<Airport>();
-            /*
+            
             foreach (var airport in airports)
             {
-                if (airport.RepairInstallation.Count() != 0) exit.Add(airport);
+                foreach (var installation in airport.Installations)
+                {
+                    if(installation.RepairInstallations.Count != 0)
+                    {
+                        exit.Add(airport);
+                        continue;
+                    }
+                }
             }
-            */
+            
             return _mapper.Map<List<AirportDTO>>(exit);
         }
         //2
-        public async Task<List<(AirportDTO, int)>> GetPoint2()
+        //cantidad de reparaciones capitales en cada aeropuerto
+        public async Task<Dictionary<AirportDTO, int>> GetPoint2()
         {
             var airports = await _context.Airports.ToListAsync();
-            List<(Airport, int)> exit = new List<(Airport, int)>();
+            var repairShips = await _context.RepairShips.ToListAsync();
+            //List<(Airport, int)> exit = new List<(Airport, int)>();
+
+            Dictionary<Airport, int> exit = new Dictionary<Airport, int>();
 
             foreach (var airport in airports)
             {
-                int CapitalReparationsCounter = 0;
-                /*
-                foreach (var item in airport.RepairShip)
+                //exit.Add(airport, 0);
+                int count = 0;
+
+                foreach (var installation in airport.Installations)
                 {
-                    if (item.Name == "Reparación Capital") CapitalReparationsCounter++;
+                    foreach (var repairInstallation in installation.RepairInstallations)
+                    {
+                        foreach (var repairShip in repairShips)
+                        {
+                            if(repairShip.Name == "Reparación Capital") count++;
+                        }
+                    }
                 }
-                */
-                exit.Add((airport, CapitalReparationsCounter));
+                exit.Add(airport, count);
             }
 
-            return _mapper.Map<List<(AirportDTO, int)>>(exit);
+            return _mapper.Map<Dictionary<AirportDTO, int>>(exit);
         }
        
         

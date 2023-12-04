@@ -11,6 +11,7 @@ namespace AIRCOM.Controllers
     [Authorize(Policy = "Security")]
     public class ClientController : Controller
     {
+        private readonly string[] types = new string[] { "Seguridad", "Mecánico", "Dirección" };
         private readonly ClientService _service;
         public ClientController(ClientService service)
         {
@@ -38,17 +39,21 @@ namespace AIRCOM.Controllers
             {
                 var userId = HttpContext.User.FindFirst("Airport")?.Value;
                 await _service.Create(client, userId);
-                return RedirectToAction("Index", "Security");
+                return RedirectToAction("Index", "Security", new { sucess= "Los cambios han sido realizados satisfactoriamente" });
             }
             catch (DbUpdateException e)
             {
                 int lugar_del_error = 4;
+                if (types.Contains(client.Type))
+                    lugar_del_error = 5;
                 string error = "Error al insertar valores repetidos";
                 return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = error });
             }
             catch (Exception e)
             {
                 int lugar_del_error = 4;
+                if (types.Contains(client.Type))
+                    lugar_del_error = 5;
                 return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
