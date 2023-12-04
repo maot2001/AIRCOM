@@ -43,7 +43,7 @@
             <div>Costo: $@Html.DisplayFor(m=>repair.Price)</div>
         </div>
         <div>
-            <div style="flex:none;">@Calificacion(10)</div>
+            <div style="flex:none;">@Calificacion((int)repair.Stars)</div>
             <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
                 <details>
                     <summary><strong>Leer Comentario: </strong></summary>
