@@ -27,7 +27,7 @@ namespace AIRCOM.Controllers
                 case 3:
                 {
                     ViewData["repairs"] = await _aux.Get(2, userId);
-                    return View("Reparaciones");
+                    return View("Comentarios");
                 }
                 default:
                 {
