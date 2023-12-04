@@ -15,23 +15,108 @@
         <p style="color:white;">____</p>
         <button name="pagina" class="active" type="submit"><h2>Ver estadísticas</h2></button>
     </div>
+    <form asp-action="Save">
+        <button class="badboton" style="background-color:rgb(175,5,5);" type="submit">Salvar</button>
+    </form>
 </nav>
 
 <section>
     <details>
         <summary>Aeropuertos con reparación</summary>
+        <center>
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Posición geográfica</th>
+                </tr>
+
+                @foreach (var item in ViewBag.Nombre_posición)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Coordinates</td>
+                    </tr>
+                }
+            </table>
+        </center>
+    </details>
+    @*----------------------------------------*@
+    <details>
+        <summary>Cantidad de reparaciones capitales</summary>
 
         <table>
             <tr>
                 <th>Nombre</th>
-                <th>Posición geográfica</th>
+                <th>Cantidad de reparaciones</th>
             </tr>
 
-            @foreach (var item in ViewBag.Nombre_posición)
+            @foreach (var item in ViewBag.cant_reps)
+            {
+                <tr>
+                    <th>item.Key.Name</th>
+                    <th>item.value</th>
+                </tr>
+            }
+        </table>
+    </details>
+    @*----------------------------------------*@
+    <details>
+
+        <summary>Capitanes a "José Martí"</summary>
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+            </tr>
+
+            @foreach (var item in ViewBag.capitán_Aero)
             {
                 <tr>
                     <th>item.Name</th>
-                    <th>item.Coordinates</th>
+                    <th>item.Type</th>
+                </tr>
+            }
+        </table>
+    </details>
+    @*---------------------------------------*@
+    <details>
+
+        <summary>Menos servicios por año"</summary>
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Cant</th>
+                <th>Año</th>
+            </tr>
+
+            @foreach (var item in ViewBag.punto4)
+            {
+                <tr>
+                    <th>item[0].Name</th>
+                    <th>item.[2]</th>
+                    <th>item.[1]</th>
+
+                </tr>
+            }
+        </table>
+    </details>
+    @*-------------------------------------------*@
+    <details>
+
+        <summary>Servicios deficientes "José Martí"</summary>
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Monto promedio</th>
+
+            </tr>
+
+            @foreach (var item in ViewBag.punto4)
+            {
+                <tr>
+                    <th>item[0]</th>
+                    <th>item.[1]</th>
+
                 </tr>
             }
         </table>

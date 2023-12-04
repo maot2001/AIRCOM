@@ -18,6 +18,7 @@ namespace AIRCOM.Models
         public float Price { get; set; }
         public int? Stars { get; set; } = 0;
         public string? Comment { get; set; }
+       // public bool Eficient { get; set; } = true;
         /*public int InstallationID { get; set; }
         [ForeignKey(nameof(InstallationID))]
         public virtual Installation Installation { get; set; }

@@ -10,7 +10,10 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-
+using Aspose.Html;
+using Aspose.Html.Converters;
+using Aspose.Html.Rendering.Pdf;
+using Aspose.Html.Saving;
 
 namespace AIRCOM.Services
 {
@@ -24,26 +27,28 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
+
+
         //1
         public async Task<List<AirportDTO>> GetPoint1()
-        {
+        {   
             var airports = await _context.Airports
                 .Include(a => a.Installations).ThenInclude(i => i.RepairInstallations)
                 .ToListAsync();
             List<Airport> exit = new List<Airport>();
-            
+
             foreach (var airport in airports)
             {
                 foreach (var installation in airport.Installations)
                 {
-                    if(installation.RepairInstallations.Count != 0)
+                    if (installation.RepairInstallations.Count != 0)
                     {
                         exit.Add(airport);
                         continue;
                     }
                 }
             }
-            
+
             return _mapper.Map<List<AirportDTO>>(exit);
         }
         //2
@@ -67,7 +72,7 @@ namespace AIRCOM.Services
                     {
                         foreach (var repairShip in repairShips)
                         {
-                            if(repairShip.Name == "Reparación Capital") count++;
+                            if (repairShip.Name == "Reparación Capital") count++;
                         }
                     }
                 }
@@ -76,8 +81,8 @@ namespace AIRCOM.Services
 
             return _mapper.Map<Dictionary<AirportDTO, int>>(exit);
         }
-       
-        
+
+
         public async Task<List<ClientDTO>> GetPoint3()
         {
 
@@ -86,7 +91,7 @@ namespace AIRCOM.Services
 
             foreach (var history in historys)
             {
-                if (history.ArrivalAirport.Name == "José Martí")
+                if (history.ArrivalDate != null && history.ArrivalAirport.Name == "José Martí")
                 {
 
                     if ((history.OwnerRole == "Capitán")) exit.Add(history.Ships.Clients);
@@ -97,46 +102,79 @@ namespace AIRCOM.Services
 
         }
         //4 
-      
-        public async Task<List<(Airport,int)>> GetPoint4()
+
+        public async Task<List<(Airport, int)>> GetPoint4()
+        {
+            DateTime inicio = new DateTime(2010, 1, 1);
+            Dictionary<Airport, int> exit = new Dictionary<Airport, int>();
+            List<(Airport, int)> exit1 = new List<(Airport, int)>();
+            var historys = await _context.Historys.ToListAsync();
+            int count = 0;
+
+
+            foreach (var history in historys)
+            {
+                if (history.ArrivalDate != null && history.ArrivalDate > inicio)
+                {
+                    if (exit.ContainsKey(history.ArrivalAirport)) exit[history.ArrivalAirport]++;
+
+                    else exit.Add(history.ArrivalAirport, 1);
+                }
+                var a = exit.OrderBy(v => v.Value);
+
+
+            }
+            foreach (var item in exit)
+            {
+                if (count > 4) break;
+                count++;
+
+                int aux = 0;
+
+                foreach (var RepairInstallation in item.Key.Installations)
+                {
+                    aux++;
+                }
+                exit1.Add((item.Key, aux));
+
+
+            }
+            return exit1;
+        }
+        public async Task<List<(RepairInstallation, float)>> GetPoint5()
         {
 
-            var date1 = new DateTime(2010, 1, 1);
-            var date2 = new DateTime(2024, 1, 1);
-            var change = new TimeSpan(366, 0, 0, 0);
             var airports = await _context.Airports.ToListAsync();
-            var historys = await _context.Historys.ToListAsync();
-            List<(Airport, int)> exit = new List<(Airport, int)>(); // pendiente ver si devuelvo un datetime o un entero para el anno
+            List<(RepairInstallation, float)> exit = new List<(RepairInstallation, float)>();
 
-            while (date1 < date2)
+            foreach (var airport in airports)
             {
-                Dictionary<Airport, int> aux = new Dictionary<Airport, int>();
-
-                foreach (var history in historys)
+                if (airport.Name == "Jose Martí")
                 {
-                    if (history.ArrivalDate != null && history.ArrivalDate > date1 &&
-                    history.ArrivalDate < date2)
+
+                    foreach (var installation in airport.Installations)
                     {
-                        if (aux.ContainsKey(history.ArrivalAirport))
-                            aux[history.ArrivalAirport] += 1;
-                        else aux.Add(history.ArrivalAirport, 1);
+                        foreach (var repairInstallation in installation.RepairInstallations)
+                        {
+                            
+                        float sum = 0;
+                        int count = 0;
+                        bool itHappened = false;
+
+                        foreach (var repairShip in repairInstallation.RepairShips)
+                        {
+                            sum += repairShip.Price;
+                            count++;
+                           // if (!repairShip.Eficient) itHappened = true;
+                        }
+                        if (itHappened) exit.Add((repairInstallation, sum / count));
+                        }
 
                     }
                 }
-                Airport airport1 = airports[0];   // inicializo airport1 en cualquiera y despues lo actualizo
-                int min = int.MaxValue;
-                foreach (var airport in aux)
-                {
-                    if (airport.Value < min)
-                    {
-                        min = airport.Value;
-                        airport1 = airport.Key;
-                    }
-                }
-                exit.Add((airport1, date1.Year));
-                date1 += change;
+
             }
-            return _mapper.Map<List<(Airport, int)>>(exit);
+            return _mapper.Map<List<(RepairInstallation, float)>>(exit);
         }
     }
-}
+}   

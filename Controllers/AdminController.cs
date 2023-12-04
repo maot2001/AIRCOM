@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Aspose.Html;
+using Aspose.Html.Converters;
+using Aspose.Html.Saving;
 
 namespace AIRCOM.Controllers
 {
@@ -28,6 +31,16 @@ namespace AIRCOM.Controllers
             ViewData["lugar_del_error"] = 0;
             return View("Admin");
         }
+        
+        public void Save()
+        {
+
+            var document = new HTMLDocument("https://localhost:7134/Admin/ChangePage");
+            var option = new PdfSaveOptions();
+            var direct = Directory.GetParent(Directory.GetCurrentDirectory());
+            Converter.ConvertHTML(document, option, direct.ToString());
+
+        }     
 
         public IActionResult Comprobe(string pwd)
         {
@@ -60,6 +73,9 @@ namespace AIRCOM.Controllers
             var a = await _aux2.GetPoint1();
             ViewData["Nombre_posición"] = a;
             ViewData["cant_reps"] = await _aux2.GetPoint2();
+            ViewData["capitán_Aero"] = await _aux2.GetPoint3();
+            ViewData["punto4"] = await _aux2.GetPoint4();
+            ViewData["punto5"] = await _aux2.GetPoint5();
             return View("Estadisticas");
         }
 

@@ -52,7 +52,7 @@ namespace AIRCOM.Controllers
             catch
             {
                 ViewData["check"] = true;
-                ViewData["error"] = "El usuario no existe";
+                ViewData["error"] = "Credenciales incorrectos";
                 return View();
             }
         }
