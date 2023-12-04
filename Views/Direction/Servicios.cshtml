@@ -47,7 +47,7 @@
             </div>
             <div style="justify-content:center;">
                 <h5>Precio: $</h5>
-                <input type="number" name="price">
+                <input type="number" name="price" step="0.01">
                 <button class="boton" type="submit">Crear</button>
             </div>
         </form>
@@ -83,7 +83,7 @@
                     </div>
                 </aside>
             </div>
-            <div style="margin-top:2%;">
+            <div style="margin-top:2%; display:flex;">
                     <button class="boton" onclick="swap(@service.Code.ToString(),true)">Cambiar precio</button>
                 <form asp-controller="ServiceInstallation" asp-action="Delete">
                     <input name="code" value="@Html.DisplayFor(m=>service.Code)" hidden>
@@ -105,7 +105,7 @@
                 <input name="installationid" value="@Html.DisplayFor(m=>service.InstallationID)" hidden>
                 <center>
                     $
-                    <input type="number" name="price">
+                    <input type="number" name="price" step="0.01">
                 </center>
                 <center>
                     <button type="submit" class="goodboton">Cambiar</button>

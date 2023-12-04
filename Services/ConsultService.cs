@@ -10,10 +10,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Aspose.Html;
-using Aspose.Html.Converters;
-using Aspose.Html.Rendering.Pdf;
-using Aspose.Html.Saving;
+
 
 namespace AIRCOM.Services
 {

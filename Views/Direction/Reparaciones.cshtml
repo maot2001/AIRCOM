@@ -55,7 +55,7 @@
             </div>
             <div style="justify-content:center;">
                 <h5>Precio: $</h5>
-                <input type="number" name="price">
+                <input type="number" name="price" step="0.01">
                 <button class="boton" type="submit">Crear</button>
             </div>
         </form>
@@ -102,7 +102,7 @@
                     <input name="id" value="@Html.DisplayFor(m=>repair.ID)" hidden>
                     <button name="page" value="3" class="boton">Ver reseñas</button>
                 </form>
-            </div>s
+            </div>
         </div>
         <div style="display:none;" id=@("a"+repair.ID)>
             <div>
@@ -113,7 +113,7 @@
                 <input name="installationid" value="@Html.DisplayFor(m=>repair.InstallationID)" hidden>
                 <center>
                     $
-                    <input type="number" name="price">
+                    <input type="number" name="price" step="0.01">
                     /h
                 </center>
                 <center>
