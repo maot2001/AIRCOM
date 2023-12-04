@@ -47,8 +47,7 @@ namespace AIRCOM.Services
             var installationDB = await GetInstallationById(installation.ID);
 
             installationDB.Name = installation.Name;
-            installationDB.Ubication = installation.Ubication;
-            installationDB.InstallationID = installation.InstallationID;
+            installationDB.Type = installation.Type;
 
             await _context.SaveChangesAsync();
         }
@@ -119,17 +118,31 @@ namespace AIRCOM.Services
 
         private async Task Errors(InstallationDTO installation, string userId)
         {
-            var installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
-            i.InstallationID == installation.InstallationID && i.AirportID == int.Parse(userId));
+            Installation installationDB = new();
+            if (installation.InstallationID is not null)
+            {
+                installationDB = await _context.Installations
+                    .SingleOrDefaultAsync(i => i.InstallationID == installation.InstallationID && i.AirportID == int.Parse(userId));
+                if (installationDB is not null)
+                    throw new Exception("Este número de instalación ya existe en el aeropuerto");
 
-            if (installationDB is not null)
-                throw new Exception("Este número de instalación ya existe en el aeropuerto");
+                var installat = await _context.Installations.SingleOrDefaultAsync(i =>
+                    i.Name == installation.Name && i.AirportID == int.Parse(userId));
 
-            installationDB = await _context.Installations.SingleOrDefaultAsync(i =>
-            i.Name == installation.Name && i.AirportID == int.Parse(userId));
+                if (installat is not null)
+                    throw new Exception("Este nombre de instalación ya existe en el aeropuerto");
+            }
+            else
+            {
+                installationDB = await _context.Installations.FindAsync(installation.ID);
 
-            if (installationDB is not null)
-                throw new Exception("Este nombre de instalación ya existe en el aeropuerto");
+                var installat = await _context.Installations.SingleOrDefaultAsync(i =>
+                    i.Name == installation.Name && i.AirportID == installationDB.AirportID);
+
+                if (installat is not null)
+                    throw new Exception("Este nombre de instalación ya existe en el aeropuerto");
+            }
+            
         }
     }
 }

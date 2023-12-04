@@ -36,17 +36,17 @@ namespace AIRCOM.Controllers
             var histories = await _service.Get();
             return View(histories);
         }
-
+        */
         // POST: History
         //[Authorize(Policy = "Security")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] HistoryDTO history)
+        public async Task<IActionResult> Create(HistoryDTO history)
         {
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
             await _service.Create(history, userId);
-            return RedirectToAction(nameof(Get));
+            return RedirectToAction("Index", "Security");
         }
-
+        /*
         // PUT: History
         //[Authorize(Policy = "Security")]
         [HttpPut]

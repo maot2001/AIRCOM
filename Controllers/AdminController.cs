@@ -8,9 +8,6 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Aspose.Html;
-using Aspose.Html.Converters;
-using Aspose.Html.Saving;
 
 namespace AIRCOM.Controllers
 {
@@ -31,16 +28,6 @@ namespace AIRCOM.Controllers
             ViewData["lugar_del_error"] = 0;
             return View("Admin");
         }
-        
-        public void Save()
-        {
-
-            var document = new HTMLDocument("https://localhost:7134/Admin/ChangePage");
-            var option = new PdfSaveOptions();
-            var direct = Directory.GetParent(Directory.GetCurrentDirectory());
-            Converter.ConvertHTML(document, option, direct.ToString());
-
-        }     
 
         public IActionResult Comprobe(string pwd)
         {

@@ -48,6 +48,7 @@ builder.Services.AddDbContext<DBContext>(options =>
 builder.Services.AddScoped<AirportService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<ConsultService>();
+builder.Services.AddScoped<DependService>();
 builder.Services.AddScoped<HistoryService>();
 builder.Services.AddScoped<InstallationService>();
 builder.Services.AddScoped<LoginService>();

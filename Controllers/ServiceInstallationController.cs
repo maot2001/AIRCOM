@@ -26,6 +26,12 @@ namespace AIRCOM.Controllers
             return View(serviceInstallations);
         }
 
+        public async Task<IActionResult> InstalationGet(int? id)
+        {
+            var serviceInstallations = await _service.Get(null ,id);
+            return View(serviceInstallations);
+        }
+
         // POST: ServiceInstallation
         [Authorize(Policy = "Direction")]
         [HttpPost]
@@ -52,7 +58,7 @@ namespace AIRCOM.Controllers
 
         // PUT: ServiceInstallation
         [Authorize(Policy = "Direction")]
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(ServiceInstallationDTO service)
         {
             int page = 2;
@@ -76,7 +82,7 @@ namespace AIRCOM.Controllers
 
         // DELETE: ServiceInstallation
         [Authorize(Policy = "Direction")]
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(ServiceInstallationDTO service)
         {
             int page = 2;
@@ -91,6 +97,7 @@ namespace AIRCOM.Controllers
                 return RedirectToAction("Index", "Direction", new { page = page, lugar_del_error = lugar_del_error, error = e.Message });
             }
         }
+
         // ---------------------------------------------------------------------
 
         // Client --------------------------------------------------------------

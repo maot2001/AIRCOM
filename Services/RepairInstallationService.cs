@@ -15,11 +15,21 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RepairInstallationDTO>> Get(string userId)
+        public async Task<IEnumerable<RepairInstallationDTO>> Get(string? userId = null, int? id = null)
         {
-            var repairsDB = await _context.RepairInstallations
-                .Include(ri => ri.Installation)
-                .Where(ri => ri.Installation.AirportID == int.Parse(userId)).ToListAsync();
+            List<RepairInstallation> repairsDB = new();
+            if (userId is not null)
+            {
+                repairsDB = await _context.RepairInstallations
+                    .Include(ri => ri.Installation)
+                    .Where(ri => ri.Installation.AirportID == int.Parse(userId)).ToListAsync();
+            }
+            if (id is not null)
+            {
+                repairsDB = await _context.RepairInstallations
+                    .Include(ri => ri.Installation)
+                    .Where(ri => ri.InstallationID == id).ToListAsync();
+            }
             var repairs = _mapper.Map<List<RepairInstallationDTO>>(repairsDB);
             foreach (var repair in repairs)
             {
@@ -27,6 +37,13 @@ namespace AIRCOM.Services
                 repair.InstallationID = installation.InstallationID;
             }
             return repairs;
+        }
+
+        public async Task<RepairInstallationDTO> GetComments(string? userId, int? id)
+        {
+            var inst = await _context.RepairInstallations.Include(ri => ri.RepairShips).SingleOrDefaultAsync(ri => ri.ID == id);
+            var result = _mapper.Map<RepairInstallationDTO>(inst);
+            return result;
         }
 
         public async Task Create(RepairInstallationDTO repair)

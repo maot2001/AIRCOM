@@ -15,14 +15,37 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ServiceInstallationDTO>> Get(string? userId = null)
+        public async Task<IEnumerable<ServiceInstallationDTO>> Get(string? userId = null, int? id = null)
         {
             List<ServicesInstallation> service;
-            if (userId is null)
+            if (id is not null)
+                service = await _context.ServicesInstallations.Where(si => si.InstallationID == id).ToListAsync();
+            else if (userId is null)
                 service = await _context.ServicesInstallations.ToListAsync();
             else
-                service = await _context.ServicesInstallations.Where(si => si.Installation.AirportID == int.Parse(userId)).ToListAsync();
-            return _mapper.Map<List<ServiceInstallationDTO>>(service);
+                service = await _context.ServicesInstallations
+                    .Include(si => si.Installation)
+                    .Where(si => si.Installation.AirportID == int.Parse(userId)).ToListAsync();
+            var result = _mapper.Map<List<ServiceInstallationDTO>>(service);
+            foreach (var serv in result)
+            {
+                var installation = await _context.Installations.FindAsync(serv.InstallationID);
+                serv.InstallationID = installation.InstallationID;
+            }
+            return result;
+        }
+
+        public async Task<string> ObtAirport(string? userId)
+        {
+            var airport = await _context.Airports.FindAsync(int.Parse(userId));
+            return airport.Name;
+        }
+
+        public async Task<ServiceInstallationDTO> GetComments(string? userId, int? code)
+        {
+            var inst = await _context.ServicesInstallations.Include(si => si.On_Sites).SingleOrDefaultAsync(si => si.Code == code);
+            var result = _mapper.Map<ServiceInstallationDTO>(inst);
+            return result;
         }
 
         public async Task Create(ServiceInstallationDTO service)
@@ -37,8 +60,6 @@ namespace AIRCOM.Services
         {
             await Errors(service);
             var serviceDB = await GetServiceInstallation(service);
-            serviceDB.InstallationID = service.InstallationID;
-            serviceDB.Name = service.Name;
             serviceDB.Price = service.Price;
             await _context.SaveChangesAsync();
         }

@@ -25,10 +25,10 @@
         <summary>Aeropuertos con reparación</summary>
         <center>
             <table>
-                <tr>
+                 <tr> 
                     <th>Nombre</th>
                     <th>Posición geográfica</th>
-                </tr>
+                 </tr>
 
                 @foreach (var item in ViewBag.Nombre_posición)
                 {
@@ -36,93 +36,87 @@
                         <td>@item.Name</td>
                         <td>@item.Coordinates</td>
                     </tr>
-                }
-            </table>
+                    }
+             </table>
         </center>
+
     </details>
     @*----------------------------------------*@
     <details>
-        <summary>Cantidad de reparaciones capitales</summary>
+            <summary>Cantidad de reparaciones capitales</summary>
 
-        <table>
-            <tr>
-                <th>Nombre</th>
-                <th>Cantidad de reparaciones</th>
-            </tr>
+             <table>
+                 <tr> 
+                    <th>Nombre</th>
+                    <th>Cantidad de reparaciones</th>
+                 </tr>
 
-            @foreach (var item in ViewBag.cant_reps)
-            {
-                <tr>
+                @foreach(var item in ViewBag.cant_reps){
+                    <tr> 
                     <th>item.Key.Name</th>
                     <th>item.value</th>
-                </tr>
-            }
-        </table>
+                 </tr>
+                }
+             </table>
     </details>
     @*----------------------------------------*@
-    <details>
+     <details>
 
-        <summary>Capitanes a "José Martí"</summary>
-        <table>
-            <tr>
-                <th>Nombre</th>
-                <th>Tipo</th>
-            </tr>
+            <summary>Capitanes a "José Martí"</summary>
+             <table>
+                 <tr> 
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                 </tr>
 
-            @foreach (var item in ViewBag.capitán_Aero)
-            {
-                <tr>
+                @foreach(var item in ViewBag.capitán_Aero){
+                    <tr> 
                     <th>item.Name</th>
                     <th>item.Type</th>
-                </tr>
-            }
-        </table>
+                 </tr>
+                }
+             </table>
     </details>
     @*---------------------------------------*@
-    <details>
+     <details>
 
-        <summary>Menos servicios por año"</summary>
-        <table>
-            <tr>
-                <th>Nombre</th>
-                <th>Cant</th>
-                <th>Año</th>
-            </tr>
+            <summary>Menos servicios por año"</summary>
+             <table>
+                 <tr> 
+                    <th>Nombre</th>
+                    <th>Cant</th>
+                    <th>Año</th>
+                 </tr>
 
-            @foreach (var item in ViewBag.punto4)
-            {
-                <tr>
+                @foreach(var item in ViewBag.punto4){
+                    <tr> 
                     <th>item[0].Name</th>
                     <th>item.[2]</th>
                     <th>item.[1]</th>
-
+                 
                 </tr>
             }
         </table>
     </details>
     @*-------------------------------------------*@
     <details>
-
         <summary>Servicios deficientes "José Martí"</summary>
         <table>
             <tr>
                 <th>Nombre</th>
                 <th>Monto promedio</th>
-
             </tr>
-
             @foreach (var item in ViewBag.punto4)
             {
                 <tr>
                     <th>item[0]</th>
                     <th>item.[1]</th>
-
                 </tr>
             }
         </table>
     </details>
+    
 </section>
-
 
 @section Scripts{
     @{

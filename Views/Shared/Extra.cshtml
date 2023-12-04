@@ -5,12 +5,12 @@
     {
        service  = ViewBag.service;
     }
-    List<On_siteDTO> serviceInst = new();
+    ServiceInstallationDTO serviceInst = new();
     if (ViewBag.serviceInst != null)
     {
        serviceInst  = ViewBag.serviceInst;
     }
-    List<RepairShipDTO> repairInst = new();
+    RepairInstallationDTO repairInst = new();
     if (ViewBag.repairInst != null)
     {
        repairInst  = ViewBag.repairInst;
@@ -86,16 +86,16 @@
 @if (ViewBag.page == 2)
 {
     <center>
-        <h3>Servicio: @Html.DisplayFor(m=>serviceInst[0].Name)</h3>
+        <h3>Servicio: @Html.DisplayFor(m=>serviceInst.Name)</h3>
     </center>
     <div style="display:flex;justify-content:space-around;">
-        <div>Aeropuerto: Jose Marti</div>
-        <div>Instalacion </div>
-        <div>Precio: $@Html.DisplayFor(m=>serviceInst[0].Price)</div>
+        <div>Aeropuerto: @ViewBag.airport</div>
+        <div>Instalacion @Html.DisplayFor(m=>serviceInst.InstallationID)</div>
+        <div>Precio: $@Html.DisplayFor(m=>serviceInst.Price)</div>
         <div>Calificación: @Calificacion(a)</div>
     </div>
 
-    @foreach (On_siteDTO serv in serviceInst)
+    @foreach (On_siteDTO serv in serviceInst.On_sites)
     {
         <section class="dataToShow" style="font-size:x-large">
             <div>
@@ -119,16 +119,16 @@
 @if (ViewBag.page == 3)
 {
     <center>
-        <h3>Historial de reparaciones: @Html.DisplayFor(m=>repairInst[0].Name)</h3>
+        <h3>Historial de reparaciones: @Html.DisplayFor(m=>repairInst.Name)</h3>
     </center>
     <div style="display:flex;justify-content:space-around;">
         <div>Aeropuerto: Jose Marti</div>
-        <div>Instalacion #</div>
-        <div>Precio: $@Html.DisplayFor(m=>repairInst[0].Price)/h</div>
+        <div>Instalacion #@Html.DisplayFor(m=>repairInst.InstallationID)</div>
+        <div>Precio: $@Html.DisplayFor(m=>repairInst.Price)/h</div>
         <div>Calificación: @Calificacion(a)</div>
     </div>
 
-    @foreach (RepairShipDTO rep in repairInst)
+    @foreach (RepairShipDTO rep in repairInst.RepairShips)
     {
         <section class="dataToShow" style="font-size:x-large">
             <div style="display: flex;">
