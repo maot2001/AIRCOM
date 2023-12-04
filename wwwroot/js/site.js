@@ -21,3 +21,15 @@ function swap(id, ElBoleano) {
         document.getElementById("a" + id).style.display = 'none';
     }
 }
+
+function filter() {
+    var list = document.querySelectorAll(".ofertas > div");
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].id.includes(document.getElementById("search").inputMode.toString(), 0)) {
+            list[i].style.display = "block";
+        }
+        else {
+            list[i].style.display = "none";
+        }
+    }
+}

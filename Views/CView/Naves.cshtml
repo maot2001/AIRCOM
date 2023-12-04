@@ -1,6 +1,9 @@
 @{
-    int[] sol = new int[] { 1, 1, 1 };
-    bool a = true;
+    string GetId(ShipsDTO ship)
+    {
+        return ship.State + "\0" + ship.Plate + "\0" + ship.NextFly + "\0" + ship.ClientID + "\0" + ship.Capacity
+            + "\0" + ship.Pass + "\0" + ship.Crew + "\0" + ship.Model;
+    }
 }
 
 <header>
@@ -10,6 +13,7 @@
 <nav>
     <h4>USUARIO</h4>
 </nav>
+
 <nav class="navegacion">
     <form asp-controller="CView" asp-action="Index">
         <div>
@@ -20,9 +24,10 @@
     </form>
 </nav>
 
+@*Muestreo de las naves que pertenecen al usuario*@
 @foreach (ShipsDTO ship in ViewBag.ships)
 {
-    <section class="dataToShow">
+    <section class="dataToShow" id=@GetId(ship)>
         <div style="display: flex;">
             <div>Matricula: @Html.DisplayFor(m=>ship.Plate)</div>
             <div>Estado: @Html.DisplayFor(m=>ship.State)</div>
