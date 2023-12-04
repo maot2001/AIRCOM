@@ -24,11 +24,21 @@
     bool b = true;
     bool check = true;
     bool[] sol = new bool[] { true, true, true };
-    string Calificacion(bool i)
+    string Calificacion(int val)
     //ponerlo en funcion de la calificacion
     {
-        return "⭐⭐🌗🌑🌑";
+        string cal = "";
+        for (int i = 0; i < val / 2; i++)
+            cal += "⭐";
+        if (val % 2 == 1)
+            cal += "🌗";
+        for (int i = 0; i < (10 - val) / 2; i++)
+            cal += "🌑";
+        return cal;
+
+        
     }
+
 }
 
 
@@ -92,7 +102,7 @@
         <div>Aeropuerto: @ViewBag.airport</div>
         <div>Instalacion @Html.DisplayFor(m=>serviceInst.InstallationID)</div>
         <div>Precio: $@Html.DisplayFor(m=>serviceInst.Price)</div>
-        <div>Calificación: @Calificacion(a)</div>
+        <div>Calificación: @Calificacion(10)</div>
     </div>
 
     @foreach (On_siteDTO serv in serviceInst.On_sites)
@@ -103,7 +113,7 @@
                 <div>Usuario: @Html.DisplayFor(m=>serv.Name)</div>
             </div>
             <div>
-                <div style="flex:none;">@Calificacion(a)</div>
+                <div style="flex:none;">@Calificacion(10)</div>
                 <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
                     <details>
                         <summary><strong>Leer Comentario: </strong></summary>
@@ -125,7 +135,7 @@
         <div>Aeropuerto: Jose Marti</div>
         <div>Instalacion #@Html.DisplayFor(m=>repairInst.InstallationID)</div>
         <div>Precio: $@Html.DisplayFor(m=>repairInst.Price)/h</div>
-        <div>Calificación: @Calificacion(a)</div>
+        <div>Calificación: @Calificacion(10)</div>
     </div>
 
     @foreach (RepairShipDTO rep in repairInst.RepairShips)
@@ -144,7 +154,7 @@
             @if (b)
             {
                 <div>
-                    <div style="flex:none;">@Calificacion(a)</div>
+                    <div style="flex:none;">@Calificacion(10)</div>
                     <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
                         <details>
                             <summary><strong>Leer Comentario: </strong></summary>
@@ -186,7 +196,7 @@
             @if (b)
             {
                 <div>
-                    <div style="flex:none;">@Calificacion(a)</div>
+                    <div style="flex:none;">@Calificacion(10)</div>
                     <div style="background-color:lightgrey; padding:0.5%; border:solid;font-size:medium;">
                         <details>
                             <summary><strong>Leer Comentario: </strong></summary>

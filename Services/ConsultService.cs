@@ -138,9 +138,6 @@ namespace AIRCOM.Services
             return exit1;
             
         }
-        //
-    }
-}
         public async Task<List<(RepairInstallation, float)>> GetPoint5()
         {
 
@@ -176,3 +173,6 @@ namespace AIRCOM.Services
             }
             return _mapper.Map<List<(RepairInstallation, float)>>(exit);
         }
+        //
+    }
+}

@@ -1,7 +1,16 @@
 @{
-    int[] sol = new int[] { 1, 2, 3, 4 };
-    bool a = true;
-    bool b = true;
+    string Evaluation(int val)
+    {
+        string cal = "";
+        for (int i = 0; i < val / 2; i++)
+            cal += "⭐";
+        if (val % 2 == 1)
+            cal += "🌗";
+        for (int i = 0; i < (10 - val) / 2; i++)
+            cal += "🌑";
+        return cal;
+
+    }
 }
 
 <header>
@@ -91,7 +100,7 @@
                     </div>
                 </aside>
             </div>
-            <div style="margin-top:2%;">
+            <div style="margin-top:2%; display:flex;">
                 <button class="boton" onclick="swap(@repair.ID,true)">Cambiar precio</button>
                 <form asp-controller="RepairInstallation" asp-action="Delete">
                     <input name="id" value="@Html.DisplayFor(m=>repair.ID)" hidden>
@@ -117,8 +126,8 @@
                     /h
                 </center>
                 <center>
-                    <button type="submit" class="boton" style="background-color:rgb(20,150,20)">Cambiar</button>
-                    <button type="button" class="boton" style="background-color:rgb(175,10,10)" onclick="swap(@repair.ID,false)">Volver</button>
+                    <button type="submit" class="goodboton">Cambiar</button>
+                    <button type="button" class="badboton" onclick="swap(@repair.ID,false)">Volver</button>
                 </center>
             </form>
         </div>

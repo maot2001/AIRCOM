@@ -79,12 +79,12 @@
                     @if (hist.ArrivalDate != null)
                     {
                         <td><center>Entrada</center></td>
-                        <td><center>@Html.DisplayFor(m=>hist.ArrivalDate)</center></td>
+                        <td><center>@Html.DisplayFor(m=>hist.ArrivalDate.ToString().Split()[0])</center></td>
                     }
                     @if (hist.ExitDate != null)
                     {
                         <td><center>Salida</center></td>
-                        <td><center>@Html.DisplayFor(m=>hist.ExitDate)</center></td>
+                        <td><center>@Html.DisplayFor(m=>hist.ExitDate.ToString().Split()[0])</center></td>
                     }
                     <td><center>@Html.DisplayFor(m=>hist.Plate)</center></td>
                     <td><center>@Html.DisplayFor(m=>hist.OwnerRole)</center></td>
