@@ -19,7 +19,7 @@ namespace AIRCOM.Controllers
             _aux3 = aux3;
             _aux4 = aux4;
         }
-        public async Task<IActionResult> Index(int page = 1, int lugar_del_error = 0, string error = "")
+        public async Task<IActionResult> Index(int page = 1, int lugar_del_error = 0, string error = "", int? id = null, bool filter = false)
         {
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
@@ -33,15 +33,31 @@ namespace AIRCOM.Controllers
                     return View("Instalaciones");
                 case 2:
                     ViewData["installations"] = new SelectList(installations, "ID", "Name");
-                    var services = await _aux3.Get(userId);
-                    ViewData["services"] = services;
+                    if (filter)
+                    {
+                        var services = await _aux3.Get(null, id);
+                        ViewData["services"] = services;
+                    }
+                    else
+                    {
+                        var services = await _aux3.Get(userId);
+                        ViewData["services"] = services;
+                    }
                     return View("Servicios");
                 default:
                     ViewData["installations"] = new SelectList(installations, "ID", "Name");
                     var repairs = await _aux2.Get();
                     ViewData["rep"] = new SelectList(repairs, "RepairID", "Name");
-                    var ri = await _aux4.Get(userId);
-                    ViewData["repairs"] = ri;
+                    if (filter)
+                    {
+                        var ri = await _aux4.Get(null, id);
+                        ViewData["repairs"] = ri;
+                    }
+                    else
+                    {
+                        var ri = await _aux4.Get(userId);
+                        ViewData["repairs"] = ri;
+                    }
                     return View("Reparaciones");
             }
         }

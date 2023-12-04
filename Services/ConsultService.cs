@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿using Microsoft.VisualBasic.CompilerServices;
+using System.Security.Authentication;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -24,28 +25,26 @@ namespace AIRCOM.Services
             _mapper = mapper;
         }
 
-
-
         //1
         public async Task<List<AirportDTO>> GetPoint1()
-        {   
+        {
             var airports = await _context.Airports
                 .Include(a => a.Installations).ThenInclude(i => i.RepairInstallations)
                 .ToListAsync();
             List<Airport> exit = new List<Airport>();
-
+            
             foreach (var airport in airports)
             {
                 foreach (var installation in airport.Installations)
                 {
-                    if (installation.RepairInstallations.Count != 0)
+                    if(installation.RepairInstallations.Count != 0)
                     {
                         exit.Add(airport);
                         continue;
                     }
                 }
             }
-
+            
             return _mapper.Map<List<AirportDTO>>(exit);
         }
         //2
@@ -69,7 +68,7 @@ namespace AIRCOM.Services
                     {
                         foreach (var repairShip in repairShips)
                         {
-                            if (repairShip.Name == "Reparación Capital") count++;
+                            if(repairShip.Name == "Capital") count++;
                         }
                     }
                 }
@@ -78,8 +77,8 @@ namespace AIRCOM.Services
 
             return _mapper.Map<Dictionary<AirportDTO, int>>(exit);
         }
-
-
+       
+        
         public async Task<List<ClientDTO>> GetPoint3()
         {
 
@@ -88,7 +87,7 @@ namespace AIRCOM.Services
 
             foreach (var history in historys)
             {
-                if (history.ArrivalDate != null && history.ArrivalAirport.Name == "José Martí")
+                if (history.ArrivalAirport!= null &&  history.ArrivalAirport.Name == "José Martí")
                 {
 
                     if ((history.OwnerRole == "Capitán")) exit.Add(history.Ships.Clients);
@@ -99,36 +98,36 @@ namespace AIRCOM.Services
 
         }
         //4 
-
-        public async Task<List<(Airport, int)>> GetPoint4()
+      
+        public async Task<List<(Airport,int)>> GetPoint4()
         {
             DateTime inicio = new DateTime(2010, 1, 1);
-            Dictionary<Airport, int> exit = new Dictionary<Airport, int>();
+            Dictionary<Airport,int> exit = new Dictionary<Airport,int>();
             List<(Airport, int)> exit1 = new List<(Airport, int)>();
             var historys = await _context.Historys.ToListAsync();
             int count = 0;
 
 
-            foreach (var history in historys)
+            foreach(var history in historys)
             {
                 if (history.ArrivalDate != null && history.ArrivalDate > inicio)
                 {
-                    if (exit.ContainsKey(history.ArrivalAirport)) exit[history.ArrivalAirport]++;
-
-                    else exit.Add(history.ArrivalAirport, 1);
+                    if(exit.ContainsKey(history.ArrivalAirport)) exit[history.ArrivalAirport]++;
+                    
+                    else exit.Add(history.ArrivalAirport,1);
                 }
                 var a = exit.OrderBy(v => v.Value);
-
-
+                
+                
             }
-            foreach (var item in exit)
+            foreach(var item in exit)
             {
                 if (count > 4) break;
                 count++;
 
                 int aux = 0;
 
-                foreach (var RepairInstallation in item.Key.Installations)
+                foreach(var RepairInstallation in item.Key.Installations)
                 {
                     aux++;
                 }
@@ -137,7 +136,11 @@ namespace AIRCOM.Services
 
             }
             return exit1;
+            
         }
+        //
+    }
+}
         public async Task<List<(RepairInstallation, float)>> GetPoint5()
         {
 
@@ -162,7 +165,7 @@ namespace AIRCOM.Services
                         {
                             sum += repairShip.Price;
                             count++;
-                           // if (!repairShip.Eficient) itHappened = true;
+                            if (!repairShip.Eficient) itHappened = true;
                         }
                         if (itHappened) exit.Add((repairInstallation, sum / count));
                         }
@@ -173,5 +176,3 @@ namespace AIRCOM.Services
             }
             return _mapper.Map<List<(RepairInstallation, float)>>(exit);
         }
-    }
-}   

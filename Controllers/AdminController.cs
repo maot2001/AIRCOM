@@ -30,19 +30,6 @@ namespace AIRCOM.Controllers
             return View("Admin");
         }
 
-        //public void Save()
-        //{
-
-        //    var document = new HTMLDocument("https://localhost:7134/Admin/ChangePage");
-        //    var option = new PdfSaveOptions();
-        //    var direct = Directory.GetParent(Directory.GetCurrentDirectory());
-        //    Converter.ConvertHTML(document, option, direct.ToString());
-
-        //}     
-        //public IActionResult GeneratePDF()
-        //{
-        //    var pdf = new ViewAsPdf("Estadistica",)
-        //}
         public IActionResult Comprobe(string pwd)
         {
             if (pwd == "1234")

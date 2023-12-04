@@ -132,12 +132,12 @@
     <details @open[1]>
         <summary>Añadir Dependencia de reparación</summary>
         <center>
-            <form class="formulario" name="dependencia" method="post">
+            <form asp-controller="Depend" asp-action="Create" class="formulario" name="dependencia" method="post">
                 <table>
                     <tr>
                         <td>Dependiente: </td>
                         <td>
-                            <select name="dependiente" asp-items="ViewBag.repairs">
+                            <select name="dependiente" asp-items="ViewBag.repairs" name="primaryid">
                             </select>
                         </td>
                     </tr>
@@ -145,7 +145,7 @@
                         @*Estos son los unicos posibles estados de una nave*@
                         <td>Estado necesario: </td>
                         <td>
-                            <select name="estado">
+                            <select name="state">
                                 <option value="Óptimo">Óptimo</option>
                                 <option value="Bien">Bien</option>
                                 <option value="Regular">Regular</option>
@@ -158,7 +158,7 @@
                     <tr>
                         <td>Dependencia: </td>
                         <td>
-                            <select name="Dependencia" asp-items="ViewBag.repairs">
+                            <select name="Dependencia" asp-items="ViewBag.repairs" name="secondid">
                             </select>
                         </td>
                     </tr>
@@ -234,12 +234,12 @@
     <details class="dangerousZone" @open[4]>
         <summary>Eliminar Dependencia de reparación</summary>
         <center>
-            <form class="formulario" name="dependencia" method="post">
+            <form asp-controller="Depend" asp-action="Delete" class="formulario" name="dependencia" method="post">
                 <table>
                     <tr>
                         <td>Dependiente: </td>
                         <td>
-                            <select name="dependiente" asp-items="ViewBag.repairs">
+                            <select name="dependiente" asp-items="ViewBag.repairs" name="primaryid">
                             </select>
                         </td>
                     </tr>
@@ -247,7 +247,7 @@
                         @*Estos son los unicos posibles estados de una nave*@
                         <td>Estado necesario: </td>
                         <td>
-                            <select name="estado">
+                            <select name="state">
                                 <option value="Óptimo">Óptimo</option>
                                 <option value="Bien">Bien</option>
                                 <option value="Regular">Regular</option>
@@ -260,7 +260,7 @@
                     <tr>
                         <td>Dependencia: </td>
                         <td>
-                            <select name="Dependencia" asp-items="ViewBag.repairs">
+                            <select name="Dependencia" asp-items="ViewBag.repairs" name="secondid">
                             </select>
                         </td>
                     </tr>

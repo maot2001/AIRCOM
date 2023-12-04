@@ -15,7 +15,7 @@ namespace AIRCOM.Services
         private readonly DBContext _context;
         private readonly IMapper _mapper;
         private readonly Dictionary<string, int> types = new () { 
-            { "Seguridad", 1 },  { "Mecánico", 2 }, { "Dirección", 3 }, { "Administrador", 4 } };
+            { "Seguridad", 1 },  { "Mecánico", 2 }, { "Dirección", 3 } };
         public LoginService(DBContext context, IMapper mapper, IConfiguration config)
         {
             _context = context;

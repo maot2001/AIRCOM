@@ -50,6 +50,7 @@ namespace AIRCOM.Services
             await Errors(repair, shipId);
 
             var ship = await _context.Shipss.FindAsync(shipId);
+
             var RS = _mapper.Map<RepairShip>(repair);
             RS.RepairInstallationID = repair.ID;
             RS.Plate = shipId;
@@ -57,12 +58,21 @@ namespace AIRCOM.Services
 
             _context.RepairShips.Add(RS);
             await _context.SaveChangesAsync();
+
+            await Dependencys(RS);
         }
 
         public async Task ProcessRepair(RepairShipDTO repair)
         {
             var shipRepair = await _context.RepairShips.FindAsync(repair.RSID);
             shipRepair.Init = DateTime.Now;
+            var ship = await _context.Shipss.FindAsync(repair.Plate);
+
+            if (shipRepair.Finish.Value.Year > ship.NextFly.Value.Year)
+                shipRepair.Eficient = false;
+            if (shipRepair.Finish.Value.Year == ship.NextFly.Value.Year && shipRepair.Finish.Value.DayOfYear > ship.NextFly.Value.DayOfYear)
+                shipRepair.Eficient = false;
+
             await _context.SaveChangesAsync();
         }
 
@@ -117,14 +127,55 @@ namespace AIRCOM.Services
             if (ship is null)
                 throw new Exception();
 
-            var exist = await _context.RepairShips.SingleOrDefaultAsync(rs => 
-            rs.RepairInstallationID == repair.ID && rs.Plate == shipId && rs.Init == null);
+            var exist = await _context.RepairShips
+                .SingleOrDefaultAsync(rs => rs.RepairInstallationID == repairDB.ID && rs.Plate == shipId && (rs.Finish == null || 
+            (rs.Finish.Value.Year > DateTime.Now.Year && rs.Finish.Value.DayOfYear > DateTime.Now.DayOfYear)));
             if (exist is not null)
                 throw new Exception();
 
             repair.ID = repairDB.ID;
             repair.Name = repairDB.Name;
             repair.Price = repairDB.Price;
+        }
+
+        private async Task Dependencys(RepairShip repair)
+        {
+            //Obtener dependencias de raparaciones
+            var repairDB = await _context.RepairShips
+                .Include(rs => rs.RepairInstallation)
+                .SingleOrDefaultAsync(rs => rs.RSID == repair.RSID);
+            var depends = await _context.Depends
+                .Where(d => d.PrimaryID == repairDB.RepairInstallation.RepairID && d.State == repairDB.State).ToListAsync();
+
+            foreach (var depend in depends)
+            {
+                //Revision de existencia de solciitud
+                var newRS = await _context.RepairShips
+                    .Include(rs => rs.RepairInstallation)
+                    .SingleOrDefaultAsync(rs => rs.RepairInstallation.RepairID == depend.SecondID && rs.Plate == repair.Plate && rs.Finish > DateTime.Now);
+                if (newRS is not null)
+                    continue;
+
+                //Revision de posibilidad de solicitud
+                var repInst = await _context.RepairInstallations
+                    .SingleOrDefaultAsync(ri => ri.RepairID == depend.SecondID && ri.InstallationID == repairDB.RepairInstallation.InstallationID);
+                if (repInst is null)
+                    continue;
+
+                var rep = await _context.Repairs.FindAsync(depend.SecondID);
+                newRS = new RepairShip()
+                {
+                    Name = rep.Name,
+                    Plate = repair.Plate,
+                    State = depend.State,
+                    Price = repInst.Price,
+                    RepairInstallationID = repInst.ID
+                };
+
+                _context.RepairShips.Add(newRS);
+                await _context.SaveChangesAsync();
+                Dependencys(newRS);
+            }
         }
     }
 }

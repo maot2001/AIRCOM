@@ -8,5 +8,6 @@
         public float? Stars { get; set; }
         public int InstallationID { get; set; }
         public int RepairID { get; set; }
+        public List<RepairShipDTO> RepairShips { get; set; }
     }
 }

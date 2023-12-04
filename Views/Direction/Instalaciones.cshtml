@@ -8,11 +8,11 @@
 <nav class="navegacion">
     <form method="post">
         <div>
-            <button class="active" type="submit" name="page" value="1"><h2>Instalaciones</h2></button>
+            <button asp-controller="Direction" asp-action="Index" class="active" type="submit" name="page" value="1"><h2>Instalaciones</h2></button>
             <p style="color:white;">____</p>
-            <button class="pasive" type="submit" name="page" value="2"><h2>Servicios</h2></button>
+            <button asp-controller="Direction" asp-action="Index" class="pasive" type="submit" name="page" value="2"><h2>Servicios</h2></button>
             <p style="color:white;">____</p>
-            <button class="pasive" type="submit" name="page" value="3"><h2>Reparaciones</h2></button>
+            <button asp-controller="Direction" asp-action="Index" class="pasive" type="submit" name="page" value="3"><h2>Reparaciones</h2></button>
         </div>
     </form>
     <aside>
@@ -93,7 +93,7 @@
                         <button class="goodboton" onclick="swap(@inst.ID.ToString(),true)">Editar</button>
                     </center>
                 </div>
-                <form asp-controller="Installation" asp-action="Edit" id=@("a"+@inst.ID.ToString()) style="display:none">
+                <form method="post" id=@("a"+@inst.ID.ToString()) style="display:none">
                         <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
                     <div>
                         <strong>Nombre:</strong> <input name="name">
@@ -102,15 +102,19 @@
                         <strong>Tipo:</strong> <input name="type">
                     </div>
                     <center>
-                        <button class="goodboton" type="submit">Enviar</button>
+                        <button asp-controller="Installation" asp-action="Edit" class="goodboton" type="submit">Enviar</button>
                         <button type="button" class="badboton" onclick="swap(@inst.ID.ToString(),false)">Volver</button>
 
-                        <button class="boton" style="background-color:rgb(165,5,5)">Eliminar</button>
+                        <button asp-controller="Installation" asp-action="Delete" class="boton" style="background-color:rgb(165,5,5)">Eliminar</button>
                     </center>
                 </form>
                 <center>
-                    <button class="boton">Servicios</button>
-                    <button class="boton">Reparaciones</button>
+                    <form>
+                        <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
+                        <input name="filter" value="true" hidden>
+                        <button asp-controller="Direction" asp-action="Index" name="page" value="2" class="boton">Servicios</button>
+                        <button asp-controller="Direction" asp-action="Index" name="page" value="3" class="boton">Reparaciones</button>
+                    </form>
                 </center>
             </div>
         </div>

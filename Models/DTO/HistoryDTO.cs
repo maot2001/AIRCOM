@@ -10,5 +10,6 @@
         public string State { get; set; }
         public int? ArrivalID { get; set; }
         public int? ExitID { get; set; }
+        public Ships? Ships { get; set; }
     }
 }

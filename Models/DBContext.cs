@@ -21,6 +21,7 @@ namespace AIRCOM.Models
         public virtual DbSet<Installation>? Installations { get; set; }
         public virtual DbSet<RepairInstallation>? RepairInstallations { get; set; }
         public virtual DbSet<RepairShip>? RepairShips { get; set; }
+        public virtual DbSet<Depend>? Depends { get; set; }
 
         /*   protected override void OnModelCreating(ModelBuilder modelBuilder)
            {
