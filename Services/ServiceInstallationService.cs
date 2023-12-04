@@ -18,19 +18,23 @@ namespace AIRCOM.Services
         public async Task<IEnumerable<ServiceInstallationDTO>> Get(string? userId = null, int? id = null)
         {
             List<ServicesInstallation> service;
+            List<ServiceInstallationDTO> result = new();
             if (id is not null)
                 service = await _context.ServicesInstallations.Where(si => si.InstallationID == id).ToListAsync();
             else if (userId is null)
-                service = await _context.ServicesInstallations.ToListAsync();
+            {
+                service = await _context.ServicesInstallations.Include(si => si.Installation).ToListAsync();
+            }
             else
                 service = await _context.ServicesInstallations
                     .Include(si => si.Installation)
                     .Where(si => si.Installation.AirportID == int.Parse(userId)).ToListAsync();
-            var result = _mapper.Map<List<ServiceInstallationDTO>>(service);
+                result = _mapper.Map<List<ServiceInstallationDTO>>(service);
             foreach (var serv in result)
             {
                 var installation = await _context.Installations.FindAsync(serv.InstallationID);
                 serv.InstallationID = installation.InstallationID;
+                serv.AirportID = installation.AirportID;
             }
             return result;
         }

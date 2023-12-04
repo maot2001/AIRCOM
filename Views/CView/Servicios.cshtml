@@ -46,7 +46,7 @@
                         @Html.DisplayFor(m=>service.Name)
                     </div>
                     <div>
-                            Aeropuerto: Jose Marti
+                            Aeropuerto: @Html.DisplayFor(m=>service.AirportID)
                     </div>
                     <div>
                         Instalacion #@Html.DisplayFor(m=>service.InstallationID)
@@ -73,14 +73,19 @@
                 </aside>
             </div>
             <div style="display:flex;justify-content:space-between">
-                <form method="post">
-                    <button class="boton">Valorar</button>
+                <form asp-controller="Extra" asp-action="Index">
+                    <input name="code" value="@Html.DisplayFor(m=>service.Code)" hidden>
+                    <button name="page" value="1" class="boton">Valorar</button>
                 </form>
-                <form method="post">
+                <form asp-controller="On_site" asp-action="Create">
+                    <input name="code" value="@Html.DisplayFor(m=>service.Code)" hidden>
+                    <input name="name" value="@Html.DisplayFor(m=>service.Name)" hidden>
+                    <input name="price" value="@Html.DisplayFor(m=>service.Price)" hidden>
                     <button class="goodboton">Solicitar</button>
                 </form>
-                <form method="post">
-                    <button class="boton">Ver reseñas</button>
+                <form asp-controller="Extra" asp-action="Index">
+                    <input name="code" value="@Html.DisplayFor(m=>service.Code)" hidden>
+                    <button name="page" value="2" class="boton">Ver reseñas</button>
                 </form>
             </div>
         </div>

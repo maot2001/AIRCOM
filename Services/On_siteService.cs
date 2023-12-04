@@ -17,6 +17,19 @@ namespace AIRCOM.Services
             _aux = aux;
         }
 
+        public async Task<On_siteDTO> GetOne(int? code, string? Id)
+        {
+            var service = await _context.On_Site.FirstOrDefaultAsync(o => o.Code == code && o.ClientID == int.Parse(Id));
+            return _mapper.Map<On_siteDTO>(service);
+        }
+
+        public async Task<int> GetAir(int? code)
+        {
+            var service = await _context.On_Site.Include(o => o.ServiceInstallation).ThenInclude(si => si.Installation)
+                .SingleOrDefaultAsync(o => o.Code == code);
+            return service.ServiceInstallation.Installation.AirportID;
+        }
+
         public async Task<IEnumerable<On_siteDTO>> Get(string userId)
         {
             var service = await _context.On_Site.Where(s => s.ClientID == int.Parse(userId)).ToListAsync();
@@ -34,11 +47,18 @@ namespace AIRCOM.Services
 
         public async Task Valorate(On_siteDTO service)
         {
-            var on_site = await _context.On_Site.FindAsync(service.ID);
+            var on_site = await _context.On_Site.Include(o => o.ServiceInstallation).SingleOrDefaultAsync(o => o.ID == service.ID);
+            if (on_site.Fecha.ToString().Split()[0] != service.Fecha.ToString().Split()[0])
+                throw new Exception("Usted no recibio un servicio este dia");
+
             on_site.Stars = service.Stars;
             on_site.Comment = service.Comment;
 
-            var serviceDB = await _aux.GetServiceInstallation(_mapper.Map<ServiceInstallationDTO>(service));
+            var serviceDB = await _aux.GetServiceInstallation(_mapper.Map<ServiceInstallationDTO>(on_site.ServiceInstallation));
+            if (serviceDB.Stars is null)
+                serviceDB.Stars = 0;
+            if (serviceDB.Votes is null)
+                serviceDB.Votes = 0;
             var prom = serviceDB.Stars * (float)serviceDB.Votes;
             prom += on_site.Stars;
             serviceDB.Votes++;

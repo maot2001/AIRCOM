@@ -61,18 +61,23 @@
 {
     <div class="calificar">
         <form asp-controller="On_site" asp-action="Valorate">
-            <input name="id" value="@Html.DisplayFor(m=>service.ID)">
+            <input name="id" value="@Html.DisplayFor(m=>service.ID)" hidden>
+            <div>
+                    <strong>Nombre:</strong>
+                        @Html.DisplayFor(m=>service.Name)
+                </div>
+
             <center><h1>Comentar</h1></center>
             <div>
                 <div>
                     <strong>Fecha del servicio:</strong>
-                    <input type="date" name="Fecha" />
+                    <input type="date" name="fecha" />
                 </div>
 
-                @if (check)
+                @if (@ViewBag.check)
                 {
                     <aside class="error">
-                        No se le oferto el servicio en esta fecha
+                        @ViewBag.error
                     </aside>
                 }
                 <div>

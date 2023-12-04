@@ -30,17 +30,26 @@ namespace AIRCOM.Controllers
         {
             var userId = HttpContext.User.FindFirst("Id")?.Value;
             await _service.Create(service, userId);
-            return RedirectToAction(nameof(Get));
+            int page = 2;
+            return RedirectToAction("Index", "CView", new { page = page });
         }
 
         // PUT: On_site
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Valorate(On_siteDTO service)
         {
-            await _service.Valorate(service);
-            return RedirectToAction(nameof(Get));
+            try
+            {
+                int page = 2;
+                await _service.Valorate(service);
+                return RedirectToAction("Index", "CView", new { page = page });
+            }
+            catch (Exception ex)
+            {
+                bool check = true;
+                return RedirectToAction("Index", "Extra", new { check = check, error = ex.Message });
+            }
         }
-
         // ----------------------------------------------------------------------
     }
 }

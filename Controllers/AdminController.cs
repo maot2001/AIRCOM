@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Rotativa.AspNetCore;
+//using Rotativa.AspNetCore;
 
 namespace AIRCOM.Controllers
 {
