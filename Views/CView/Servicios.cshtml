@@ -38,29 +38,30 @@
         <div style="display:block">
             <div style="display:flex">
                 <div>
-                    @Html.DisplayFor(m=>service.Name)
+                    <div>
+                        @Html.DisplayFor(m=>service.Name)
+                    </div>
+                    <div>
+                            Aeropuerto: Jose Marti
+                    </div>
+                    <div>
+                        Instalacion #@Html.DisplayFor(m=>service.InstallationID)
+                    </div>
                 </div>
-                <div>
-                        Aeropuerto: Jose Marti
-                </div>
-                <div>
-                    Instalacion #@Html.DisplayFor(m=>service.InstallationID)
-                </div>
-            </div>
 
-            <aside>
-                <div>
-                    <h3>$@Html.DisplayFor(m=>service.Price)</h3>
-                </div>
-                <div>
-                    @Evaluation(10);
-                </div>
-                <div class="ignorar">
-                    relleno
-                </div>
-            </aside>
-        </div>
-        <div style="display:flex;justify-content:space-between">
+                <aside>
+                    <div>
+                        <h3>$@Html.DisplayFor(m=>service.Price)</h3>
+                    </div>
+                    <div>
+                        @Evaluation(10)
+                    </div>
+                    <div class="ignorar">
+                        relleno
+                    </div>
+                </aside>
+            </div>
+            <div style="display:flex;justify-content:space-between">
                 <form method="post">
                     <button class="boton">Valorar</button>
                 </form>
@@ -71,5 +72,6 @@
                     <button class="boton">Ver reseñas</button>
                 </form>
             </div>
+        </div>
     }
 </div>

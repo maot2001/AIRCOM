@@ -48,28 +48,21 @@
                     </button>
                 </form>
             </div>
-            @if (a)
-            {
-                <center style="flex:2;align-items:center;display:flex;">
-                    <button class="boton">Incluirse</button>
-                </center>
-            }
-            @if (!a)
-            {
-                <form method="post">
-                    <select name="Rol" class="boton">
-                        @foreach (var x in sol)
-                        {
-                            <option value="VIP">Capitan</option>
-                        }
-                    </select>
+            <form method="post" style="display:block;">
+                <center>
                     <div>
-                        <button class="boton" style="background-color:rgb(75,200,75);" type="submit">✔️</button>
-                        <button class="boton" style="background-color:rgb(250,40,60)">✖️</button>
+                        <select name="Rol">      
+                            <option value="VIP">VIP</option>
+                            <option value="Dueño de naves">Dueño de naves</option>
+                            <option value="Patrocinador">Patrocinador</option>
+                            <option value="Empresa de viajes">Empresa de viajes</option>
+                        </select>
                     </div>
-
-                </form>
-            }
+                    <div>
+                        <button class="boton">Incluirse</button>
+                    </div>
+                </center>
+            </form>
         </div>
 
     </section>
