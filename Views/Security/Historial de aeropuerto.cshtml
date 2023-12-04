@@ -24,8 +24,14 @@
         <thead>
             <tr>
                 <th>
+                        <center>
+                            Tipo
+                            <button class="no">🔽</button>
+                        </center>
+                    </th>
+                <th>
                     <center>
-                        Fecha de arribo
+                        Fecha
                         <button class="no">🔽</button>
                     </center>
                 </th>
@@ -44,12 +50,6 @@
                 <th>
                     <center>
                         Estado de la nave
-                        <button class="no">🔽</button>
-                    </center>
-                </th>
-                <th>
-                    <center>
-                        Próximo vuelo
                         <button class="no">🔽</button>
                     </center>
                 </th>
@@ -76,8 +76,16 @@
             @foreach (HistoryDTO hist in ViewBag.historys)
             {
                 <tr>
-                    <td><center>Salida</center></td>
-                    <td><center>@Html.DisplayFor(m=>hist.ArrivalDate)</center></td>
+                    @if (hist.ArrivalDate != null)
+                    {
+                        <td><center>Entrada</center></td>
+                        <td><center>@Html.DisplayFor(m=>hist.ArrivalDate)</center></td>
+                    }
+                    @if (hist.ExitDate != null)
+                    {
+                        <td><center>Salida</center></td>
+                        <td><center>@Html.DisplayFor(m=>hist.ExitDate)</center></td>
+                    }
                     <td><center>@Html.DisplayFor(m=>hist.Plate)</center></td>
                     <td><center>@Html.DisplayFor(m=>hist.OwnerRole)</center></td>
                     <td><center>@Html.DisplayFor(m=>hist.State)</center></td>
