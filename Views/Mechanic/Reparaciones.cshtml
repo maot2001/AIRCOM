@@ -25,11 +25,7 @@
         <div>
             <div>Inicio: @Html.DisplayFor(m=>repair.Init)</div>
             <div>Terminación: @Html.DisplayFor(m=>repair.Finish)</div>
-            <div>Horas previstas: </div>
-            <form asp-controller="RepairShip" asp-action="FinishRepair">
-                    <input name="rsid" value="@Html.DisplayFor(m=>repair.RSID)" hidden>
-                    <button type="submit" style="align-self:end;" class="boton">Terminada</button>
-            </form>
+            <div>Horas previstas: @Html.DisplayFor(m=>repair.Time)</div>
         </div>
 
     </section>

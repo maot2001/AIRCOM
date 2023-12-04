@@ -269,9 +269,9 @@
     @*Cambiar nombre al aeropuerto*@
         <details class="dangerousZone">
             <summary>Cambiar nombre al aeropuerto</summary>
-            <form class="formulario" method="post" name="NombreAeropuerto">
+            <form asp-controller="Airport" asp-action="Edit" class="formulario" method="post" name="NombreAeropuerto">
                 <center>
-                    <input type="text" name="nombre" placeholder="introduzca nuevo nombre" required>
+                    <input type="text" name="name" placeholder="introduzca nuevo nombre" required>
                     <button class="goodboton" type="submit">Cambiar Nombre</button>
                 </center>
             </form>
@@ -304,10 +304,6 @@
                     <tr>
                         <td>Cambiar Contraseña: </td>
                         <td><input type="password" name="pwd"></td>
-                    </tr>
-                    <tr>
-                        <td>Comprobar contraseña: </td>
-                        <td><input type="password" name="pwd2"></td>
                     </tr>
                 </table>
                 @if (ViewBag.lugar_del_error == 9)

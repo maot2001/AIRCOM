@@ -39,7 +39,7 @@ namespace AIRCOM.Services
 
         public async Task Create(ClientDTO client, string userId)
         {
-            await Errors(client);
+            await ErrorsEmail(client);
 
             if (types.Contains(client.Type))
             {
@@ -65,21 +65,15 @@ namespace AIRCOM.Services
             if (types.Contains(client.Type))
             {
                 var worker = await GetWorkerById(client.Email);
-                worker.Name = client.Name;
-                worker.CI = client.CI;
-                worker.Email = client.Email;
-                worker.Nationality = client.Nationality;
                 worker.Type = client.Type;
+                worker.Pwd = client.Pwd;
             }
 
             else
             {
                 var clientDB = await GetClientById(client.Email);
-                clientDB.Name = client.Name;
-                clientDB.CI = client.CI;
-                clientDB.Email = client.Email;
-                clientDB.Nationality = client.Nationality;
                 clientDB.Type = client.Type;
+                clientDB.Pwd = client.Pwd;
             }
 
             await _context.SaveChangesAsync();
@@ -153,6 +147,15 @@ namespace AIRCOM.Services
         }
 
         private async Task Errors(ClientDTO client)
+        {
+            var errors = await _context.Clients.SingleOrDefaultAsync(c => (c.CI == client.CI && c.Nationality == client.Nationality));
+            var errors2 = await _context.Workers.SingleOrDefaultAsync(w => (w.CI == client.CI && w.Nationality == client.Nationality));
+
+            if (errors is not null || errors2 is not null)
+                throw new Exception("Credenciales existentes");
+        }
+
+        private async Task ErrorsEmail(ClientDTO client)
         {
             var errors = await _context.Clients.SingleOrDefaultAsync(c => (c.CI == client.CI && c.Nationality == client.Nationality) || c.Email == client.Email);
             var errors2 = await _context.Workers.SingleOrDefaultAsync(w => (w.CI == client.CI && w.Nationality == client.Nationality) || w.Email == client.Email);

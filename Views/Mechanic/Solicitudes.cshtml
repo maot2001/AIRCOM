@@ -28,6 +28,7 @@
             <div>
                 <form asp-controller="RepairShip" asp-action="ProcessRepair">
                     <input name="rsid" value="@Html.DisplayFor(m=>repair.RSID)" hidden>
+                    <input name="plate" value="@Html.DisplayFor(m=>repair.Plate)" hidden>
                     <div>
                         Cantidad de horas:
                         <input type="number" name="time" min="0" style="width:20%;">

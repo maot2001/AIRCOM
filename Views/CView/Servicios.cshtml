@@ -11,6 +11,10 @@
         return cal;
 
     }
+    string GetId(ServiceInstallationDTO service)
+    {
+        return service.Code + '\0' + service.InstallationID + '\0' + service.Name + '\0' + service.Price;
+    }
 }
 
 <header>
@@ -28,14 +32,14 @@
             <button class="active" type="submit" name="page" value="2"><h2>Servicios Ofertados</h2></button>
         </div>
     </form>
-    <aside><input type="text" placeholder="🔍buscar"></aside>
+    <aside><input type="text" id="search" placeholder="🔍buscar" oninput="filter()"></aside>
 </nav>
 
 @*Muestra los servicios de todos los aeropuertos*@
 <div class="ofertas" style="text-align:left">
     @foreach (ServiceInstallationDTO service in ViewBag.services)
     {
-        <div style="display:block">
+        <div style="display:block" id=@GetId(service)>
             <div style="display:flex">
                 <div>
                     <div>

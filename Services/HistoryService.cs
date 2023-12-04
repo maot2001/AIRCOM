@@ -76,7 +76,7 @@ namespace AIRCOM.Services
         {
             var historyBD = await _context.Historys.SingleOrDefaultAsync(h => h.ID == id);
             if (historyBD is null)
-                throw new Exception();
+                throw new Exception("Este vuelo no existe");
             return historyBD;
         }
 
@@ -84,13 +84,13 @@ namespace AIRCOM.Services
         {
             var ship = await _context.Shipss.FindAsync(history.Plate);
             if (ship is null)
-                throw new Exception();
+                throw new Exception("La nave no existe");
 
             var fly = await _context.Historys.SingleOrDefaultAsync(h => h.Plate == history.Plate && 
                 ((h.ArrivalDate.Value.Year == DateTime.Now.Year && h.ArrivalDate.Value.DayOfYear == DateTime.Now.DayOfYear && h.ArrivalID == int.Parse(userId)) || 
                 (h.ExitDate.Value.Year == history.ExitDate.Value.Year && h.ExitDate.Value.DayOfYear == history.ExitDate.Value.DayOfYear && h.ExitID == int.Parse(userId))));
             if (fly is not null)
-                throw new Exception();
+                throw new Exception("Esta nave ya está en el aeropuerto");
             
             ship.State = history.State;
             if (ship.NextFly is null)

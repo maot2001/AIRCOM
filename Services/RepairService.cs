@@ -66,7 +66,7 @@ namespace AIRCOM.Services
                 }
             }
 
-            await Waterfall(repairDB, !money);
+            await Waterfall(repairDB, !money && all);
             await _context.SaveChangesAsync();
         }
 

@@ -3,6 +3,7 @@ using AIRCOM.Models.DTO;
 using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIRCOM.Controllers
 {
@@ -42,10 +43,24 @@ namespace AIRCOM.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(HistoryDTO history)
         {
-            var userId = HttpContext.User.FindFirst("Airport")?.Value;
-            await _service.Create(history, userId);
-            return RedirectToAction("Index", "Security");
+            try
+            {
+                var userId = HttpContext.User.FindFirst("Airport")?.Value;
+                await _service.Create(history, userId);
+                return RedirectToAction("Index", "Security");
+            }
+            catch (DbUpdateException ex)
+            {
+                int lugar_del_error = 8;
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = "Error al insertar valores repetidos" });
+            }
+            catch (Exception ex)
+            {
+                int lugar_del_error = 8;
+                return RedirectToAction("Index", "Security", new { lugar_del_error = lugar_del_error, error = ex.Message });
+            }
         }
+            
         /*
         // PUT: History
         //[Authorize(Policy = "Security")]

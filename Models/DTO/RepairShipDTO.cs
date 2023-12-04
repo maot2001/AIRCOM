@@ -6,6 +6,7 @@
         public string Name { get; set; }
         public int RepairInstallationID { get; set; }
         public string Plate { get; set; }
+        public int Time { get; set; }
         public DateTime? Init { get; set; }
         public DateTime? Finish { get; set; }
         public string State { get; set; }

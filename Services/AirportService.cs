@@ -34,16 +34,14 @@ namespace AIRCOM.Services
             return airp.AirportID;
         }
 
-        /*public async Task Edit(AirportDTO airport)
+        public async Task Edit(AirportDTO airport, string userId)
         {
-            var airportDB = await GetAirportById(airport.AirportID);
+            var airportDB = await _context.Airports.FindAsync(int.Parse(userId));
 
             airportDB.Name = airport.Name;
-            airportDB.Coordinates = airport.Coordinates;
-            airportDB.Direction = airport.Direction;
 
             await _context.SaveChangesAsync();
-        }*/
+        }
 
         public async Task Delete(string name, bool all)
         {
@@ -73,7 +71,7 @@ namespace AIRCOM.Services
                 }
             }
 
-            await Waterfall(airportDB, !money);
+            await Waterfall(airportDB, !money && all);
             await _context.SaveChangesAsync();
         }
 

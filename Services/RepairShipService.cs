@@ -23,18 +23,24 @@ namespace AIRCOM.Services
             {
                 case 0:
                     repairs = await _context.RepairShips
+                        .Include(rs => rs.RepairInstallation).ThenInclude(ri => ri.Installation)
                         .Where(SR => SR.Init == null && SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 1:
                     repairs = await _context.RepairShips
-                        .Where(SR => SR.Finish == null && SR.Init != null && SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                        .Include(rs => rs.RepairInstallation).ThenInclude(ri => ri.Installation)
+                        .Where(SR => SR.Finish > DateTime.Now && SR.Init != null && SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 case 2:
                     repairs = await _context.RepairShips
-                        .Where(SR => SR.Finish != null && SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                        .Include(rs => rs.RepairInstallation).ThenInclude(ri => ri.Installation)
+                        .Where(SR => SR.Finish <= DateTime.Now && SR.Init != null && SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
+                    foreach (RepairShip repair in repairs)
+                        await FinishRepair(_mapper.Map<RepairShipDTO>(repair));
                     break;
                 case 3:
                     repairs = await _context.RepairShips
+                        .Include(rs => rs.RepairInstallation).ThenInclude(ri => ri.Installation)
                         .Where(SR => SR.RepairInstallation.Installation.AirportID == int.Parse(userId)).ToListAsync();
                     break;
                 default:
@@ -66,11 +72,13 @@ namespace AIRCOM.Services
         {
             var shipRepair = await _context.RepairShips.FindAsync(repair.RSID);
             shipRepair.Init = DateTime.Now;
+            shipRepair.Finish = repair.Finish;
+            shipRepair.Time = repair.Time;
             var ship = await _context.Shipss.FindAsync(repair.Plate);
 
-            if (shipRepair.Finish.Value.Year > ship.NextFly.Value.Year)
+            if (ship.NextFly is not null && shipRepair.Finish.Value.Year > ship.NextFly.Value.Year)
                 shipRepair.Eficient = false;
-            if (shipRepair.Finish.Value.Year == ship.NextFly.Value.Year && shipRepair.Finish.Value.DayOfYear > ship.NextFly.Value.DayOfYear)
+            if (ship.NextFly is not null && shipRepair.Finish.Value.Year == ship.NextFly.Value.Year && shipRepair.Finish.Value.DayOfYear > ship.NextFly.Value.DayOfYear)
                 shipRepair.Eficient = false;
 
             await _context.SaveChangesAsync();
@@ -78,26 +86,26 @@ namespace AIRCOM.Services
 
         public async Task FinishRepair(RepairShipDTO repair)
         {
+            if (repair.Time == 0)
+                return;
+            
             var shipRepair = await _context.RepairShips
                 .Include(rs => rs.Ships).ThenInclude(s => s.Reports)
                 .SingleOrDefaultAsync(rs => rs.RSID == repair.RSID);
-            shipRepair.Finish = DateTime.Now;
             
-            TimeSpan? time = shipRepair.Finish - shipRepair.Init;
-            float cost = shipRepair.Price * (float) time?.TotalHours;
-
             float val = 1;
             if (shipRepair.Ships.Reports.Count == 1)
-                val += 0.01f * (float)time?.TotalHours;
-            if (shipRepair.Ships.NextFly > shipRepair.Init && shipRepair.Ships.NextFly < shipRepair.Finish)
+                val += 0.01f * (float) shipRepair.Time;
+            if (shipRepair.Ships.NextFly > shipRepair.Init && shipRepair.Ships.NextFly.Value.Year <= shipRepair.Finish.Value.Year
+                && shipRepair.Ships.NextFly.Value.DayOfYear < shipRepair.Finish.Value.DayOfYear)
             {
-                TimeSpan? time2 = shipRepair.Finish - shipRepair.Ships.NextFly;
-                val -= 0.01f * (float)(time2?.TotalHours);
+                val -= 0.01f * (float) shipRepair.Time;
             }
             else if (shipRepair.Ships.NextFly < shipRepair.Init)
                 shipRepair.Ships.NextFly = null;
 
-            shipRepair.Price = cost * val;
+            shipRepair.Price = (shipRepair.Price * shipRepair.Time) * val;
+            shipRepair.Time = 0;
             await _context.SaveChangesAsync();
         }
 

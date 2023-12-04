@@ -67,11 +67,7 @@ namespace AIRCOM.Services
             if (ship.ClientID != 0)
                 await Errors(ship.ClientID);
 
-            shipBD.Model = ship.Model;
-            shipBD.Capacity = ship.Capacity;
-            shipBD.Crew = ship.Crew;
             shipBD.ClientID = ship.ClientID;
-            shipBD.State = ship.State;
 
             await _context.SaveChangesAsync();
         }
