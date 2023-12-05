@@ -58,13 +58,21 @@ namespace AIRCOM.Controllers
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> ChangePage(string page)
         {
-            var a = await _aux2.GetPoint1();
-            ViewData["Nombre_posición"] = a;
-            ViewData["cant_reps"] = await _aux2.GetPoint2();
-            ViewData["capitán_Aero"] = await _aux2.GetPoint3();
-            ViewData["punto4"] = await _aux2.GetPoint4();
-            ViewData["punto5"] = await _aux2.GetPoint5();
-            return View("Estadisticas");
+            if(page == "2")
+            {
+                var a = await _aux2.GetPoint1();
+                ViewData["Nombre_posición"] = a;
+                ViewData["cant_reps"] = await _aux2.GetPoint2();
+                ViewData["capitán_Aero"] = await _aux2.GetPoint3();
+                ViewData["punto4"] = await _aux2.GetPoint4();
+                ViewData["punto5"] = await _aux2.GetPoint5();
+                return View("Estadisticas");
+            }
+            else
+            {
+                ViewData["repairs"] = await _aux.Get();
+                return View("Ver Entidades");
+            }
         }
 
         private string GenerateToken()

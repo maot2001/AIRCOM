@@ -16,9 +16,17 @@
         <p style="color:white;">____</p>
         <form asp-action="ChangePage">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input value="3" name="page" hidden />
+            <button name="pagina" value="3" class="pasive" type="submit"><h2>Ver Entidades</h2></button>
+        </form>
+        <p style="color:white;">____</p>
+        <form asp-action="ChangePage">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input value="2" name="page" hidden />
             <button name="pagina" value="2" class="pasive" type="submit"><h2>Ver estadísticas</h2></button>
         </form>
     </div>
+    <form asp-action="Logout"><button class="badboton">📴</button></form>
 </nav>
 
 
@@ -46,8 +54,12 @@
 
                     <tr class="form-group">
                         <td>Coordenadas geográficas: </td>
-                        <td>
-                            <input name="Coordinates" class="form-control" placeholder="introduzca coordenadas" required />
+                        <td style="display:flex;">
+                            (
+                            <input type="number" step="0.1" name="Coordinate1" class="form-control" placeholder="latitud" required />
+                            <input type="number" step="0.1" name="Coordinate2" class="form-control" placeholder="longitud" required />
+                            )
+                        </td>
                     </tr>
 
                     <tr class="form-group">
@@ -121,71 +133,26 @@
         <center>
             <form asp-controller="Repair" asp-action="Create" class="formulario">
                 <div><input name="name" placeholder="Introducir nombre" required /></div>
-                <div><textarea name="description" placeholder="Introducir descripcion" required></textarea></div>
+                <div><textarea name="description" placeholder="Introducir descripción" required></textarea></div>
                 @*Si el nombre existe, se edita la descripcion, sino se crea la reparacion*@
                 <div><button class="boton" type="submit">Enviar</button></div>
             </form>
         </center>
     </details>
 
-    @*Tercer formulario: Añadir Dependencia de reparación*@
-    <details @open[1]>
-        <summary>Añadir Dependencia de reparación</summary>
-        <center>
-            <form asp-controller="Depend" asp-action="Create" class="formulario" name="dependencia" method="post">
-                <table>
-                    <tr>
-                        <td>Dependiente: </td>
-                        <td>
-                            <select name="dependiente" asp-items="ViewBag.repairs" name="primaryid">
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        @*Estos son los unicos posibles estados de una nave*@
-                        <td>Estado necesario: </td>
-                        <td>
-                            <select name="state">
-                                <option value="Óptimo">Óptimo</option>
-                                <option value="Bien">Bien</option>
-                                <option value="Regular">Regular</option>
-                                <option value="Mal">Mal</option>
-                                <option value="Pésimo">Pésimo</option>
-
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Dependencia: </td>
-                        <td>
-                            <select name="Dependencia" asp-items="ViewBag.repairs" name="secondid">
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-                @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
-                @if (ViewBag.lugar_del_error == 3)
-                {
-                    <aside class="error">
-                        @ViewBag.error
-                    </aside>
-                }
-                <button class="boton" type="submit">Enviar</button>
-            </form>
-        </center>
-    </details>
-
-    <center><h1>Region peligrosa, proceda con cuidado</h1></center>
+    <center><h1>Región peligrosa, proceda con cuidado</h1></center>
 
     @*Cuarto Formulario: Eliminar Aeropuerto*@
     <details class="dangerousZone" @open[2]>
         <summary>Eliminar aeropuerto</summary>
         <center>
             <form asp-controller="Airport" asp-action="Delete" class="formulario">
-                Nombre del aeorpuerto
-                <input type="text" name="Name" placeholder="Introduzca nombre" required>
+                Nombre antiguo del aeorpuerto
+                <select>
+                    <option>Jose Marti</option>
+                </select>
                 <div class="error">
-                    Nota*: Al desactivar un aeropuerto se mantiene su informacion asociada como el historial en la base de datos
+                    Nota*: Al desactivar un aeropuerto se mantiene su información asociada como el historial en la base de datos
                     Al eliminar se elimina tambien todo rastro de este en la base de datos
                 </div>
                 @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
@@ -211,7 +178,7 @@
                 Nombre
                 <input type="text" name="Name" placeholder="Introduzca nombre" required>
                 <div class="error">
-                    Nota*: Al desactivar un aeropuerto se mantiene su informacion asociada como el historial en la base de datos
+                    Nota*: Al desactivar una reparación se mantiene su información asociada como el historial en la base de datos
                     Al eliminar se elimina tambien todo rastro de este en la base de datos
                 </div>
                 @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
@@ -229,53 +196,6 @@
         </center>
     </details>
 
-
-    @*Sexto formulario: Eliminar Dependencia de reparación*@
-    <details class="dangerousZone" @open[4]>
-        <summary>Eliminar Dependencia de reparación</summary>
-        <center>
-            <form asp-controller="Depend" asp-action="Delete" class="formulario" name="dependencia" method="post">
-                <table>
-                    <tr>
-                        <td>Dependiente: </td>
-                        <td>
-                            <select name="dependiente" asp-items="ViewBag.repairs" name="primaryid">
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        @*Estos son los unicos posibles estados de una nave*@
-                        <td>Estado necesario: </td>
-                        <td>
-                            <select name="state">
-                                <option value="Óptimo">Óptimo</option>
-                                <option value="Bien">Bien</option>
-                                <option value="Regular">Regular</option>
-                                <option value="Mal">Mal</option>
-                                <option value="Pésimo">Pésimo</option>
-
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Dependencia: </td>
-                        <td>
-                            <select name="Dependencia" asp-items="ViewBag.repairs" name="secondid">
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-                @*Aqui va un mensaje de error si lo hay. a y error deben ser cambiados por atributos que se pasen*@
-                @if (ViewBag.lugar_del_error == 6)
-                {
-                    <aside class="error">
-                        @ViewBag.error
-                    </aside>
-                }
-                <button class="badboton" type="submit">Eliminar</button>
-            </form>
-        </center>
-    </details>
 </section>
 
 @section Scripts{

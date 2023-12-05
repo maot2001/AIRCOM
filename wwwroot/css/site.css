@@ -203,6 +203,15 @@ section > details {
     box-shadow: none;
 }
 
+.navegacion .badboton {
+    background-color: rgb(175, 10, 10);
+    color: white;
+    border: solid rgb(0, 0, 0) 2px;
+    box-shadow: 2px 2px 5px grey;
+    align-self: center;
+    outline:solid 1px black;
+}
+
 .navegacion div {
     border-bottom: solid rgb(0,0,100) 2px;
     padding: 0%;

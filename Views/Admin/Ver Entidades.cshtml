@@ -1,0 +1,78 @@
+﻿@{
+    int[] sol = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+}
+
+<header style="background:darkred;">
+    AIRCOM ADMIN
+</header>
+
+<nav class="navegacion">
+    <div>
+        <form asp-action="Init">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <button name="pagina" value="3" class="pasive" type="submit"><h2>Administrar</h2></button>
+        </form>
+        <p style="color:white;">____</p>
+        <form asp-action="ChangePage">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input value="3" name="page" hidden />
+            <button name="pagina" value="3" class="active" type="submit"><h2>Ver Entidades</h2></button>
+        </form>
+        <p style="color:white;">____</p>
+        <form asp-action="ChangePage">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input value="2" name="page" hidden />
+            <button name="pagina" value="2" class="pasive" type="submit"><h2>Ver estadísticas</h2></button>
+        </form>
+    </div>
+    <form asp-action="Logout"><button class="badboton">📴</button></form>
+</nav>
+
+<section>
+    <details>
+        <summary>VerAeropuertos</summary>
+        <center style="font-size:large;">
+            <table>
+                <tr class="form-group">
+                    <th>Nombre</th>
+                    <th>Coordenadas</th>
+                    <th>Dirección</th>
+                </tr>
+                @foreach(var a in "aaaa")
+                {
+                    <tr class="form-group">
+                        <td>Jose Marti</td>
+                        <td>Coordenadas</td>
+                        <td>Direccion</td>
+                    </tr>
+                }
+            </table>
+        </center>
+    </details>
+    @*----------------------------------------*@
+    <details>
+        <center style="font-size:large;">
+            <table>
+                <tr class="form-group">
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                </tr class="form-group">
+                @foreach (var a in ViewBag.repairs)
+                {
+                    <tr>
+                        <td>@a.Name</td>
+                        <td>@a.Description</td>
+                    </tr>
+                }
+            </table>
+        </center>
+    </details>
+    @*----------------------------------------*@
+    
+</section>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
