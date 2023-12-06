@@ -14,7 +14,7 @@
             <div><button class="no" type="submit" name="page" value="2">✈️</button></div>
             <div><button class="no" type="submit" name="page" value="3">👨‍💼</button></div>
             <div><button class="no" type="submit" name="page" value="4">➕</button></div>
-            <button class="badboton">📴</button>
+            <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
         </div>
     </form>
 </nav>
@@ -24,31 +24,31 @@
     <table>
         <thead>
             <tr>
-                <th>
+                <th onclick="sortTable(0, 'str')">
                         <center>
                             Tipo
                             <button class="no">🔽</button>
                         </center>
                     </th>
-                <th>
+                <th onclick="sortTable(1, 'str')">
                     <center>
                         Fecha
                         <button class="no">🔽</button>
                     </center>
                 </th>
-                <th>
+                <th onclick="sortTable(2, 'str')">
                     <center>
                         Matrícula
                         <button class="no">🔽</button>
                     </center>
                 </th>
-                <th>
+                <th onclick="sortTable(3, 'str')">
                     <center>
                         Rol del Dueño
                         <button class="no">🔽</button>
                     </center>
                 </th>
-                <th>
+                <th onclick="sortTable(4, 'str')">
                     <center>
                         Estado de la nave
                         <button class="no">🔽</button>

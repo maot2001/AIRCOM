@@ -25,7 +25,7 @@
             <button name="pagina" value="2" class="pasive" type="submit"><h2>Ver estadísticas</h2></button>
         </form>
     </div>
-    <form asp-action="Logout"><button class="badboton">📴</button></form>
+    <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
 </nav>
 
 <section>
@@ -34,9 +34,9 @@
         <center style="font-size:large;">
             <table>
                 <tr class="form-group">
-                    <th>Nombre</th>
-                    <th>Coordenadas</th>
-                    <th>Dirección</th>
+                    <th onclick="sortTable(0, 'str')">Nombre</th>
+                    <th onclick="sortTable(1, 'str')">Coordenadas</th>
+                    <th onclick="sortTable(2, 'str')">Dirección</th>
                 </tr>
                 @foreach(var a in "aaaa")
                 {
@@ -54,8 +54,8 @@
         <center style="font-size:large;">
             <table>
                 <tr class="form-group">
-                    <th>Nombre</th>
-                    <th>Descripción</th>
+                    <th onclick="sortTable(0, 'str')">Nombre</th>
+                    <th onclick="sortTable(1, 'str')">Descripción</th>
                 </tr class="form-group">
                 @foreach (var a in ViewBag.repairs)
                 {
