@@ -133,6 +133,8 @@ nav {
 
     .dataToShow form {
         display: flex;
+        flex-wrap:wrap;
+        align-items:center;
     }
 
     .dataToShow div {

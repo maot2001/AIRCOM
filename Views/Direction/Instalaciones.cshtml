@@ -17,6 +17,7 @@
     </form>
     <aside>
         <button class="no" onclick="show()">➕</button>
+        <button class="badboton">📴</button>
     </aside>
 </nav>
 
@@ -32,7 +33,7 @@
                 <div>
                     <div>
                         <div>
-                            <h5>Id:</h5>
+                            <h5>Número de la instalación:</h5>
                             <input type="number" name="installationid" />
                         </div>
                     </div>
@@ -96,10 +97,10 @@
                 <form method="post" id=@("a"+@inst.ID.ToString()) style="display:none">
                         <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
                     <div>
-                        <strong>Nombre:</strong> <input name="name">
+                        <strong>Nombre:</strong> <input name="name" value=@Html.DisplayFor(m=>inst.Name)>
                     </div>
                     <div>
-                        <strong>Tipo:</strong> <input name="type">
+                        <strong>Tipo:</strong> <input name="type" value=@Html.DisplayFor(m=>inst.Type)>
                     </div>
                     <center>
                         <button asp-controller="Installation" asp-action="Edit" class="goodboton" type="submit">Enviar</button>

@@ -22,6 +22,9 @@
             <button class="pasive" type="submit" name="page" value="2"><h2>Servicios Ofertados</h2></button>
         </div>
     </form>
+    <aside>
+        <button class="badboton">📴</button>
+    </aside>
 </nav>
 
 @*Muestreo de las naves que pertenecen al usuario*@
@@ -29,7 +32,7 @@
 {
     <section class="dataToShow" id=@GetId(ship)>
         <div style="display: flex;">
-            <div>Matricula: @Html.DisplayFor(m=>ship.Plate)</div>
+            <div>Matrícula: @Html.DisplayFor(m=>ship.Plate)</div>
             <div>Estado: @Html.DisplayFor(m=>ship.State)</div>
         </div>
         <div class="tag">

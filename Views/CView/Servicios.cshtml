@@ -32,7 +32,10 @@
             <button class="active" type="submit" name="page" value="2"><h2>Servicios Ofertados</h2></button>
         </div>
     </form>
-    <aside><input type="text" id="search" placeholder="🔍buscar" oninput="filter()"></aside>
+    <aside>
+        <input type="text" id="search" placeholder="🔍buscar" oninput="filter()">
+        <button class="badboton">📴</button>
+    </aside>
 </nav>
 
 @*Muestra los servicios de todos los aeropuertos*@
@@ -40,7 +43,7 @@
     @foreach (ServiceInstallationDTO service in ViewBag.services)
     {
         <div style="display:block" id=@GetId(service)>
-            <div style="display:flex">
+            <div style="display:flex; justify-content:space-between">
                 <div>
                     <div>
                         @Html.DisplayFor(m=>service.Name)
@@ -49,7 +52,7 @@
                             Aeropuerto: @Html.DisplayFor(m=>service.AirportID)
                     </div>
                     <div>
-                        Instalacion #@Html.DisplayFor(m=>service.InstallationID)
+                        Instalación #@Html.DisplayFor(m=>service.InstallationID)
                     </div>
                 </div>
 
@@ -57,16 +60,14 @@
                     <div>
                         <h3>$@Html.DisplayFor(m=>service.Price)</h3>
                     </div>
-                    <div>
-                        @if (service.Stars is null)
-                        {
-                            <p>no hay reseñas</p>
-                        }
-                        @if (service.Stars is not null)
-                        {
-                            @Evaluation((int)service.Stars)
-                        }
-                    </div>
+                    @if (service.Stars is null)
+                    {
+                        <div>sin reseñas</div>
+                    }
+                    @if (service.Stars is not null)
+                    {
+                        <div>@Evaluation((int)service.Stars)</div>
+                    }
                     <div class="ignorar">
                         relleno
                     </div>

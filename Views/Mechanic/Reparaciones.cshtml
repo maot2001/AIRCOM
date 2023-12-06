@@ -9,6 +9,7 @@
             <div><button class="no" type="submit" name="page" value="1">❗</button></div>
             <div><button class="yes" type="submit" name="page" value="2">🛠️</button></div>
             <div><button class="no" type="submit" name="page" value="3">✉️</button></div>
+            <button class="badboton">📴</button>
         </div>
     </form>
 </nav>
@@ -18,9 +19,9 @@
 {
     <section class="dataToShow">
         <div style="display: flex;">
-            <div>Matricula: @Html.DisplayFor(m=>repair.Plate)</div>
+            <div>Matrícula: @Html.DisplayFor(m=>repair.Plate)</div>
             <div>Estado: @Html.DisplayFor(m=>repair.State)</div>
-            <div>tipo: @Html.DisplayFor(m=>repair.Name)</div>
+            <div>Tipo: @Html.DisplayFor(m=>repair.Name)</div>
         </div>
         <div>
             <div>Inicio: @Html.DisplayFor(m=>repair.Init.ToString().Split()[0])</div>
