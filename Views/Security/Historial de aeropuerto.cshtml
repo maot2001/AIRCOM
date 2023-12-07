@@ -54,6 +54,11 @@
                         <button class="no">🔽</button>
                     </center>
                 </th>
+                <th>
+                    <center>
+                        Editar
+                    </center>
+                </th>
             </tr>
             <tr>
                 <td>
@@ -71,6 +76,7 @@
                 <td>
                     <input type="text" placeholder="🔍filtrar">
                 </td>
+                <td></td>
             </tr>
         </thead>
         <tbody>
@@ -90,6 +96,8 @@
                     <td><center>@Html.DisplayFor(m=>hist.Plate)</center></td>
                     <td><center>@Html.DisplayFor(m=>hist.OwnerRole)</center></td>
                     <td><center>@Html.DisplayFor(m=>hist.Ships.State)</center></td>
+
+                    <td><center>⚙️</center></td>
                 </tr>
             }
         </tbody>
