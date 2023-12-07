@@ -21,15 +21,17 @@ namespace AIRCOM.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(bool deleteCookie = false)
         {
+            if (deleteCookie)
+                HttpContext.Response.Cookies.Delete("UserData");
             ViewData["check"] = false;
             ViewData["error"] = "";
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(Register client)
+        public async Task<IActionResult> Login(Register client)
         {
             try
             {
