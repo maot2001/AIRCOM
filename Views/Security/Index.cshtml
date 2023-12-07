@@ -146,7 +146,7 @@
                         <td><input type="text" name="state" value="Óptimo" hidden></td>
                     </tr>
                     <tr>
-                        <td>Matricula: </td>
+                        <td>Matrícula: </td>
                         <td><input type="text" name="plate" placeholder="Introduzca Matrícula" required></td>
                     </tr>
                     <tr>
@@ -162,8 +162,8 @@
                         <td><input type="number" name="crew" min="0" placeholder="Introduzca Capacidad" required></td>
                     </tr>
                     <tr>
-                        <td>Cantidad de tripulacion: </td>
-                        <td><input type="number" name="capacity" placeholder="Introduzca Tripulacion" min="0" required></td>
+                        <td>Cantidad de tripulación: </td>
+                        <td><input type="number" name="capacity" placeholder="Introduzca Tripulación" min="0" required></td>
                     </tr>
                     <tr>
                         <td>Cantidad de pasajeros: </td>
@@ -222,7 +222,7 @@
             <form asp-controller="History" asp-action="Create" class="formulario">
                 <table>
                     <tr>
-                        <td>Matricula: </td>
+                        <td>Matrícula: </td>
                         <td><input type="text" name="plate" placeholder="Introduzca Matrícula" required></td>
                     </tr>
                     <tr>
@@ -230,7 +230,7 @@
                         <td>
                             <select name="ownerRole">
                                 <option>Ninguno</option>
-                                <option>Capitan</option>
+                                <option>Capitán</option>
                                 <option>Pasajero</option>
                                 <option>Copiloto</option>
                             </select>
@@ -249,7 +249,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Proximo vuelo: </td>
+                        <td>Próximo vuelo: </td>
                         <td><input type="date" name="exitDate" required
                                        min="@DateTime.Now.Date.ToString().Split().First()"></td>
                     </tr>
@@ -289,20 +289,6 @@
                         <td><input name="email"></td>
                     </tr>
                     <tr>
-                            <td>Cambiar tipo: </td>
-                            <td>
-                                <select name="type">
-                                    <option>VIP</option>
-                                    <option>Dueño de naves</option>
-                                    <option>Patrocinador</option>
-                                    <option>Empresa de viajes</option>
-                                    <option>Seguridad</option>
-                                    <option>Direccion</option>
-                                    <option>Mecanico</option>
-                                </select>
-                            </td>
-                        </tr>
-                    <tr>
                         <td>Cambiar Contraseña: </td>
                         <td><input type="password" name="pwd"></td>
                     </tr>
@@ -327,7 +313,7 @@
                 <center>
                     <table>
                         <tr>
-                            <td>Matricula: </td>
+                            <td>Matrícula: </td>
                             <td><input type="text" name="plate" placeholder="Introduzca Matrícula" required></td>
                         </tr>
                         <tr>

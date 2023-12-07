@@ -82,7 +82,7 @@
         <tbody>
             @foreach (HistoryDTO hist in ViewBag.historys)
             {
-                <tr>
+                <tr id=@hist.ID>
                     @if (hist.ArrivalDate != null)
                     {
                         <td><center>Entrada</center></td>
@@ -97,7 +97,57 @@
                     <td><center>@Html.DisplayFor(m=>hist.OwnerRole)</center></td>
                     <td><center>@Html.DisplayFor(m=>hist.Ships.State)</center></td>
 
-                    <td><center>⚙️</center></td>
+                    <td onclick="swap(@hist.ID,true,'table-row')"><center>⚙️</center></td>
+                </tr>
+                <tr id=@("a"+hist.ID) style="display:none">
+                    <form>
+                        <td><center>
+
+                            <select name="InOrOut">
+                                @if (hist.ArrivalDate != null)
+                                {
+                                    <option><center>Entrada</center></option>
+                                    <option><center>Salida</center></option>
+                                }
+                                @if (hist.ExitDate != null)
+                                {
+                                    <option><center>Entrada</center></option>
+                                    <option><center>Salida</center></option>
+                                }
+                            </select>
+                        </center></td>
+                        <td><center><input type="date" name="date"/></center></td>
+                        <td><center><input type="text" name="Plate" value="@Html.DisplayFor(m=>hist.Plate)" /></center></td>
+                        <td><center>
+                            <select name="OwnerRole">
+                                @{
+                                    string[] Roles = {"","Capitán","Pasajero","Copiloto"};
+                                }
+                                @foreach(var k in Roles)
+                                {
+                                    <option value=@k>@k</option>
+                                }
+                            </select>
+                        </center></td>
+                        <td><center>
+                            <select name="State">
+                                <option value=@hist.Ships.State>@hist.Ships.State</option>
+                                @{
+                                    string[] states = new string[] { "Óptimo", "Bien", "Regular", "Mal", "Pésimo" };
+                                }
+                                @foreach(var k in states.Where(a=>a!=hist.Ships.State) )
+                                {
+                                    <option value=@k>@k</option>
+                                }
+                                </select>
+                        </center></td>
+                        <td>
+                            <center>
+                                <button type="submit" class="goodboton">✔️</button>
+                                <button type="button" class="badboton" onclick="swap(@hist.ID,false,'table-row')">✖️</button>
+                            </center>
+                        </td>
+                    </form>
                 </tr>
             }
         </tbody>

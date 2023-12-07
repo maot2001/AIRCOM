@@ -76,14 +76,46 @@
         </tr>
         @foreach (ClientDTO client in ViewBag.clients)
         {
-            <tr>
-                <td>@Html.DisplayFor(m=>client.Rol)</td>
-                <td>@Html.DisplayFor(m=>client.CI)</td>
-                <td>@Html.DisplayFor(m=>client.Name)</td>
-                <td>@Html.DisplayFor(m=>client.Nationality)</td>
-                <td>@Html.DisplayFor(m=>client.Type)</td>
-                <td>⚙️</td>
-            </tr>
+                <tr id=@client.ClientID>
+                    <td>@Html.DisplayFor(m=>client.Rol)</td>
+                    <td>@Html.DisplayFor(m=>client.CI)</td>
+                    <td>@Html.DisplayFor(m=>client.Name)</td>
+                    <td>@Html.DisplayFor(m=>client.Nationality)</td>
+                    <td>@Html.DisplayFor(m=>client.Type)</td>
+                    <td onclick="swap(@client.ClientID,true,'table-row')">⚙️</td>
+                </tr>
+                <tr style="display:none;" id=@("a"+client.ClientID)>
+                    <form>
+                        <td>@Html.DisplayFor(m=>client.Rol)</td>
+                        <td><input name="CI" type="text" value=@Html.DisplayFor(m=>client.CI)></td>
+                        <td><input name="name" type="text" value=@Html.DisplayFor(m=>client.Name)></td>
+                        <td><input name="Nationality" type="text" value=@Html.DisplayFor(m=>client.Nationality)></td>
+                        <td>
+                            <select name="Rol">
+                                <option value=@Html.DisplayFor(m=>client.Type)>@Html.DisplayFor(m=>client.Type)</option>
+                                @{
+                                    string[] posiblesValores;
+                                    if (client.Rol=="Cliente")
+                                    {
+                                        posiblesValores = new string[]{"VIP","Dueño de naves","Patrocinador","Empresa de viajes"};
+                                    }
+                                    else
+                                    {
+                                        posiblesValores = new string[] { "Seguridad", "Dirección", "Mecánico"};
+                                    }
+                                }
+                                @foreach (var k in posiblesValores.Where(a => a != client.Type))
+                                {
+                                    <option value=@k>@k</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="goodboton">✔️</button>
+                            <button type="button" class="badboton" onclick="swap(@client.ClientID,false,'table-row')">✖️</button>
+                        </td>
+                    </form>
+                </tr>
         }
     </table>
 

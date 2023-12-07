@@ -25,7 +25,9 @@
             <button name="pagina" value="2" class="pasive" type="submit"><h2>Ver estadísticas</h2></button>
         </form>
     </div>
-    <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
+    <form>
+        <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
+    </form>
 </nav>
 
 <section>
@@ -51,6 +53,7 @@
     </details>
     @*----------------------------------------*@
     <details>
+        <summary>Reparaciones</summary>
         <center style="font-size:large;">
             <table>
                 <tr class="form-group">

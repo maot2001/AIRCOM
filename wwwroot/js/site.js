@@ -11,13 +11,13 @@ function show() {
     document.getElementById('add').style.display = 'block';
 }
 
-function swap(id, ElBoleano) {
+function swap(id, ElBoleano, tipo="block") {
     if (ElBoleano) {
         document.getElementById(id).style.display = 'none';
-        document.getElementById("a" + id).style.display = 'block';
+        document.getElementById("a" + id).style.display = tipo;
     }
     else {
-        document.getElementById(id).style.display = 'block';
+        document.getElementById(id).style.display = tipo;
         document.getElementById("a" + id).style.display = 'none';
     }
 }
