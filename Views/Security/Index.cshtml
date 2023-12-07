@@ -181,40 +181,6 @@
         </center>
     </details>
     
-    @*Solicitar reparacion*@
-    <details @open[3]>
-        <summary>Solicitar Reparación</summary>
-        <center>
-            <form asp-controller="RepairShip" asp-action="RequestRepair" class="formulario">
-                <table>
-                    <tr>
-                        <td>Matricula: </td>
-                        <td><input type="text" name="plate" placeholder="Introduzca Matrícula" required></td>
-                    </tr>
-                    <tr>
-                        <td>Instalación de la reparación </td>
-                        <td>
-                            <select name="InstallationID" asp-items="ViewBag.installations"></select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Tipo de reparación: </td>
-                        <td>
-                            <select name="RepairID" asp-items="ViewBag.repairs"></select>
-                        </td>
-                    </tr>
-                </table>
-                @if (ViewBag.lugar_del_error == 7)
-                {
-                    <aside class="error">
-                        @ViewBag.error
-                    </aside>
-                }
-                <button class="boton">Enviar</button>
-            </form>
-        </center>
-    </details>
-    
     @*Registrar Arribo*@
     <details @open[4]>
         <summary>Registrar Arribo</summary>

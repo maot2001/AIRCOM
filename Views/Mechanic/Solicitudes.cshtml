@@ -14,46 +14,43 @@
     </form>
 </nav>
 
-<h1>Solicitudes de reparación:</h1>
-@foreach (RepairShipDTO repair in ViewBag.repairs)
-{
-    <section class="dataToShow">
-        <div style="display: flex;">
-            <div>Matrícula: @Html.DisplayFor(m=>repair.Plate)</div>
-            <div>Estado: @Html.DisplayFor(m=>repair.State)</div>
-            <div>Tipo: @Html.DisplayFor(m=>repair.Name)</div>
+<h1>Crear Reparación:</h1>
+<form>
+    <section>
+        <center>
 
+    <div style="display:flex; justify-content:space-between; font-size:large">
+        <div>
+            Matrícula de la nave:
+            <select name="plate">
+                <option>3789ruire</option>
+                <option>3789ruire</option>
+                <option>3789ruire</option>
+            </select>
+            Estado: Pésimo
         </div>
-        @if (!ViewBag.a)
+        <div>
+            Instalación donde se realizará la reparación:
+            <select name="Instalation">
+                <option>Instalación #1</option>
+                <option>Instalación #2</option>
+                <option>Instalación #3</option>
+            </select>
+        </div>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-around;border:grey solid 2px; margin:1%">
+        @foreach(var k in "9huibaerfy9huewr9huiergohnjigewh0uihi")
         {
-            <div>
-                <form asp-controller="RepairShip" asp-action="ProcessRepair">
-                    <input name="rsid" value="@Html.DisplayFor(m=>repair.RSID)" hidden>
-                    <input name="plate" value="@Html.DisplayFor(m=>repair.Plate)" hidden>
-                    <div style="flex:2;">
-                        Horas necesarias:
-                        <input type="number" name="time" min="0" style="width:20%;" required>
-                    </div>
-                    <div>
-                        Terminación:
-                        <input type="date" name="finish" style="width:100%;" required min="@DateTime.Today.Date.ToString().Split().First()">
-                    </div>
-                    <div style="flex:1">
-                        <button type="submit" style="align-self:end;" class="boton">Reparar</button>
-                    </div>
-                    <div style="flex:2">
-                        <button type="button" style="align-self:end;" class="goodboton" onclick="show()">Sumar reparación</button>
-                    </div>
-                    <div id="add" style="padding:0% 7%">
-                        @foreach(var a in "yad89u89-uqfeoisf")
-                        {
-                            <label>
-                                <input type="checkbox">Reparacion capital
-                            </label>
-                        }
-                    </div>
-                </form>
-            </div>
+            <label style="margin:1%"><input type="checkbox"/> Reparacion capital</label>
         }
+    </div>
+    <div>
+        Fecha de terminación:
+        <input type="date" name="date"/>
+        Cantidad de horas que se emplearán:
+        <input type="number" min="0"/>
+        <button class="boton" type="submit">Reparar</button>
+    </div>
+        </center>
     </section>
-}
+</form>

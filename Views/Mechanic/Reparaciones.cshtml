@@ -23,11 +23,27 @@
             <div>Estado: @Html.DisplayFor(m=>repair.State)</div>
             <div>Tipo: @Html.DisplayFor(m=>repair.Name)</div>
         </div>
-        <div>
+        <div id=@repair.RSID>
             <div>Inicio: @Html.DisplayFor(m=>repair.Init.ToString().Split()[0])</div>
-            <div>Terminación: @Html.DisplayFor(m=>repair.Finish.ToString().Split()[0])</div>
+            <div style="flex:1.5">Terminación: @Html.DisplayFor(m=>repair.Finish.ToString().Split()[0])</div>
             <div>Horas previstas: @Html.DisplayFor(m=>repair.Time)</div>
+            <div><button onclick="swap(@repair.RSID,true,'flex')" class="goodboton">Editar</button></div>
         </div>
-
+        <div id=@("a"+repair.RSID) style="display:none;">
+            <form>
+                <div>Inicio: @Html.DisplayFor(m=>repair.Init.ToString().Split()[0])</div>
+                <div style="flex:1.5">Terminación:
+                    <input type="date" value=@repair.Finish/>
+                </div>
+                <div>Horas previstas: 
+                    <input type="number" value=@repair.Time style="width:100px"/>
+                </div>
+                <div>
+                    <button class="goodboton">✔️</button>
+                    <button type="button" onclick="swap(@repair.RSID,false,'flex')" class="badboton">✖️</button>
+                    <button class="badboton" style="background-color:rgb(165,5,5)">Eliminar</button>
+                </div>
+            </form>
+        </div>
     </section>
 }
