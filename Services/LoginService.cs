@@ -23,10 +23,12 @@ namespace AIRCOM.Services
             _config = config;
         }
 
-        public async Task<(string, int)> Login(Register register)
+        public async Task<(string, int,string,string)> Login(Register register)
         {
             string jwtToken;
             int val = 0;
+            string UserName;
+            string UserAirportName;
             var client = await _context.Clients.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
 
             if (client is null)
@@ -34,12 +36,19 @@ namespace AIRCOM.Services
                 var worker = await _context.Workers.SingleOrDefaultAsync(x => x.Email == register.Email && x.Pwd == register.Pwd);
                 if (worker is null)
                     throw new Exception();
+                UserName = worker.Name;
+                var k =  _context.Airports.SingleOrDefault(x=>(x.AirportID==worker.AirportID));
+                UserAirportName = k.Name;
                 jwtToken = GenerateToken(worker.AirportID.ToString(), worker.WorkerID.ToString(), worker.Type);
                 val = types[worker.Type];
             }
             else
+            {
+                UserName = client.Name;
+                UserAirportName = "";
                 jwtToken = GenerateToken("0", client.ClientID.ToString(), "Cliente");
-            return (jwtToken, val);
+            }
+            return (jwtToken, val,UserName,UserAirportName);
         }
 
         //------------------------------------------------------------------

@@ -42,13 +42,13 @@ namespace AIRCOM.Controllers
                 switch (Token.Item2)
                 {
                     case 0:
-                        return RedirectToAction("Index", "CView");
+                        return RedirectToAction("Index", "CView", new {UserName=Token.Item3});
                     case 1:
-                        return RedirectToAction("Index", "Security");
+                        return RedirectToAction("Index", "Security", new { UserName = Token.Item3, UserAirportName = Token.Item4 });
                     case 2:
-                        return RedirectToAction("Index", "Mechanic");
+                        return RedirectToAction("Index", "Mechanic", new { UserName = Token.Item3, UserAirportName = Token.Item4 });
                     default:
-                        return RedirectToAction("Index", "Direction");
+                        return RedirectToAction("Index", "Direction", new { UserName = Token.Item3, UserAirportName = Token.Item4 });
                 }
             }
             catch

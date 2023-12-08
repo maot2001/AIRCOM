@@ -219,6 +219,12 @@ section > details {
     padding: 0%;
 }
 
+.navegacion aside{
+    display:flex;
+    align-content:center;
+    align-items:center;
+}
+
 .ofertas {
     display: flex;
     flex-wrap: wrap;

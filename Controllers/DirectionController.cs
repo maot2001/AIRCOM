@@ -12,6 +12,8 @@ namespace AIRCOM.Controllers
         private readonly RepairService _aux2;
         private readonly ServiceInstallationService _aux3;
         private readonly RepairInstallationService _aux4;
+        private static string Name;
+        private static string Airport;
         public DirectionController(InstallationService aux, RepairService aux2, ServiceInstallationService aux3, RepairInstallationService aux4)
         {
             _aux = aux;
@@ -19,8 +21,17 @@ namespace AIRCOM.Controllers
             _aux3 = aux3;
             _aux4 = aux4;
         }
-        public async Task<IActionResult> Index(int page = 1, int lugar_del_error = 0, string error = "", int? id = null, bool filter = false)
+        public async Task<IActionResult> Index(int page = 1, int lugar_del_error = 0, string error = "", int? id = null, bool filter = false, string UserName="",string UserAirportName = "")
         {
+            if (UserName != "") {
+                Name = UserName;
+            }
+            if (UserAirportName != "")
+            {
+                Airport = UserAirportName;
+            }
+            ViewData["Usuario"]=Name;
+            ViewData["Aeropuerto"] = Airport;
             ViewData["lugar_del_error"] = lugar_del_error;
             ViewData["error"] = error;
             var userId = HttpContext.User.FindFirst("Airport")?.Value;

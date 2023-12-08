@@ -17,7 +17,7 @@
 </header>
 
 <nav>
-    <h4>AEREOPUERTO > USUARIO</h4>
+    <h4> AEROPUERTO: @ViewBag.Aeropuerto > USUARIO: @ViewBag.Usuario</h4>
 </nav>
 <nav class="navegacion">
     <form method="post">
@@ -32,7 +32,9 @@
     <aside>
         <button class="no" onclick="show()">➕</button>
         <input type="text" placeholder="🔍buscar">
-        <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
+        <form>
+            <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
+        </form>
     </aside>
 </nav>
 

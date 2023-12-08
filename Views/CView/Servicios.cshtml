@@ -22,7 +22,7 @@
 </header>
 
 <nav>
-    <h4>USUARIO</h4>
+    <h4>USUARIO:  @ViewBag.Usuario</h4>
 </nav>
 <nav class="navegacion">
     <form asp-controller="CView" asp-action="Index">
@@ -34,7 +34,9 @@
     </form>
     <aside>
         <input type="text" id="search" placeholder="🔍buscar" oninput="filter()">
-        <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
+        <form>
+            <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
+        </form>
     </aside>
 </nav>
 

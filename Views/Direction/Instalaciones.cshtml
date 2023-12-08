@@ -3,7 +3,7 @@
 </header>
 
 <nav>
-    <h4>AEREOPUERTO > USUARIO</h4>
+    <h4> AEROPUERTO: @ViewBag.Aeropuerto > USUARIO: @ViewBag.Usuario</h4>
 </nav>
 <nav class="navegacion">
     <form method="post">
@@ -17,7 +17,9 @@
     </form>
     <aside>
         <button class="no" onclick="show()">➕</button>
-        <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
+        <form>
+            <button method="get" asp-controller="Home" asp-action="Index" name="deleteCookie" value="true" class="badboton">📴</button>
+        </form>
     </aside>
 </nav>
 
@@ -97,7 +99,7 @@
                 <form method="post" id=@("a"+@inst.ID.ToString()) style="display:none">
                         <input name="id" value="@Html.DisplayFor(m=>inst.ID)" hidden>
                     <div>
-                        <strong>Nombre:</strong> <input name="name" value=@Html.DisplayFor(m=>inst.Name)>
+                        <strong>Nombre:</strong> <input name="name" value=@(Html.DisplayFor(m=>inst.Name))>
                     </div>
                     <div>
                         <strong>Tipo:</strong> <input name="type" value=@Html.DisplayFor(m=>inst.Type)>

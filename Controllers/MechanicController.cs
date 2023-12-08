@@ -1,4 +1,5 @@
-﻿using AIRCOM.Services;
+﻿using AIRCOM.Models;
+using AIRCOM.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,17 +8,28 @@ namespace AIRCOM.Controllers
     [Authorize(Policy = "Mechanic")]
     public class MechanicController : Controller
     {
-        private readonly RepairShipService _aux;
+        private readonly RepairShipService _aux; 
+        private static string Name;
+        private static string Airport;
         public MechanicController(RepairShipService aux)
         {
             _aux = aux;
         }
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, string UserName = "", string UserAirportName = "")
         {
             ViewData["a"] = false;
             var userId = HttpContext.User.FindFirst("Airport")?.Value;
-
-            switch(page)
+            if (UserName != "")
+            {
+                Name = UserName;
+            }
+            if (UserAirportName !="")
+            {
+                Airport = UserAirportName;
+            }
+            ViewData["Usuario"] = Name;
+            ViewData["Aeropuerto"] = Airport;
+            switch (page)
             {
                 case 2:
                 {
